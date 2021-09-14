@@ -15,3 +15,14 @@ app.use(
   })
 );
 app.use(cors());
+
+app.use('/foodItems', require('./routes/foodItems'));
+
+
+const db = require('./keys').mongoURI;
+
+const mongoose = require('mongoose');
+mongoose
+  .connect(db, { useNewUrlParser: true })
+  .then(() => console.log('Connection to Mongo DB established'))
+  .catch(err => console.log(err));
