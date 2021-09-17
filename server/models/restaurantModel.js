@@ -5,11 +5,6 @@ import mongoose from 'mongoose'
 
 const RestaurantSchema = new mongoose.Schema({
     type: Object,
-    // restaurant_id: {
-    //     type: Schema.Types.ObjectId,
-    //     required: true,
-    //     unique: true,
-    // },
     name: {
         type: String,
         required: true,

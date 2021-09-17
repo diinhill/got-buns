@@ -3,12 +3,9 @@ import mongoose from 'mongoose'
 
 
 
-const CommentSchema = new mongoose.Schema({
+export const CommentSchema = new mongoose.Schema({
     type: Object,
-    user: {
-        type: String,
-        required: true,
-    },
+    restaurant: [Schema.Types.ObjectId],
     message: {
         type: String,
         required: true,

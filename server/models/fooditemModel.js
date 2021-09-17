@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import Schema from 'mongoose'
+import {CommentSchema} from './commentModel.js'
 
 
 const FooditemSchema = new mongoose.Schema({
@@ -72,38 +73,8 @@ const FooditemSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    restaurant: {
-        type: Object,
-        required: true,
-        unique: true,
-        restaurant_id: {
-            type: Schema.Types.ObjectId,
-            required: true,
-            unique: true,
-        },
-        name: {
-            type: String,
-            required: true,
-            unique: true,
-        },
-        phone: {
-            type: Number,
-            required: true,
-            unique: true,
-        },
-        street: {
-            type: String,
-            required: true,
-        },
-        number: {
-            type: Number,
-            required: true,
-        },
-        postal: {
-            type: Number,
-            required: true,
-        },
-    },
+    restaurant: [Schema.Types.ObjectId],
+    // this is only pointing to an object in another collection.
     img: {
         type: String,
         unique: true,
@@ -111,13 +82,12 @@ const FooditemSchema = new mongoose.Schema({
     likes: {
         type: Number,
     },
-    comments: [Schema.Types.ObjectId],
-    // comments: {
-    //     type: [CommentSchema],
-    //     default: undefined,  
-    // }, this would only store the information 'this is an array of schemas' in it, but not 
-    // the comments themselves. I will have to point to the comments and create the path when the comment 
-    // is created via the_id set by mongodb during doc creation.
+    comments: {
+        type: [CommentSchema],
+        default: undefined,  
+    //  this is creating a subcollection (nesting) in my collection, which is preferable because I don't need these
+    // particular comments anywhere else in my app.
+    },
 })
 
 
