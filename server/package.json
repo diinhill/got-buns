@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"nodemon server.js\" \"cd ../client && npm start\"",
+    "dev": "concurrently \"nodemon server.js\" \"cd ../client && npm dev\"",
     "server": "nodemon server.js"
   },
   "repository": {

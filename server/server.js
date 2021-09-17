@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 // const bodyParser = require('body-parser');
 // const cors = require('cors');
 //importing the routes
-import fooditemRoute from "./routes/fooditemRoute.js"
+import fooditemRoutes from "./routes/fooditemRoute.js"
 
 dotenv.config();
 
@@ -26,7 +26,7 @@ app.use(express.urlencoded({
 
 
 //using the routes for a specific api
-app.use('/api/fooditemRoute', fooditemRoute);
+app.use('/api/fooditems', fooditemRoutes);
 // app.use('/fooditemRoute', require('./routes/fooditemRoute'));
 
 
