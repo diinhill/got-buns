@@ -1,10 +1,9 @@
 import mongoose from 'mongoose'
-// import Schema from 'mongoose'
+import { CommentSchema } from './commentModel.js'
 
 
 
 const RestaurantSchema = new mongoose.Schema({
-    type: Object,
     name: {
         type: String,
         required: true,
@@ -30,6 +29,10 @@ const RestaurantSchema = new mongoose.Schema({
     img: {
         type: String,
         unique: true,
+    },
+    comments: {
+        type: [CommentSchema],
+        default: undefined,
     },
 })
 

@@ -1,10 +1,9 @@
 import mongoose from 'mongoose'
-// import Schema from 'mongoose'
+import Schema from 'mongoose'
 
 
 
 export const CommentSchema = new mongoose.Schema({
-    type: Object,
     restaurant: [Schema.Types.ObjectId],
     message: {
         type: String,

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import Schema from 'mongoose'
-import {CommentSchema} from './commentModel.js'
+import { CommentSchema } from './commentModel.js'
 
 
 const FooditemSchema = new mongoose.Schema({
@@ -27,7 +27,7 @@ const FooditemSchema = new mongoose.Schema({
             required: true,
         },
         month: {
-            type: String, 
+            type: String,
             required: true,
         },
         year: {
@@ -84,9 +84,9 @@ const FooditemSchema = new mongoose.Schema({
     },
     comments: {
         type: [CommentSchema],
-        default: undefined,  
-    //  this is creating a subcollection (nesting) in my collection, which is preferable because I don't need these
-    // particular comments anywhere else in my app.
+        default: undefined,
+        //  this is creating a subcollection (nesting) in my collection, which is preferable because I don't need these
+        // particular comments anywhere else in my app.
     },
 })
 
