@@ -53,7 +53,7 @@ const Fooditem = () => {
         setNewFooditem(await getFooditem(urlkey))
     }, [urlkey])
 
-    console.log('fooditem:', mergedAuthorInfo)
+    console.log('fooditem:', fooditem)
 
 
     // const handleExpandClick = () => {

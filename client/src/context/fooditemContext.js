@@ -12,10 +12,11 @@ export const FooditemContextProvider = ({ children }) => {
     const getFooditems = async () => {
         // do fetch from backend when fooditems collection is updated
     }
-    const getFooditem = async () => {
-        const fooditem /* = ... */
-        // get fooditem from backend via the fooditem.id in its url
-        return fooditem
+
+    // get fooditem from backend via the fooditem.id in its url
+    const getFooditem = async (id) => {
+        const fooditem = await fetch(`/api/fooditems/${id}`)
+        return fooditem.json()
     }
 
     const createNewFooditem = () => {

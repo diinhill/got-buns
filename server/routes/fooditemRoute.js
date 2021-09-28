@@ -42,8 +42,32 @@ router.post('/',
             if (err) { console.log(err) }
             res.status(201).json(files)
         })
-    });
+    }
+)
 
+// update fooditem
+router.put('/:id',
+    (req, res) => {
+        fooditemModel.findByIdAndUpdate({ _id: req.params.id }, req.body
+            .then(() => {
+                fooditemModel.findOne({ _id: req.params.id })
+                    .then(files => {
+                        res.send(files)
+                    })
+            })
+        )
+    }
+)
+
+// delete fooditem
+router.delete('/:id',
+    (req, res) => {
+        fooditemModel.findByIdAndRemove({ _id: req.params.id })
+            .then(files => {
+                res.send(files)
+            })
+    }
+)
 
 // module.exports = router;
 export default router;

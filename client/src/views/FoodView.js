@@ -1,0 +1,1 @@
+// move all hooks and states to views, use Fooditem mainly for rendering, handing down props
