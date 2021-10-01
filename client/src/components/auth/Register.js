@@ -9,7 +9,7 @@ import { Paper, TextField, Button, Container } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: deepOrange[500],
+        // backgroundColor: deepOrange[500],
     },
     field: {
         display: 'blocks',
@@ -53,7 +53,7 @@ const Register = () => {
                 <label>
                     <TextField className={classes.field} fullWidth variant='outlined' required label='name' type='text' name='name' onChange={handleChange} value={state.name} />
                 </label>
-                <label>
+                {/* <label>
                     <div>
                         <Button className={classes.field} fullWidth variant='outlined' required aria-label='more' aria-controls='long-menu' aria-haspopup='true' onClick={handleClick}>
                             choose your avatar*
@@ -69,7 +69,7 @@ const Register = () => {
                             )}
                         </Menu>
                     </div>
-                </label>
+                </label> */}
                 <label>
                     <TextField className={classes.field} fullWidth variant='outlined' required label='email' type='email' name='email' onChange={handleChange} value={state.email} />
                 </label>

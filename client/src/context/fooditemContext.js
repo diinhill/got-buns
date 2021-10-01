@@ -6,10 +6,10 @@ export const FooditemContext = createContext()
 
 export const FooditemContextProvider = ({ children }) => {
 
-    const [fooditems, setNewFooditems] = useState([])
-
 
     const getFooditems = async () => {
+        const fooditems = await fetch(`/api/fooditems/all`)
+        return fooditems.json()
         // do fetch from backend when fooditems collection is updated
     }
 
@@ -19,18 +19,18 @@ export const FooditemContextProvider = ({ children }) => {
         return fooditem.json()
     }
 
-    const createNewFooditem = () => {
-        const fooditem /* = ... */
-        // function needs to be connected with router.post...addFooditem in fooditemRoute ?
-        return fooditem
-    }
+    // const createNewFooditem = () => {
+    //     const fooditem /* = ... */
+    //     // function needs to be connected with router.post...addFooditem in fooditemRoute ?
+    //     return fooditem
+    // }
 
 
 
 
     return (
 
-        <FooditemContext.Provider value={{ fooditems, getFooditems, getFooditem, createNewFooditem }}>
+        <FooditemContext.Provider value={{ getFooditems, getFooditem, /*createNewFooditem*/ }}>
             {children}
         </FooditemContext.Provider>
 

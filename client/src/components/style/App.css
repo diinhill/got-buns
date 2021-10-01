@@ -1,4 +1,4 @@
-.App {
+.HomeView {
   text-align: center;
 }
 
@@ -13,8 +13,8 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
+.HomeView-header {
+  background-color: #df853cea;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

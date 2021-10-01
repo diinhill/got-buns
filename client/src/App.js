@@ -1,57 +1,15 @@
-import logo from './logo.svg'
-import './App.css'
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
-}
-
-export default App
-
-
-// import './App.css'
-// import Nav from './components/Nav'
-// import Homepage from './components/Homepage'
-// import AuthorSearch from './components/AuthorSearch'
-// import AuthorCard from './components/AuthorCard'
-// import AuthorBooksAll from './components/AuthorBooksAll'
-// import BookSearch from './components/BookSearch'
-// import BookCard from './components/BookCard'
-// import UserLists from './components/UserLists'
-// import UserList from './components/UserList'
-// import PublicLists from './components/PublicLists'
-// import PublicList from './components/PublicList'
-// import React, { useContext } from 'react'
-// import {
-//   BrowserRouter as Router,
-//   Switch,
-//   Route,
-//   Redirect
-// } from 'react-router-dom'
-// import Register from './components/auth/Register'
-// import Login from './components/auth/Login'
-// import Logout from './components/auth/Logout'
-// import { BookContextProvider } from './context/bookContext'
-// import { AuthContextProvider, AuthContext } from './context/authContext'
-// import { UserListsContextProvider } from './context/userListsContext'
-// import { ThemeContextProvider } from './context/themeContext'
-// import Layout from './components/Layout'
+// import './components/style/App.css'
+import React, { useContext } from 'react'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import Layout from './components/nav/Layout'
+import HomeView from './views/HomeView'
+import FoodView from './views/FoodView'
+import Register from './components/auth/Register'
+import Login from './components/auth/Login'
+import Logout from './components/auth/Logout'
+import { FooditemContextProvider } from './context/fooditemContext'
+import { AuthContextProvider, AuthContext } from './context/authContext'
+import { ThemeContextProvider } from './context/themeContext'
 
 // console.log(`process.env.REACT_APP_GOOGLE_API_KEY`, process.env.REACT_APP_GOOGLE_API_KEY)
 // const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -68,64 +26,43 @@ export default App
 // }
 
 
-// function App() {
+function App() {
 
 
-//   return (
+  return (
 
-//     <div className='App'>
-//       <ThemeContextProvider>
-//         <AuthContextProvider>
-//           <Router>
-//             {/* <Nav /> */}
-//             <Layout>
-//               <BookContextProvider>
-//                 <UserListsContextProvider>
-//                   <Switch>
-//                     <Route exact path='/'>
-//                       <Homepage />
-//                     </Route>
-//                     <Route exact path='/authors'>
-//                       <AuthorSearch />
-//                     </Route>
-//                     <Route exact path={`/authors/:authorKey`}>
-//                       <AuthorCard />
-//                     </Route>
-//                     <Route exact path={`/authors/:authorKey/books/all`}>
-//                       <AuthorBooksAll />
-//                     </Route>
-//                     <Route exact path='/books'>
-//                       <BookSearch />
-//                     </Route>
-//                     <Route exact path={`/authors/:authorKey/books/:bookKey`}>
-//                       <BookCard />
-//                     </Route>
-//                     <Route exact path='/lists/public'>
-//                       <PublicLists />
-//                     </Route>
-//                     <Route exact path={`/lists/public/:publicListId`}>
-//                       <PublicList />
-//                     </Route>
-//                     <Route exact path='/register'>
-//                       <Register />
-//                     </Route>
-//                     <Route exact path='/login'>
-//                       <Login />
-//                     </Route>
-//                     <Route exact path='/logout'>
-//                       <Logout />
-//                     </Route>
-//                     <PrivateRoute component={UserLists} exact path='/lists' />
-//                     <PrivateRoute component={UserList} exact path={`/lists/:listId`} />
-//                   </Switch>
-//                 </UserListsContextProvider>
-//               </BookContextProvider>
-//             </Layout>
-//           </Router>
-//         </AuthContextProvider>
-//       </ThemeContextProvider>
-//     </div>
-//   )
-// }
+    <div className='App'>
+      <ThemeContextProvider>
+        <AuthContextProvider>
+          <Router>
+            <Layout>
+              <FooditemContextProvider>
+                <Switch>
+                  <Route exact path='/'>
+                    <HomeView />
+                  </Route>
+                  <Route exact path='/fooditems'>
+                    <FoodView />
+                  </Route>
+                  <Route exact path='/register'>
+                    <Register />
+                  </Route>
+                  <Route exact path='/login'>
+                    <Login />
+                  </Route>
+                  <Route exact path='/logout'>
+                    <Logout />
+                  </Route>
+                  {/* <PrivateRoute component={UserLists} exact path='/lists' />
+                  <PrivateRoute component={UserList} exact path={`/lists/:listId`} /> */}
+                </Switch>
+              </FooditemContextProvider>
+            </Layout>
+          </Router>
+        </AuthContextProvider>
+      </ThemeContextProvider>
+    </div>
+  )
+}
 
-// export default App
+export default App

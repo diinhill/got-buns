@@ -1,30 +1,30 @@
 import express from 'express'
-import fooditemModel from '../models/fooditemModel.js';
+import fooditemModel from '../models/fooditemModel.js'
 import restaurantModel from '../models/restaurantModel.js'
 
 
-const router = express.Router();
+const router = express.Router()
 
 
 // create a test route
 router.get('/test', (req, res) => {
-    res.send({ msg: 'Test route.' });
-});
+    res.send({ msg: 'Test route.' })
+})
 
 
 // get all restaurants
-router.get('/all',
+router.get('/restaurants/all',
     (req, res) => {
         restaurantModel.find()
             .then(files => {
                 res.send(files)
             })
-            .catch(err => console.log(err));
-    });
+            .catch(err => console.log(err))
+    })
 
 
 // add restaurant
-router.post('/',
+router.post('/restaurants/',
     (req, res) => {
         const { name, phone, street, number, postal, img } = req.body
         // am I only adding the parameters that the user needs to set or also those that are set automatically during doc creation or added later like comments ??
@@ -45,7 +45,7 @@ router.post('/',
 )
 
 // update restaurant
-router.put('/:id',
+router.put('/restaurants/:id',
     (req, res) => {
         fooditemModel.findByIdAndUpdate({ _id: req.params.id }, req.body)
             .then(() => {
@@ -58,7 +58,7 @@ router.put('/:id',
 )
 
 // delete restaurant
-router.delete('/:id',
+router.delete('/restaurants/:id',
     (req, res) => {
         fooditemModel.findByIdAndRemove({ _id: req.params.id })
             .then(files => {

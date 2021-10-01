@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { FooditemContext } from '../../context/fooditemContext'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import Card from '@material-ui/core/Card'
@@ -13,7 +12,6 @@ import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { Paper } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
 
@@ -37,21 +35,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Fooditem = () => {
+const Fooditem = ({ fooditem }) => {
 
 
-    // am I also going to take the fooditem_id in the url to point at the right object within my collection and display it ?
-    // then I would need two get functions in the fooditemContext: 1. get just one fooditem, 2. get all fooditems after update/change
-    const { urlkey } = useParams()
-    const [fooditem, setNewFooditem] = useState()
-    const { getFooditem } = useContext(FooditemContext)
     const classes = useStyles()
     const [expanded, setExpanded] = useState(false)
 
 
-    useEffect(() => {
-        setNewFooditem(await getFooditem(urlkey))
-    }, [urlkey])
 
     console.log('fooditem:', fooditem)
 
