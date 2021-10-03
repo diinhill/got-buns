@@ -10,6 +10,7 @@ import Logout from './components/auth/Logout'
 import { FooditemContextProvider } from './context/fooditemContext'
 import { AuthContextProvider, AuthContext } from './context/authContext'
 import { ThemeContextProvider } from './context/themeContext'
+import { UploadFileContextProvider } from './context/uploadFileContext'
 
 // console.log(`process.env.REACT_APP_GOOGLE_API_KEY`, process.env.REACT_APP_GOOGLE_API_KEY)
 // const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -36,27 +37,29 @@ function App() {
         <AuthContextProvider>
           <Router>
             <Layout>
-              <FooditemContextProvider>
-                <Switch>
-                  <Route exact path='/'>
-                    <HomeView />
-                  </Route>
-                  <Route exact path='/fooditems'>
-                    <FoodView />
-                  </Route>
-                  <Route exact path='/register'>
-                    <Register />
-                  </Route>
-                  <Route exact path='/login'>
-                    <Login />
-                  </Route>
-                  <Route exact path='/logout'>
-                    <Logout />
-                  </Route>
-                  {/* <PrivateRoute component={UserLists} exact path='/lists' />
-                  <PrivateRoute component={UserList} exact path={`/lists/:listId`} /> */}
-                </Switch>
-              </FooditemContextProvider>
+              <UploadFileContextProvider>
+                <FooditemContextProvider>
+                  <Switch>
+                    <Route exact path='/'>
+                      <HomeView />
+                    </Route>
+                    <Route exact path='/fooditems'>
+                      <FoodView />
+                    </Route>
+                    <Route exact path='/register'>
+                      <Register />
+                    </Route>
+                    <Route exact path='/login'>
+                      <Login />
+                    </Route>
+                    <Route exact path='/logout'>
+                      <Logout />
+                    </Route>
+                    <PrivateRoute component={MyProfileView} exact path='/profile' />
+                    <PrivateRoute component={MailboxView} exact path={`/profile/mailbox`} />
+                  </Switch>
+                </FooditemContextProvider>
+              </UploadFileContextProvider>
             </Layout>
           </Router>
         </AuthContextProvider>

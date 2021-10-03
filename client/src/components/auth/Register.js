@@ -4,7 +4,8 @@ import { useHistory } from 'react-router-dom'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
-import { Paper, TextField, Button, Container } from '@material-ui/core'
+import { Paper, TextField, Button, Container, Typography } from '@material-ui/core'
+import App from '../style/App.css'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,28 +22,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Register = () => {
+const Register = ({ dropbox, img, file }) => {
 
     const classes = useStyles()
-    const history = useHistory()
-    const [state, setState] = useState({ email: '', password: '', name: '' })
-    const { register, user } = useContext(AuthContext)
-
-
-
-    const handleChange = (e) => {
-        setState({ ...state, [e.target.name]: e.target.value })
-    }
-    const handleOnSubmit = (event) => {
-        event.preventDefault()
-        register(state)
-    }
-
-    useEffect(() => {
-        user && history.push('/login')
-    }, [user, history])
-
-    console.log('state:', state)
 
 
 
@@ -53,23 +35,15 @@ const Register = () => {
                 <label>
                     <TextField className={classes.field} fullWidth variant='outlined' required label='name' type='text' name='name' onChange={handleChange} value={state.name} />
                 </label>
-                {/* <label>
-                    <div>
-                        <Button className={classes.field} fullWidth variant='outlined' required aria-label='more' aria-controls='long-menu' aria-haspopup='true' onClick={handleClick}>
-                            choose your avatar*
-                        </Button>
-
-                        <Menu id='long-menu' anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}
-                            PaperProps={{ style: { maxHeight: ITEM_HEIGHT * 4.5 } }}
-                        >
-                            {avatarOptions.map((option, i) =>
-                                <MenuItem key={i} selected={option === 'P'} onClick={handleClose}>
-                                    <Paper variant='contained'>{option}</Paper>
-                                </ MenuItem>
-                            )}
-                        </Menu>
+                <label>
+                    <div id={dropbox}>
+                        <input type='file' id='fileElem' multiple accept='image/*' class='visually-hidden' />
+                        <label for='fileElem'>select an image</label>
+                        <div id='fileList'>
+                            <Typography>No files selected!</Typography>
+                        </div>
                     </div>
-                </label> */}
+                </label>
                 <label>
                     <TextField className={classes.field} fullWidth variant='outlined' required label='email' type='email' name='email' onChange={handleChange} value={state.email} />
                 </label>

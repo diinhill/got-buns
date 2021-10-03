@@ -19,12 +19,13 @@ app.use(express.urlencoded({
 app.use('/api/fooditems', fooditemRoutes)
 // app.use('/fooditemRoute', require('./routes/fooditemRoute'));
 app.use('/api/restaurants', restaurantRoutes)
+app.use('api/foodalerts', foodalertRoutes)
 
 
 //connect to mongodb / .env file
 mongoose
     .connect(process.env.DB)
-    .then(() => console.log("MongoDB Connected...server running on port: " + port))
+    .then(() => console.log('mongoDB connected...server running on port: ' + port))
     .catch(err => console.log(err.message))
 
 const port = process.env.PORT || 5000

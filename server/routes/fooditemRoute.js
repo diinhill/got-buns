@@ -1,5 +1,6 @@
 import express from 'express'
 import fooditemModel from '../models/fooditemModel.js'
+import restaurantModel from '../models/restaurantModel.js'
 
 
 const router = express.Router()
@@ -19,11 +20,22 @@ router.get('/fooditems/all',
                 res.send(files)
             })
             .catch(err => console.log(err))
+    }
+)
+
+
+// get all fooditems by one restaurant
+router.get('/profile/:name/fooditems',
+    (req, res) => {
+        const name = req.params.name
+        fooditemModel.find({
+            restaurant.name
+        })
     })
 
 
 // add fooditem
-router.post('/fooditems/',
+router.post('/fooditems',
     (req, res) => {
         const { name, type, amount, purchaseDate, dueDate, price, swapPossible, img } = req.body
         // am I only adding the parameters that the user needs to set or also those that are set automatically during doc creation or added later like comments ??
@@ -42,6 +54,25 @@ router.post('/fooditems/',
             if (err) { console.log(err) }
             res.status(201).json(files)
         })
+    }
+)
+
+// get just one fooditem using the URL parameter
+router.get('/fooditems/:id',
+    (req, res) => {
+        let fooditemId = req.params.id
+        fooditemModel
+            .findById(fooditemId)
+            .populate('details')
+            .exec(function (err, fooditem) {
+                if (err) {
+                    console.log(err)
+                    res.send(err)
+                } else {
+                    console.log(fooditem.details)
+                    res.send(fooditem)
+                }
+            })
     }
 )
 

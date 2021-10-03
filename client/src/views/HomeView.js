@@ -2,6 +2,7 @@ import '../components/style/App.css'
 import bun from '../components/style/img/bun.jpg'
 
 const HomeView = () => {
+
     return (
         <div className='HomeView'>
             <header className='HomeView-header'>
@@ -21,5 +22,4 @@ const HomeView = () => {
         </div>
     )
 }
-
 export default HomeView

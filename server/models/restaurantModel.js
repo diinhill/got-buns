@@ -26,6 +26,20 @@ const RestaurantSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 6,
+        maxlength: 10,
+    },
+    passwordHash: {
+        type: String,
+    },
     img: {
         type: String,
         unique: true,

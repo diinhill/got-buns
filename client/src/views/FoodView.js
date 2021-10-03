@@ -17,7 +17,7 @@ const FoodView = () => {
     const [body, setBody] = useState('')
 
     const getFooditems = async () => {
-        const fooditems = await fetch(`http://localhost:3000/api/fooditems/all`)
+        const fooditems = await fetch(`http://localhost:5000/api/fooditems/all`)
         console.log('fooditems:', fooditems)
         setFooditems(fooditems.json())
     }

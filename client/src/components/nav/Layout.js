@@ -87,23 +87,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Layout({ children }) {
+
     const { user } = useContext(AuthContext)
     const { activeTheme, toggleTheme } = useContext(ThemeContext)
-
-    const classes = useStyles();
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const classes = useStyles()
+    const theme = useTheme()
+    const [open, setOpen] = React.useState(false)
 
     const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-
+        setOpen(true)
+    }
     const handleDrawerClose = () => {
-        setOpen(false);
-    };
+        setOpen(false)
+    }
     const handleClick = () => {
         activeTheme === "light" ? toggleTheme("dark") : toggleTheme("light")
     }
+
 
     return (
         <div className={classes.root}>
