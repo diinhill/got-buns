@@ -1,5 +1,6 @@
 import express from 'express'
 import foodalertModel from '../models/foodalertModel.js'
+import responseModel from '../models/responseModel.js'
 
 
 const router = express.Router()
@@ -37,7 +38,7 @@ router.post('/foodalerts',
     }
 )
 
-// get just one foodalter using the URL parameter
+// get just one foodaltert using the URL parameter
 router.get('/foodalerts/:id',
     (req, res) => {
         let foodalertId = req.params.id

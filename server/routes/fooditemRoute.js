@@ -1,6 +1,5 @@
 import express from 'express'
 import fooditemModel from '../models/fooditemModel.js'
-import restaurantModel from '../models/restaurantModel.js'
 
 
 const router = express.Router()
@@ -24,14 +23,15 @@ router.get('/fooditems/all',
 )
 
 
-// get all fooditems by one restaurant
-router.get('/profile/:name/fooditems',
-    (req, res) => {
-        const name = req.params.name
-        fooditemModel.find({
-            restaurant.name
-        })
-    })
+// // get all fooditems by one restaurant
+// router.get('/profile/:name/fooditems',
+//     (req, res) => {
+//         const name = req.params.name
+//         fooditemModel.find({
+//             // restaurant.name
+//         })
+//     }
+// )
 
 
 // add fooditem

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import Schema from 'mongoose'
-import { ResponseSchema } from './responseModel'
+import { ResponseSchema } from './responseModel.js'
 
 
 

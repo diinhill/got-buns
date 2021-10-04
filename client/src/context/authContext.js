@@ -1,24 +1,25 @@
 import { createContext, useState, useEffect } from 'react'
-import bcrypt from 'bcrypt'
+import { useHistory } from 'react-router'
 
 
-export const AuthContext = createContext(/*null*/)
+export const AuthContext = createContext()
 
 
 
 export const AuthContextProvider = ({ children }) => {
 
+    const history = useHistory()
+    const [user, setUser] = useState(null)
 
-    // The signIn function takes an email and password and uses the emailPassword authentication provider to log in.
-    const login = async (name, email, password) => {
-        const cred = bcrypt.compareSync(password, hash)
-        if (cred) {
-            const user = await fetch(`/${name}/profile`)
+    // compare the provided password with the hashPassword that has been saved during registration. if they match, reroute to profile page
+    const login = async ({ email, password }) => {
+        const user = await fetch(`/users?email=${email}&password=${password}`)
+        if (user) {
+            setUser(user)
+            history.push(`/users/${user._id}`)
         } else {
             console.log('wrong password?')
-            const user = null
         }
-        return user
     }
 
     // // The signUp function takes an email and password and uses the emailPassword authentication provider to register the user.
@@ -38,7 +39,7 @@ export const AuthContextProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ user, login }}>
+        <AuthContext.Provider value={{ login, user }}>
             {children}
         </AuthContext.Provider>
     )

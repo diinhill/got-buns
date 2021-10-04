@@ -25,7 +25,23 @@ const useStyles = makeStyles((theme) => ({
 const Register = ({ dropbox, img, file }) => {
 
     const classes = useStyles()
+    const history = useHistory()
+    const [state, setState] = useState({ email: '', password: '', name: '' })
+    const { register, user } = useContext(AuthContext)
 
+    const handleChange = (e) => {
+        setState({ ...state, [e.target.name]: e.target.value })
+    }
+    const handleOnSubmit = (event) => {
+        event.preventDefault()
+        register(state)
+    }
+
+    useEffect(() => {
+        user && history.push('/login')
+    }, [user, history])
+
+    console.log('state:', state)
 
 
     return (

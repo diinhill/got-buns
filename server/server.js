@@ -3,6 +3,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import fooditemRoutes from './routes/fooditemRoute.js'
 import restaurantRoutes from './routes/restaurantRoute.js'
+import foodalertRoutes from './routes/foodalertRoute.js'
+import userRoutes from './routes/userRoute.js'
 
 dotenv.config()
 
@@ -19,7 +21,8 @@ app.use(express.urlencoded({
 app.use('/api/fooditems', fooditemRoutes)
 // app.use('/fooditemRoute', require('./routes/fooditemRoute'));
 app.use('/api/restaurants', restaurantRoutes)
-app.use('api/foodalerts', foodalertRoutes)
+app.use('/api/foodalerts', foodalertRoutes)
+app.use('/api/users', userRoutes)
 
 
 //connect to mongodb / .env file
