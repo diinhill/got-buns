@@ -12,7 +12,7 @@ router.get('/test', (req, res) => {
 
 
 // get all fooditems
-router.get('/fooditems/all',
+router.get('/',
     (req, res) => {
         fooditemModel.find()
             .then(files => {
@@ -100,5 +100,4 @@ router.delete('/fooditems/:id',
     }
 )
 
-// module.exports = router;
-export default router;
+export default router
