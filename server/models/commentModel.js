@@ -4,7 +4,7 @@ import Schema from 'mongoose'
 
 
 export const CommentSchema = new mongoose.Schema({
-    restaurant: [Schema.Types.ObjectId],
+    user: [Schema.Types.ObjectId],
     message: {
         type: String,
         required: true,

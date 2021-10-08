@@ -7,7 +7,7 @@ const router = express.Router()
 
 
 // get all foodalerts
-router.get('/foodalerts/all',
+router.get('/',
     (req, res) => {
         foodalertModel.find()
             .then(files => {
@@ -18,7 +18,7 @@ router.get('/foodalerts/all',
 
 
 // add foodalert
-router.post('/foodalerts',
+router.post('/',
     (req, res) => {
         const { title, amount, asap, untilLatest, price, swapPossible } = req.body
         // am I only adding the parameters that the user needs to set or also those that are set automatically during doc creation or added later like comments ??
@@ -39,7 +39,7 @@ router.post('/foodalerts',
 )
 
 // get just one foodaltert using the URL parameter
-router.get('/foodalerts/:id',
+router.get('/:id',
     (req, res) => {
         let foodalertId = req.params.id
         foodalertModel
@@ -58,7 +58,7 @@ router.get('/foodalerts/:id',
 )
 
 // update foodalert
-router.put('/foodalerts/:id',
+router.put('/:id',
     (req, res) => {
         foodalertModel.findByIdAndUpdate({ _id: req.params.id }, req.body
             .then(() => {
@@ -72,7 +72,7 @@ router.put('/foodalerts/:id',
 )
 
 // delete foodalert
-router.delete('/foodalerts/:id',
+router.delete('/:id',
     (req, res) => {
         foodalertModel.findByIdAndRemove({ _id: req.params.id })
             .then(files => {
@@ -81,5 +81,4 @@ router.delete('/foodalerts/:id',
     }
 )
 
-// module.exports = router;
-export default router;
+export default router

@@ -27,15 +27,18 @@ const RestaurantSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    img: {
+    town: {
         type: String,
-        unique: true,
+        required: true,
+    },
+    photo: {
+        type: String,
     },
     comments: {
         type: [CommentSchema],
         default: undefined,
     },
-    owner: [Schema.Types.ObjectId],
+    user: [Schema.Types.ObjectId],
 })
 
 export default mongoose.model('restaurant', RestaurantSchema)

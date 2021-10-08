@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, TextField, Button, Container, Typography } from '@material-ui/core'
 import App from '../style/App.css'
+import axios from 'axios'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,49 +23,73 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Register = ({ dropbox, img, file }) => {
+const Register = (/*{ dropbox, img, file }*/) => {
 
     const classes = useStyles()
     const history = useHistory()
-    const [state, setState] = useState({ email: '', password: '', name: '' })
-    const { register, user } = useContext(AuthContext)
+    const [newUser, setNewUser] = useState({ email: '', password: '', name: '', photo: '' })
+    // const { register, user } = useContext(AuthContext)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const formData = new FormData()
+        formData.append('photo', newUser.photo)
+        formData.append('email', newUser.email)
+        formData.append('name', newUser.name)
+        formData.append('password', newUser.password)
+
+        axios.post('http://localhost:5000/api/users/register', formData)
+            .then(res => {
+                console.log(res)
+                // do I reroute to login here or setUser(user) ??
+                history.push('/login')
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
 
     const handleChange = (e) => {
-        setState({ ...state, [e.target.name]: e.target.value })
-    }
-    const handleOnSubmit = (event) => {
-        event.preventDefault()
-        register(state)
+        setNewUser({ ...newUser, [e.target.name]: e.target.value })
     }
 
-    useEffect(() => {
-        user && history.push('/login')
-    }, [user, history])
+    const handlePhoto = (e) => {
+        setNewUser({ ...newUser, photo: e.target.files[0] })
+        console.log('filename:', e.target.files[0].name)
+        const imgfile = document.getElementById('imgfile')
+        imgfile.append(' >> ' + e.target.files[0].name)
+    }
 
-    console.log('state:', state)
+    // const handleOnSubmit = (event) => {
+    //     event.preventDefault()
+    //     register(state)
+    // }
+
+    // useEffect(() => {
+    //     user && history.push('/login')
+    // }, [user, history])
+
+    console.log('newUser:', newUser)
 
 
     return (
 
         <Container /*className={classes.root}*/>
-            <form onSubmit={handleOnSubmit}>
+            <form onSubmit={handleSubmit} encType='multipart/form-data'>
                 <label>
-                    <TextField className={classes.field} fullWidth variant='outlined' required label='name' type='text' name='name' onChange={handleChange} value={state.name} />
+                    <TextField className={classes.field} fullWidth variant='outlined' required label='name' type='text' name='name' onChange={handleChange} value={newUser.name} />
                 </label>
                 <label>
-                    <div id={dropbox}>
-                        <input type='file' id='fileElem' multiple accept='image/*' class='visually-hidden' />
-                        <label for='fileElem'>select an image</label>
-                        <div id='fileList'>
-                            <Typography>No files selected!</Typography>
-                        </div>
+                    <div id='imgfile' /*id={dropbox}*/>
+                        <input type='file' id='fileElem' /*multiple accept='image/*'*/ class='visually-hidden' accept='.png, .jpg, .jpeg' name='photo' onChange={handlePhoto} />
+                        <label for='fileElem'>choose profile picture</label>
                     </div>
                 </label>
                 <label>
-                    <TextField className={classes.field} fullWidth variant='outlined' required label='email' type='email' name='email' onChange={handleChange} value={state.email} />
+                    <TextField className={classes.field} fullWidth variant='outlined' required label='email' type='email' name='email' onChange={handleChange} value={newUser.email} />
                 </label>
                 <label>
-                    <TextField className={classes.field} fullWidth variant='outlined' required label='password' type='password' name='password' onChange={handleChange} value={state.password} />
+                    <TextField className={classes.field} fullWidth variant='outlined' required label='password' type='password' name='password' onChange={handleChange} value={newUser.password} />
                 </label>
                 <div>
                     <Button className={classes.field} variant='contained' type='submit'>submit</Button>

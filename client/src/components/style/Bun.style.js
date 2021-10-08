@@ -7,3 +7,4 @@ const Button = styled.button`
     background-color: orange;
 
 `;
+export default Button

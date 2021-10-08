@@ -1,12 +1,13 @@
 import express from 'express'
 import restaurantModel from '../models/restaurantModel.js'
+import upload from '../middlewares/imgUpload.js'
 
 
 const router = express.Router()
 
 
 // get all restaurants
-router.get('/restaurants',
+router.get('/',
     (req, res) => {
         restaurantModel.find()
             .then(files => {
@@ -18,30 +19,31 @@ router.get('/restaurants',
 
 
 // add a new restaurant 
-router.post('/restaurants',
-    (req, res) => {
-        const newRestaurant = new restaurantModel({
-            name: req.body.name,
-            phone: req.body.phone,
-            street: req.body.street,
-            number: req.body.number,
-            postal: req.body.postal,
-            img: req.body.img,
+router.route('/:uid/register').post(upload.single('photo'), (req, res) => {
+    const newRestaurant = new restaurantModel({
+        name: req.body.name,
+        phone: req.body.phone,
+        street: req.body.street,
+        number: req.body.number,
+        postal: req.body.postal,
+        town: req.body.town,
+        photo: req.file.filename,
+        user: req.params.uid
+    })
+    console.log('new restaurant:', newRestaurant)
+    newRestaurant
+        .save()
+        .then(() => {
+            res.send('restaurant successfully added')
         })
-        console.log('new restaurant:', newRestaurant)
-        newRestaurant
-            .save()
-            .then(() => {
-                res.send('restaurant successfully added')
-            })
-            .catch(err => {
-                res.status(500).send('server error')
-            })
-    }
+        .catch(err => {
+            res.status(500).send('server error')
+        })
+}
 )
 
 // update restaurant information
-router.put('/restaurants/:id/:name',
+router.put('/:uid-:id/:name',
     (req, res) => {
         restaurantModel.findOneAndUpdate({
             _id: req.params.id,
@@ -50,7 +52,8 @@ router.put('/restaurants/:id/:name',
             street: req.body.street,
             number: req.body.number,
             postal: req.body.postal,
-            img: req.body.img,
+            town: req.body.town,
+            photo: req.file.filename,
         }, req.body)
             .then(() => {
                 restaurantModel.findOne({
@@ -64,17 +67,18 @@ router.put('/restaurants/:id/:name',
 )
 
 // get just one restaurant using the URL parameter
-router.get('/restaurants/:id/:name',
+router.get('/:uid-:id/:name',
     (req, res) => {
         restaurantModel
             .findById(req.params.id)
-            .populate('details')
+            // how do I have to populate to get all the data, if at all
+            .populate('name', 'phone', 'street', 'number', 'postal', 'town', 'photo')
             .exec(function (err, restaurant) {
                 if (err) {
                     console.log(err)
                     res.send(err)
                 } else {
-                    console.log(restaurant.details)
+                    console.log(restaurant)
                     res.send(restaurant)
                 }
             })
@@ -82,7 +86,7 @@ router.get('/restaurants/:id/:name',
 )
 
 // delete restaurant
-router.delete('/restaurants/:id/:name',
+router.delete('/:uid-:id/:name',
     (req, res) => {
         restaurantModel.findByIdAndRemove({ _id: req.params.id })
             .then(files => {

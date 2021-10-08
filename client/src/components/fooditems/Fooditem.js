@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { Paper } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import Comment from '../comments/Comment.js'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
 
@@ -42,65 +42,64 @@ const Fooditem = ({ fooditem }) => {
     const [expanded, setExpanded] = useState(false)
 
 
-
     console.log('fooditem:', fooditem)
 
 
-    // const handleExpandClick = () => {
-    //     setExpanded(!expanded)
-    // }
+    const handleExpandClick = () => {
+        setExpanded(!expanded)
+    }
 
 
     return (
 
         <Card>
             <CardHeader
-                title={fooditem?.name}
-            // subheader={(`${mergedAuthorInfo?.birth_date} - ${mergedAuthorInfo?.death_date}`) || "We didn't bother looking up the author's birth date."}
+                title={fooditem.name}
+                subheader={<i>{fooditem.type}</i>}
             />
-            {/* <CardMedia className={classes.media} title='portrait author' align='center'>
-                {mergedAuthorInfo?.photos ?
-                    <img src={`https://covers.openlibrary.org/a/id/${mergedAuthorInfo?.photos[0]}-M.jpg`} />
-                    :
-                    mergedAuthorInfo?.name && <Avatar variant='square' aria-label='author' className={classes.avatar}>{mergedAuthorInfo?.name[0]}</Avatar>
-                }
+            <CardMedia className={classes.media} title='foodpic' align='center'>
+                <img src={fooditem.photo} alt='' />
             </CardMedia>
 
             <CardContent>
                 <Paper>
-                    <Typography>{`This author has written ${mergedAuthorInfo?.work_count || "an unknown number of"} book(s) so far.`}</Typography>
-                    <Typography><i>{mergedAuthorInfo?.top_work}</i>{" is considered to be the author's finest work." || "We have no clue what the author's finest work might be."}</Typography>
-                    <IconButton aria-label='show all books' endIcon={<KeyboardArrowRight />}>
-                        <Link to={`/authors/${authorKey}/books/all`}>
-                            see all books
-                        </Link>
+                    <Typography>purchased on: `${fooditem.purchaseDate.day}` `${fooditem.purchaseDate.month} ${fooditem.purchaseDate.year}`</Typography>
+                    <Typography>due on: {fooditem.dueDate.day} {fooditem.dueDate.month} {fooditem.dueDate.year}</Typography>
+                    <Typography>amount: {fooditem.amount}</Typography>
+                    <Typography>price: {fooditem.price}</Typography>
+                    <Typography>optional swap: {fooditem.swapPossible}</Typography>
+                    <Typography>reserved: {fooditem.reserved}</Typography>
+
+                    <Typography><i>last updated on: {fooditem.updated}</i></Typography>
+                    <Typography>likes: {fooditem.likes}</Typography>
+                    <IconButton aria-label='show list of comments' endIcon={<KeyboardArrowRight />}>
+                        <Typography>comments: {fooditem?.comments}</Typography>
                     </IconButton>
                 </Paper>
             </CardContent>
 
-            <CardActions disableSpacing>
-                <div>
-                    {mergedAuthorInfo?.bio &&
-                        <IconButton
-                            className={clsx(classes.expand, { [classes.expandOpen]: expanded, })}
-                            onClick={handleExpandClick}
-                            aria-expanded={expanded}
-                            aria-label="show more"
-                        >
-                            <ExpandMoreIcon />
-                        </IconButton>
-                    }
-                </div>
-            </CardActions>
+            {fooditem?.comments &&
+                <CardActions disableSpacing>
+                    <IconButton
+                        className={clsx(classes.expand, { [classes.expandOpen]: expanded, })}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label='read comments'
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </CardActions>
+            }
 
             <Collapse in={expanded} timeout='auto' unmountOnExit>
                 <CardContent>
-                    {/* <Typography paragraph>Method:</Typography> */}
-            {/* <Typography paragraph>
-                {mergedAuthorInfo?.bio?.value || mergedAuthorInfo?.bio}
-            </Typography>
-        </CardContent>
-            </Collapse > * /} */}
+                    {fooditem.comments.map((comment, i) => {
+                        return (
+                            <Comment key={i} comment={comment} />
+                        )
+                    })}
+                </CardContent>
+            </Collapse >
         </Card >
     )
 }

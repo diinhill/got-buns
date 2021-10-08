@@ -2,10 +2,10 @@
 
 import React, { useContext, useState, useEffect } from 'react'
 import { FooditemContext } from '../context/fooditemContext'
-import { Paper, TextField, Typography } from '@material-ui/core'
+import { TextField, Typography, Button, Container } from '@material-ui/core'
 import Fooditem from '../components/fooditems/Fooditem'
-import { Button, Container } from '@material-ui/core'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
+import axios from 'axios'
 
 
 
@@ -13,21 +13,20 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 const FoodView = () => {
 
     const { createNewFooditem } = useContext(FooditemContext)
-    const [fooditems, setFooditems] = useState([])
+    const [fooditems, setFooditems] = useState([{}])
     const [body, setBody] = useState('')
 
-    const getFooditems = async () => {
-        const fooditems = await fetch(`http://localhost:5000/api/fooditems/all`)
-        console.log('fooditems:', fooditems)
-        setFooditems(fooditems.json())
-    }
 
     useEffect(() => {
+        const getFooditems = async () => {
+            const res = await axios.get('http://localhost:5000/api/fooditems/')
+            console.log('res:', res.data)
+            const data = res.data
+            console.log('data:', data)
+            setFooditems(data)
+        }
         getFooditems()
-    }, [fooditems])
-
-
-    console.log('updated fooditemlist:', fooditems)
+    }, [fooditems, body])
 
 
     const handleOnChange = (e) => {
@@ -35,10 +34,7 @@ const FoodView = () => {
     }
     const handleCreateNewFooditem = () => {
         createNewFooditem(body)
-        getFooditems()
     }
-
-
 
 
     return (
@@ -46,17 +42,13 @@ const FoodView = () => {
         <Container>
             <Typography variant='h2' color='default' component='h4' align='center'>fooditems</Typography>
 
-            <TextField fullWidth variant='outlined' type="text" placeholder='name of new fooditem' value={body} onChange={handleOnChange} />
+            <TextField fullWidth variant='outlined' type='text' placeholder='name of new fooditem' value={body} onChange={handleOnChange} />
             <Button variant='contained' onClick={handleCreateNewFooditem} type='submit' endIcon={<KeyboardArrowRightIcon />}>add new fooditem</Button>
 
             {fooditems ?
-                fooditems.map((item, i) => {
+                fooditems.map((fooditem, i) => {
                     return (
-                        <div /*className={classes.field}*/ key={i}>
-                            <Paper>
-                                <Fooditem fooditem={item} />
-                            </Paper>
-                        </div>
+                        <Fooditem key={i} fooditem={fooditem} />
                     )
                 })
                 : <Typography>loading...</Typography>

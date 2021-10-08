@@ -15,15 +15,9 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 10,
     },
-    passwordHash: {
+    photo: {
         type: String,
-    },
-    img: {
-        type: String,
-        unique: true,
     },
     restaurant: [Schema.Types.ObjectId],
     profession: {

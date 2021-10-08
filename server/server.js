@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import mongoose from 'mongoose'
 import passport from 'passport'
+import cors from 'cors'
 import fooditemRoutes from './routes/fooditemRoute.js'
 import restaurantRoutes from './routes/restaurantRoute.js'
 import foodalertRoutes from './routes/foodalertRoute.js'
@@ -12,6 +13,7 @@ import { jwtStrategy } from './passport.js'
 dotenv.config()
 
 const app = express()
+app.use(cors())
 
 // url parser is deprecated in express 4
 app.use(express.json())
@@ -22,7 +24,6 @@ app.use(express.urlencoded({
 
 //using the routes for a specific api
 app.use('/api/fooditems', fooditemRoutes)
-// app.use('/fooditemRoute', require('./routes/fooditemRoute'))
 app.use('/api/restaurants', restaurantRoutes)
 app.use('/api/foodalerts', foodalertRoutes)
 app.use('/api/users', userRoutes)

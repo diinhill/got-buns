@@ -1,5 +1,6 @@
 import express from 'express'
 import fooditemModel from '../models/fooditemModel.js'
+import upload from '../middlewares/imgUpload.js'
 
 
 const router = express.Router()
@@ -35,34 +36,37 @@ router.get('/',
 
 
 // add fooditem
-router.post('/fooditems',
-    (req, res) => {
-        const { name, type, amount, purchaseDate, dueDate, price, swapPossible, img } = req.body
-        // am I only adding the parameters that the user needs to set or also those that are set automatically during doc creation or added later like comments ??
-        let addFooditem = new fooditemModel({
-            name,
-            type,
-            amount,
-            purchaseDate,
-            dueDate,
-            price,
-            swapPossible,
-            img
-        })
-        console.log(addFooditem)
-        addFooditem.save((err, files) => {
-            if (err) { console.log(err) }
-            res.status(201).json(files)
-        })
-    }
+router.route('/:id/add').post(upload.single('photo'), (req, res) => {
+    const { restaurant } = req.params.id
+    const { photo } = req.file.filename
+    const { name, type, amount, purchaseDate, dueDate, price, swapPossible } = req.body
+    // am I only adding the parameters that the user needs to set or also those that are set automatically during doc creation or added later like comments ??
+    let addFooditem = new fooditemModel({
+        name,
+        type,
+        amount,
+        purchaseDate,
+        dueDate,
+        price,
+        swapPossible,
+        restaurant,
+        photo
+    })
+    console.log(addFooditem)
+    addFooditem.save((err, files) => {
+        if (err) { console.log(err) }
+        res.status(201).json(files)
+    })
+}
 )
 
-// get just one fooditem using the URL parameter
-router.get('/fooditems/:id',
+// get all fooditems by one restaurant using the URL parameter
+router.get('/:id',
     (req, res) => {
-        let fooditemId = req.params.id
+        const { restaurant } = req.params.id
         fooditemModel
-            .findById(fooditemId)
+            .findById(restaurant)
+            // populate with data how ??
             .populate('details')
             .exec(function (err, fooditem) {
                 if (err) {
@@ -77,11 +81,11 @@ router.get('/fooditems/:id',
 )
 
 // update fooditem
-router.put('/fooditems/:id',
+router.put('/:id-:fodid',
     (req, res) => {
-        fooditemModel.findByIdAndUpdate({ _id: req.params.id }, req.body
+        fooditemModel.findByIdAndUpdate({ restaurant: req.params.id }, req.body
             .then(() => {
-                fooditemModel.findOne({ _id: req.params.id })
+                fooditemModel.findOne({ restaurant: req.params.id, _id: req.params.fodid })
                     .then(files => {
                         res.send(files)
                     })
@@ -91,9 +95,9 @@ router.put('/fooditems/:id',
 )
 
 // delete fooditem
-router.delete('/fooditems/:id',
+router.delete('/:id-:fodid',
     (req, res) => {
-        fooditemModel.findByIdAndRemove({ _id: req.params.id })
+        fooditemModel.findByIdAndRemove({ restaurant: req.params.id, _id: req.params.fodid })
             .then(files => {
                 res.send(files)
             })
