@@ -79,7 +79,7 @@ router.post('/login', (req, res) => {
                 if (result) {
                     //  create JWT payload
                     const payload = {
-                        id: user.id,
+                        id: user._id,
                         email: user.email
                     }
                     //sign token
@@ -104,28 +104,25 @@ router.post('/login', (req, res) => {
                 }
             })
         } else {
-            res.status(403).send({ messege: 'user does not exist', success: false })
+            res.status(403).send({ message: 'user does not exist', success: false })
         }
     })
 })
 
 
-// get one user profile
-router.get('/:uid',
-    (req, res) => {
-        userModel.findById({
-            _id: req.params.uid,
-            name: req.body.name,
-            restaurant: restaurantModel.findById({ owner: req.params.uid }),
-            profession: req.body.profession,
-        }, req.body)
-            .then(files => {
-                res.send(files)
-            })
+// get one user profile, but only after authorisation (making sure user is logged in)
+router.get('/:uid', passport.authenticate('jwt', { session: false }), (req, res) => {
+        userModel.findById({ _id: req.params.uid }, (err, user, token) => {
+            if (err) {
+                res.status(404).json({ error: 'user does not exist' })
+            } else {
+                res.send(user)
+                res.send(token)
+            }
+        })
     }
 )
-
-
+           
 
 // update user profile
 router.put('/:uid',
@@ -134,8 +131,8 @@ router.put('/:uid',
             _id: req.params.uid,
             name: req.body.name,
             password: bcrypt.hashSync(req.body.password, saltRounds),
-            img: req.body.img,
-            restaurant: restaurantModel.findById({ owner: req.params.uid }),
+            photo: req.file.filename,
+            restaurant: restaurantModel.findById({ user: req.params.uid }),
             profession: req.body.profession,
         }, req.body)
             .then(() => {

@@ -1,5 +1,5 @@
 import React, { createContext, createThrobber } from 'react'
-import RegisterView from '../views/RegisterView'
+import RegisterView from './RegisterView'
 
 
 export const UploadFileContext = createContext()

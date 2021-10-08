@@ -12,16 +12,16 @@ import MailboxView from './views/MailboxView'
 import { FooditemContextProvider } from './context/fooditemContext'
 import { AuthContextProvider, AuthContext } from './context/authContext'
 import { ThemeContextProvider } from './context/themeContext'
-import { UploadFileContextProvider } from './context/uploadFileContext'
+
 
 // console.log(`process.env.REACT_APP_GOOGLE_API_KEY`, process.env.REACT_APP_GOOGLE_API_KEY)
 const PrivateRoute = ({ component: Component, ...rest }) => {
   console.log('rest:', rest)
-  const { user } = useContext(AuthContext)
+  const { authenticateUser } = useContext(AuthContext)
   return (
     <Route {...rest}
       render={props =>
-        user ?
+        authenticateUser() ?
           <Component {...props} />
           : <Redirect to='/login' />
       } />
@@ -39,7 +39,6 @@ function App() {
         <AuthContextProvider>
           <Router>
             <Layout>
-              <UploadFileContextProvider>
                 <FooditemContextProvider>
                   <Switch>
                     <Route exact path='/'>
@@ -57,11 +56,10 @@ function App() {
                     <Route exact path='/logout'>
                       <Logout />
                     </Route>
-                    <PrivateRoute component={MyRestaurantView} exact path={`/restaurants/:uid`} />
-                    <PrivateRoute component={MailboxView} exact path={`/users/:id/profile/messages`} />
+                    <PrivateRoute component={MyRestaurantView} exact path={`/restaurants/:uid-:id`} />
+                    <PrivateRoute component={MailboxView} exact path={`/users/:uid/profile/messages`} />
                   </Switch>
                 </FooditemContextProvider>
-              </UploadFileContextProvider>
             </Layout>
           </Router>
         </AuthContextProvider>

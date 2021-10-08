@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import Register from '../components/auth/Register'
+import Register from '../client/src/components/auth/Register'
 import { UploadFileContext } from '../context/uploadFileContext'
 
 

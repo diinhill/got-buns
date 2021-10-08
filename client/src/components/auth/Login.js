@@ -22,24 +22,12 @@ const Login = () => {
     const [state, setState] = useState({ email: '', password: '' })
     // const { login } = useContext(AuthContext)
     const [user, setUser] = useState(null)
+    const [token, setToken] = useState(null)
 
 
     const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value })
     }
-
-    // const returnToPreviousPage = () => {
-    //     /*!('/lists') ?*/ history.goBack() /*: history.push('/lists')*/
-    // }
-    // async function handleOnSubmit(event) {
-    //     event.preventDefault()
-    //     try {
-    //         await login(state)
-    //         returnToPreviousPage()
-    //     } catch (e) {
-    //         alert(e.message)
-    //     }
-    // }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -48,8 +36,11 @@ const Login = () => {
         console.log('data:', data)
         const user = data.user
         console.log('user:', user)
-        history.push(`/users/${user._id}`)
+        const token = data.token
+        console.log('token:', token)
         setUser(user)
+        setToken(token)
+        history.push(`/users/${user._id}`)
     }
 
     return (

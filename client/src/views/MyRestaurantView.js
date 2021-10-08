@@ -17,7 +17,7 @@ const MyRestaurantView = () => {
     }, [uid, id])
 
     const fetchRestaurantData = async (uid, id) => {
-        const res = await axios.get(`http://localhost:5000/api/restaurants/${uid}:${id}`)
+        const res = await axios.get(`http://localhost:5000/api/restaurants/${uid}-${id}`)
         const data = res.data
         console.log('restaurant data:', data)
         // populate ??

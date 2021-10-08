@@ -1,5 +1,6 @@
-import { createContext, useState, useEffect } from 'react'
-import { useHistory } from 'react-router'
+import { createContext } from 'react'
+import { useHistory, useParams } from 'react-router'
+import axios from 'axios'
 
 
 export const AuthContext = createContext()
@@ -8,38 +9,27 @@ export const AuthContext = createContext()
 
 export const AuthContextProvider = ({ children }) => {
 
+    const { uid } = useParams()
     const history = useHistory()
-    const [user, setUser] = useState(null)
 
-    // compare the provided password with the hashPassword that has been saved during registration. if they match, reroute to profile page
-    const login = async ({ email, password }) => {
-        const user = await fetch(`/users?email=${email}&password=${password}`)
-        if (user) {
-            setUser(user)
-            history.push(`/users/${user._id}`)
+    const authenticateUser = () => {
+        const res = axios.get(`http://localhost:5000/api/users/${uid}`)
+        const data = res.data
+        console.log('data:', data)
+        console.log('user:', data.user)
+        if (data.token) {
+            const token = data.token
+            console.log('token:', token)
+            return token
         } else {
-            console.log('wrong password?')
+            console.log('warning: user not authenticated')
+            history.push('/login')
         }
     }
 
-    // // The signUp function takes an email and password and uses the emailPassword authentication provider to register the user.
-    // const signUp = async (email, password) => {
-    //     await app.emailPasswordAuth.registerUser(email, password)
-    // }
-
-    // // The signOut function calls the logOut function on the currently logged in user
-    // const signOut = () => {
-    //     if (user == null) {
-    //         console.warn("Not logged in, can't log out!")
-    //         return
-    //     }
-    //     user.logOut()
-    //     setUser(null)
-    // }
-
 
     return (
-        <AuthContext.Provider value={{ login, user }}>
+        <AuthContext.Provider value={{ authenticateUser }}>
             {children}
         </AuthContext.Provider>
     )
