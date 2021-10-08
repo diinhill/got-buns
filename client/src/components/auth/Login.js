@@ -31,6 +31,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log("hello Nadine")
         const res = axios.post('http://localhost:5000/api/users/login', state)
         const data = res.data
         console.log('data:', data)
