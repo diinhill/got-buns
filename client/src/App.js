@@ -9,6 +9,7 @@ import Login from './components/auth/Login'
 import Logout from './components/auth/Logout'
 import MyRestaurantView from './views/MyRestaurantView'
 import MailboxView from './views/MailboxView'
+import MyUserProfileView from './views/MyUserProfileView'
 import { FooditemContextProvider } from './context/fooditemContext'
 import { AuthContextProvider, AuthContext } from './context/authContext'
 import { ThemeContextProvider } from './context/themeContext'
@@ -17,11 +18,11 @@ import { ThemeContextProvider } from './context/themeContext'
 // console.log(`process.env.REACT_APP_GOOGLE_API_KEY`, process.env.REACT_APP_GOOGLE_API_KEY)
 const PrivateRoute = ({ component: Component, ...rest }) => {
   console.log('rest:', rest)
-  const { authenticateUser } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   return (
     <Route {...rest}
       render={props =>
-        authenticateUser() ?
+        user ?
           <Component {...props} />
           : <Redirect to='/login' />
       } />
@@ -39,27 +40,28 @@ function App() {
         <AuthContextProvider>
           <Router>
             <Layout>
-                <FooditemContextProvider>
-                  <Switch>
-                    <Route exact path='/'>
-                      <HomeView />
-                    </Route>
-                    <Route exact path='/fooditems'>
-                      <FoodView />
-                    </Route>
-                    <Route exact path='/register'>
-                      <Register />
-                    </Route>
-                    <Route exact path='/login'>
-                      <Login />
-                    </Route>
-                    <Route exact path='/logout'>
-                      <Logout />
-                    </Route>
-                    <PrivateRoute component={MyRestaurantView} exact path={`/restaurants/:uid-:id`} />
-                    <PrivateRoute component={MailboxView} exact path={`/users/:uid/profile/messages`} />
-                  </Switch>
-                </FooditemContextProvider>
+              <FooditemContextProvider>
+                <Switch>
+                  <Route exact path='/'>
+                    <HomeView />
+                  </Route>
+                  <Route exact path='/fooditems'>
+                    <FoodView />
+                  </Route>
+                  <Route exact path='/register'>
+                    <Register />
+                  </Route>
+                  <Route exact path='/login'>
+                    <Login />
+                  </Route>
+                  <Route exact path='/logout'>
+                    <Logout />
+                  </Route>
+                  <PrivateRoute component={MyUserProfileView} exact path={`/users/:uid`} />
+                  <PrivateRoute component={MyRestaurantView} exact path={`/restaurants/:id`} />
+                  <PrivateRoute component={MailboxView} exact path={`/users/:uid/profile/messages`} />
+                </Switch>
+              </FooditemContextProvider>
             </Layout>
           </Router>
         </AuthContextProvider>

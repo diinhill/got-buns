@@ -1,5 +1,5 @@
-import { createContext } from 'react'
-import { useHistory, useParams } from 'react-router'
+import { createContext, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
 
@@ -9,18 +9,14 @@ export const AuthContext = createContext()
 
 export const AuthContextProvider = ({ children }) => {
 
-    const { uid } = useParams()
+    const [user, setUser] = useState(null)
     const history = useHistory()
 
-    const authenticateUser = () => {
-        const res = axios.get(`http://localhost:5000/api/users/${uid}`)
-        const data = res.data
-        console.log('data:', data)
-        console.log('user:', data.user)
-        if (data.token) {
-            const token = data.token
-            console.log('token:', token)
-            return token
+    const authenticateUser = (uid) => {
+        const response = axios.get(`http://localhost:5000/api/users/${uid}`)
+        console.log('response:', response)
+        if (response.data.accessToken) {
+            setUser(response.data.user.json())
         } else {
             console.log('warning: user not authenticated')
             history.push('/login')
@@ -29,7 +25,7 @@ export const AuthContextProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ authenticateUser }}>
+        <AuthContext.Provider value={{ authenticateUser, user }}>
             {children}
         </AuthContext.Provider>
     )

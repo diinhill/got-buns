@@ -63,8 +63,8 @@ const Fooditem = ({ fooditem }) => {
 
             <CardContent>
                 <Paper>
-                    <Typography>purchased on: `${fooditem.purchaseDate.day}` `${fooditem.purchaseDate.month} ${fooditem.purchaseDate.year}`</Typography>
-                    <Typography>due on: {fooditem.dueDate.day} {fooditem.dueDate.month} {fooditem.dueDate.year}</Typography>
+                    {/* <Typography>purchased on: {fooditem.purchaseDate}</Typography>
+                    <Typography>due on: {fooditem.dueDate}</Typography> */}
                     <Typography>amount: {fooditem.amount}</Typography>
                     <Typography>price: {fooditem.price}</Typography>
                     <Typography>optional swap: {fooditem.swapPossible}</Typography>
@@ -90,16 +90,17 @@ const Fooditem = ({ fooditem }) => {
                     </IconButton>
                 </CardActions>
             }
-
-            <Collapse in={expanded} timeout='auto' unmountOnExit>
-                <CardContent>
-                    {fooditem.comments.map((comment, i) => {
-                        return (
-                            <Comment key={i} comment={comment} />
-                        )
-                    })}
-                </CardContent>
-            </Collapse >
+            {fooditem?.comments &&
+                <Collapse in={expanded} timeout='auto' unmountOnExit>
+                    <CardContent>
+                        {fooditem.comments.map((comment, i) => {
+                            return (
+                                <Comment key={i} comment={comment} />
+                            )
+                        })}
+                    </CardContent>
+                </Collapse >
+            }
         </Card >
     )
 }

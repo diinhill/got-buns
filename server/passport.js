@@ -10,22 +10,9 @@ const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 }
 
-// export const jwtStrategy = new JwtStrategy(jwtOptions, async (payload, done) => {
-//     try {
-//         // Identify user by ID
-//         const user = await UserModel.findById(payload.id)
-//         console.log('user :>> ', user)
-//         if (!user) {
-//             return done(null, false)
-//         }
-//         return done(null, user)
-//     } catch (e) {
-//         return done(e, false)
-//     }
-// })
-
 
 const jwtVerify = async (payload, next) => {
+    console.log(`payload`, payload)
     try {
         const user = await UserModel.findById(payload.id)
         console.log(user)

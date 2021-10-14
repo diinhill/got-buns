@@ -39,6 +39,7 @@ const RestaurantSchema = new mongoose.Schema({
         default: undefined,
     },
     user: [Schema.Types.ObjectId],
+    fooditems: [Schema.Types.ObjectId],
 })
 
 export default mongoose.model('restaurant', RestaurantSchema)

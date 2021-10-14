@@ -1,8 +1,9 @@
-import { Typography, Button, Container, Paper } from '@material-ui/core'
 import React, { useState, useContext, useEffect } from 'react'
 // import { AuthContext } from '../context/authContext'
 import { useHistory, useParams } from 'react-router'
 import axios from 'axios'
+import MyRestaurant from '../components/restaurants/MyRestaurant'
+
 
 
 const MyRestaurantView = () => {
@@ -27,28 +28,7 @@ const MyRestaurantView = () => {
 
     return (
 
-        <Container>
-            <Typography>{restaurant.name}</Typography>
-            <Paper>
-                <Typography>contact</Typography>
-                <Typography>{restaurant.street} {restaurant.number}</Typography>
-                <Typography>{restaurant.postal} {restaurant.town}</Typography>
-                <br></br>
-                <Typography>phone: {restaurant.phone}</Typography>
-            </Paper>
-            <img fullWidth src={restaurant.photo} />
-
-            {/* formatting address in order to create a googlemap (https://developers.google.com/maps/documentation/javascript/get-api-key#console_1)
-            API key needed!
-            <Map ...
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script> */}
-
-
-            <Button onClick={(() => history.push(`/users/${uid}`))}><Typography>edit profile</Typography></Button>
-            <Button onClick={(() => history.push(`/fooditems/${uid}`))}><Typography>my fooditems</Typography></Button>
-            <Button onClick={(() => history.push(`/foodalerts/${uid}`))}><Typography>my foodalerts</Typography></Button>
-            <Button onClick={(() => history.push(`/users/${uid}/messages`))}><Typography>my messages</Typography></Button>
-        </Container>
+        <MyRestaurant restaurant={restaurant} />
 
     )
 

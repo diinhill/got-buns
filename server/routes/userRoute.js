@@ -68,7 +68,7 @@ router.route('/register').post(upload.single('photo'), (req, res) => {
 router.post('/login', (req, res) => {
     const reqemail = req.body.email
     const reqpassword = req.body.password
-
+    console.log(`req,body`, req.body)
     UserSchema.findOne({ email: reqemail }, (err, user) => {
         if (err) {
             res.send(err)
@@ -83,21 +83,13 @@ router.post('/login', (req, res) => {
                         email: user.email
                     }
                     //sign token
-                    jwt.sign(
-                        payload,
-                        process.env.JWT_SECRET,
-                        {
-                            expiresIn: process.env.JWT_EXPIRES_IN,
-                        },
-                        (err, token) => {
-                            if (err) { res.send(err) }
-
-                            res.status(200).json({
-                                success: true,
-                                token,
-                                user
-                            })
+                    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN }, function (err, token) {
+                        if (err) {
+                            res.send(err)
+                        } else {
+                            res.status(200).json({ success: true, token, user })
                         }
+                    }
                     )
                 } else {
                     res.status(403).send({ message: 'wrong password', success: false })
@@ -111,18 +103,23 @@ router.post('/login', (req, res) => {
 
 
 // get one user profile, but only after authorisation (making sure user is logged in)
-router.get('/:uid', passport.authenticate('jwt', { session: false }), (req, res) => {
-        userModel.findById({ _id: req.params.uid }, (err, user, token) => {
-            if (err) {
-                res.status(404).json({ error: 'user does not exist' })
-            } else {
-                res.send(user)
-                res.send(token)
-            }
-        })
+router.get('/profile',
+    passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+        const user = req.user
+        console.log(`user`, user)
+        res.send(user)
+        // userModel.findById({ _id: req.params.uid }, (err, user, token) => {
+        //     if (err) {
+        //         res.status(404).json({ error: 'user does not exist' })
+        //     } else {
+        //         res.send(user)
+        //         res.send(token)
+        //     }
+        // })
     }
 )
-           
+
 
 // update user profile
 router.put('/:uid',

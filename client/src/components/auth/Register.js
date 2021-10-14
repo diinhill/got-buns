@@ -1,11 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../../context/authContext'
 import { useHistory } from 'react-router-dom'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, TextField, Button, Container, Typography } from '@material-ui/core'
-import App from '../style/App.css'
 import axios from 'axios'
 
 
@@ -23,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Register = (/*{ dropbox, img, file }*/) => {
+const Register = () => {
 
     const classes = useStyles()
     const history = useHistory()
@@ -60,14 +57,6 @@ const Register = (/*{ dropbox, img, file }*/) => {
         imgfile.append(' >> ' + e.target.files[0].name)
     }
 
-    // const handleOnSubmit = (event) => {
-    //     event.preventDefault()
-    //     register(state)
-    // }
-
-    // useEffect(() => {
-    //     user && history.push('/login')
-    // }, [user, history])
 
     console.log('newUser:', newUser)
 

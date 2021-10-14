@@ -22,26 +22,23 @@ const Login = () => {
     const [state, setState] = useState({ email: '', password: '' })
     // const { login } = useContext(AuthContext)
     const [user, setUser] = useState(null)
-    const [token, setToken] = useState(null)
 
 
     const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log("hello Nadine")
-        const res = axios.post('http://localhost:5000/api/users/login', state)
-        const data = res.data
-        console.log('data:', data)
-        const user = data.user
-        console.log('user:', user)
-        const token = data.token
-        console.log('token:', token)
-        setUser(user)
-        setToken(token)
-        history.push(`/users/${user._id}`)
+        const response = await axios.post('http://localhost:5000/api/users/login', state)
+        console.log('response:', response.data)
+        if (response.data.token) {
+            localStorage.setItem('token', response.data.token)
+            setUser(response.data.user)
+            history.push(`/users/${response.data.user._id}`)
+        } else {
+            history.push('/login')
+        }
     }
 
     return (

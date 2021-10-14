@@ -1,6 +1,7 @@
 import express from 'express'
 import fooditemModel from '../models/fooditemModel.js'
 import upload from '../middlewares/imgUpload.js'
+import passport from 'passport'
 
 
 const router = express.Router()
@@ -24,41 +25,31 @@ router.get('/',
 )
 
 
-// // get all fooditems by one restaurant
-// router.get('/profile/:name/fooditems',
-//     (req, res) => {
-//         const name = req.params.name
-//         fooditemModel.find({
-//             // restaurant.name
-//         })
-//     }
-// )
-
-
 // add fooditem
-router.route('/:id/add').post(upload.single('photo'), (req, res) => {
-    const { restaurant } = req.params.id
-    const { photo } = req.file.filename
-    const { name, type, amount, purchaseDate, dueDate, price, swapPossible } = req.body
-    // am I only adding the parameters that the user needs to set or also those that are set automatically during doc creation or added later like comments ??
-    let addFooditem = new fooditemModel({
-        name,
-        type,
-        amount,
-        purchaseDate,
-        dueDate,
-        price,
-        swapPossible,
-        restaurant,
-        photo
-    })
-    console.log(addFooditem)
-    addFooditem.save((err, files) => {
-        if (err) { console.log(err) }
-        res.status(201).json(files)
-    })
-}
-)
+router.route('/:rid')
+    .post(passport.authenticate('jwt', { session: false }), upload.single('photo'), (req, res) => {
+        const { rid } = req.params
+        const { photo } = req.file.filename
+        const { name, type, amount, purchaseDate, dueDate, price, swapPossible } = req.body
+        // am I only adding the parameters that the user needs to set or also those that are set automatically during doc creation or added later like comments ??
+        let addFooditem = new fooditemModel({
+            name,
+            type,
+            amount,
+            purchaseDate,
+            dueDate,
+            price,
+            swapPossible,
+            restaurant: rid,
+            photo
+        })
+        console.log(addFooditem)
+        addFooditem.save((err, files) => {
+            if (err) { console.log(err) }
+            res.status(201).json(files)
+        })
+    }
+    )
 
 // get all fooditems by one restaurant using the URL parameter
 router.get('/:id',
@@ -81,27 +72,27 @@ router.get('/:id',
 )
 
 // update fooditem
-router.put('/:id-:fodid',
-    (req, res) => {
-        fooditemModel.findByIdAndUpdate({ restaurant: req.params.id }, req.body
-            .then(() => {
-                fooditemModel.findOne({ restaurant: req.params.id, _id: req.params.fodid })
-                    .then(files => {
-                        res.send(files)
-                    })
-            })
-        )
-    }
-)
+// router.put('/:id-:fodid',
+//     (req, res) => {
+//         fooditemModel.findByIdAndUpdate({ restaurant: req.params.id }, req.body
+//             .then(() => {
+//                 fooditemModel.findOne({ restaurant: req.params.id, _id: req.params.fodid })
+//                     .then(files => {
+//                         res.send(files)
+//                     })
+//             })
+//         )
+//     }
+// )
 
 // delete fooditem
-router.delete('/:id-:fodid',
-    (req, res) => {
-        fooditemModel.findByIdAndRemove({ restaurant: req.params.id, _id: req.params.fodid })
-            .then(files => {
-                res.send(files)
-            })
-    }
-)
+// router.delete('/:id-:fodid',
+//     (req, res) => {
+//         fooditemModel.findByIdAndRemove({ restaurant: req.params.id, _id: req.params.fodid })
+//             .then(files => {
+//                 res.send(files)
+//             })
+//     }
+// )
 
 export default router
