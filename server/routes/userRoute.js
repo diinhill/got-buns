@@ -107,7 +107,7 @@ router.get('/profile',
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
         const user = req.user
-        console.log(`user`, user)
+        console.log('user:', user)
         res.send(user)
         // userModel.findById({ _id: req.params.uid }, (err, user, token) => {
         //     if (err) {
@@ -122,19 +122,21 @@ router.get('/profile',
 
 
 // update user profile
-router.put('/:uid',
+router.put('/profile/edit',
+    passport.authenticate('jwt', { session: false }),
     (req, res) => {
+        const user = req.user
+        console.log('user:', user)
         userModel.findOneAndUpdate({
-            _id: req.params.uid,
+            _id: user._id,
             name: req.body.name,
             password: bcrypt.hashSync(req.body.password, saltRounds),
             photo: req.file.filename,
-            restaurant: restaurantModel.findById({ user: req.params.uid }),
             profession: req.body.profession,
         }, req.body)
             .then(() => {
                 userModel.findOne({
-                    _id: req.params.uid
+                    _id: user._id
                 })
                     .then(files => {
                         res.send(files)
@@ -145,9 +147,12 @@ router.put('/:uid',
 
 
 // delete account
-router.delete('/:uid',
+router.delete('/profile/delete',
+    passport.authenticate('jwt', { session: false }),
     (req, res) => {
-        userModel.findByIdAndRemove({ _id: req.params.uid })
+        const user = req.user
+        console.log('user:', user)
+        userModel.findByIdAndRemove({ _id: user._id })
             .then(files => {
                 res.send(files)
             })

@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const MyUserProfile = ({ userData }) => {
+const MyUserProfile = ({ user }) => {
 
 
     const history = useHistory()
     const classes = useStyles()
 
-    console.log('userData:', userData)
+    console.log('user:', user)
 
 
 
@@ -30,20 +30,18 @@ const MyUserProfile = ({ userData }) => {
 
         <Card>
             <CardHeader
-                title={userData.name}
-                subheader={<i>{userData.profession}</i>}
+                title={user.name}
+                subheader={<i>{user.profession}</i>}
             />
             <CardMedia className={classes.media} title='profile pic' align='center'>
-                <img src={userData.photo} alt='' />
+                <img src={user.photo} alt='' />
             </CardMedia>
 
             <CardContent>
                 <Paper>
-                    <Button onClick={(() => history.push(`/users/${userData._id}/edit`))}><Typography>edit profile</Typography></Button>
-                    <Button onClick={(() => history.push(`/restaurants/${userData._id}-${userData.restaurant}`))}><Typography>my restaurant</Typography></Button>
-                    <Button onClick={(() => history.push(`/fooditems/${userData._id}`))}><Typography>my fooditems</Typography></Button>
-                    <Button onClick={(() => history.push(`/foodalerts/${userData._id}`))}><Typography>my foodalerts</Typography></Button>
-                    <Button onClick={(() => history.push(`/users/${userData._id}/messages`))}><Typography>my messages</Typography></Button>
+                    <Button onClick={(() => history.push('/users/profile/edit'))}><Typography>edit profile</Typography></Button>
+                    <Button onClick={(() => history.push('/users/profile/delete'))}><Typography>delete account</Typography></Button>
+                    <Button onClick={(() => history.push('/users/profile/restaurants'))}><Typography>my restaurants</Typography></Button>
                 </Paper>
             </CardContent>
         </Card >

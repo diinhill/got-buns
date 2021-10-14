@@ -52,11 +52,11 @@ router.route('/:rid')
     )
 
 // get all fooditems by one restaurant using the URL parameter
-router.get('/:id',
-    (req, res) => {
-        const { restaurant } = req.params.id
+router.route('/:rid')
+    .get(passport.authenticate('jwt', { session: false }), (req, res) => {
+        const { rid } = req.params
         fooditemModel
-            .findById(restaurant)
+            .findById({ restaurant: rid })
             // populate with data how ??
             .populate('details')
             .exec(function (err, fooditem) {
@@ -69,7 +69,7 @@ router.get('/:id',
                 }
             })
     }
-)
+    )
 
 // update fooditem
 // router.put('/:id-:fodid',

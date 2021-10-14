@@ -27,8 +27,8 @@ const MyRestaurant = ({ restaurant }) => {
             <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script> */}
 
 
-            <Button onClick={(() => history.push(`/restaurants/${restaurant._id}`))}><Typography>edit restaurant information</Typography></Button>
-            <Button onClick={(() => history.push(`/fooditems/${restaurant._id}`))}><Typography>my fooditems</Typography></Button>
+            <Button onClick={(() => history.push(`/users/profile/restaurants/${restaurant._id}`))}><Typography>edit restaurant information</Typography></Button>
+            <Button onClick={(() => history.push(`/users/profile/restaurants/${restaurant._id}/fooditems`))}><Typography>my fooditems</Typography></Button>
             <Button onClick={(() => history.push(`/foodalerts/${restaurant._id}`))}><Typography>my foodalerts</Typography></Button>
             <Button onClick={(() => history.push(`/restaurants/${restaurant._id}/messages`))}><Typography>my messages</Typography></Button>
         </Container>

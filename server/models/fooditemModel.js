@@ -72,8 +72,11 @@ const FooditemSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    restaurant: [Schema.Types.ObjectId],
-    // this is only pointing to an object in another collection.
+    restaurant: {
+        type: Schema.Types.ObjectId,
+        // this is only pointing to an object in another collection.
+        required: true,
+    },
     photo: {
         type: String,
     },

@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react'
-import { AuthContext } from '../../context/authContext'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Button, TextField, Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
@@ -20,7 +19,6 @@ const Login = () => {
     const classes = useStyles()
     const history = useHistory()
     const [state, setState] = useState({ email: '', password: '' })
-    // const { login } = useContext(AuthContext)
     const [user, setUser] = useState(null)
 
 

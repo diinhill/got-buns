@@ -38,7 +38,7 @@ const RestaurantSchema = new mongoose.Schema({
         type: [CommentSchema],
         default: undefined,
     },
-    user: [Schema.Types.ObjectId],
+    users: [Schema.Types.ObjectId],
     fooditems: [Schema.Types.ObjectId],
 })
 

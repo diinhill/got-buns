@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
     photo: {
         type: String,
     },
-    restaurant: [Schema.Types.ObjectId],
+    restaurants: [Schema.Types.ObjectId],
     profession: {
         type: String,
     }

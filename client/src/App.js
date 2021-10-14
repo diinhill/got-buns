@@ -7,7 +7,8 @@ import FoodView from './views/FoodView'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Logout from './components/auth/Logout'
-import MyRestaurantView from './views/MyRestaurantView'
+import MyRestaurantsView from './views/MyRestaurantsView'
+import MyRestaurant from './components/restaurants/MyRestaurant'
 import MailboxView from './views/MailboxView'
 import MyUserProfileView from './views/MyUserProfileView'
 import { FooditemContextProvider } from './context/fooditemContext'
@@ -57,9 +58,10 @@ function App() {
                   <Route exact path='/logout'>
                     <Logout />
                   </Route>
-                  <PrivateRoute component={MyUserProfileView} exact path={`/users/:uid`} />
-                  <PrivateRoute component={MyRestaurantView} exact path={`/restaurants/:id`} />
-                  <PrivateRoute component={MailboxView} exact path={`/users/:uid/profile/messages`} />
+                  <PrivateRoute component={MyUserProfileView} exact path='/users/profile' />
+                  <PrivateRoute component={MyRestaurantsView} exact path='/users/profile/restaurants' />
+                  <PrivateRoute component={MyRestaurant} exact path={`/users/profile/restaurants/:rid`} />
+                  <PrivateRoute component={MailboxView} exact path='/users/profile/messages' />
                 </Switch>
               </FooditemContextProvider>
             </Layout>
