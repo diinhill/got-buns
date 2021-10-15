@@ -70,7 +70,7 @@ const Register = () => {
                 </label>
                 <label>
                     <div id='imgfile' /*id={dropbox}*/>
-                        <input type='file' id='fileElem' /*multiple accept='image/*'*/ class='visually-hidden' accept='.png, .jpg, .jpeg' name='photo' onChange={handlePhoto} />
+                        <input type='file' id='fileElem' /*multiple accept='image/*'*/ className='visually-hidden' accept='.png, .jpg, .jpeg' name='photo' onChange={handlePhoto} />
                         <label for='fileElem'>choose profile picture</label>
                     </div>
                 </label>

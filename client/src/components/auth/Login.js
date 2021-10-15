@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Button, TextField, Container } from '@material-ui/core'
+import { Button, TextField, Container, FormControl, FormLabel } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import axios from 'axios'
 
@@ -10,7 +10,7 @@ const useStyles = makeStyles({
         display: 'blocks',
         marginBottom: 20,
         marginTop: 20,
-    }
+    },
 })
 
 
@@ -42,17 +42,17 @@ const Login = () => {
     return (
 
         <Container>
-            <form onSubmit={handleSubmit}>
-                <label>
+            <FormControl onSubmit={handleSubmit}>
+                <FormLabel>
                     <TextField className={classes.field} fullWidth variant='outlined' required label='email' type='email' name='email' onChange={handleChange} value={state.email} />
-                </label>
-                <label>
+                </FormLabel>
+                <FormLabel>
                     <TextField className={classes.field} fullWidth variant='outlined' required label='password' type='password' name='password' onChange={handleChange} value={state.password} />
-                </label>
-                <div>
+                </FormLabel>
+                <Container>
                     <Button className={classes.field} variant='contained' /*color='default'*/ /*disableElevation*/ type='submit' /* href='#contained-buttons' */>submit</Button>
-                </div>
-            </form>
+                </Container>
+            </FormControl>
         </Container>
     )
 }

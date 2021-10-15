@@ -14,6 +14,7 @@ import MyUserProfileView from './views/MyUserProfileView'
 import { FooditemContextProvider } from './context/fooditemContext'
 import { AuthContextProvider, AuthContext } from './context/authContext'
 import { ThemeContextProvider } from './context/themeContext'
+import MyFoodalertsView from './views/MyFoodalertsView'
 
 
 // console.log(`process.env.REACT_APP_GOOGLE_API_KEY`, process.env.REACT_APP_GOOGLE_API_KEY)
@@ -61,6 +62,7 @@ function App() {
                   <PrivateRoute component={MyUserProfileView} exact path='/users/profile' />
                   <PrivateRoute component={MyRestaurantsView} exact path='/users/profile/restaurants' />
                   <PrivateRoute component={MyRestaurant} exact path={`/users/profile/restaurants/:rid`} />
+                  <PrivateRoute component={MyFoodalertsView} exact path={`/users/profile/restaurants/foodalerts/:rid`}
                   <PrivateRoute component={MailboxView} exact path='/users/profile/messages' />
                 </Switch>
               </FooditemContextProvider>

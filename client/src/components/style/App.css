@@ -54,3 +54,11 @@ input.visually-hidden:focus + label {
 input.visually-hidden:focus-within + label {
   outline: thin dotted;
 }
+
+
+.background {
+  background: linear-gradient(0deg, #fffefa 50%, transparent 21%),linear-gradient(90deg, transparent 45%, #e6c747 45%, #e6c747 55%, transparent 55%, transparent 20%, #e6c747 20%, #e6c747 30%,transparent 30%);
+  background-size: 1em 1em;
+  background-color: #fffefa;
+  opacity: 1
+}

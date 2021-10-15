@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/authContext'
 import { useHistory, useParams } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, TextField, Button, Container, Typography } from '@material-ui/core'
+import { FormControl, FormLabel, FormControlLabel, RadioGroup, InputLabel, MenuItem, Select, Radio } from '@material-ui/core'
 import axios from 'axios'
 
 
@@ -25,7 +26,7 @@ const AddFoodItem = () => {
     const classes = useStyles()
     const history = useHistory()
     const [newFooditem, setNewFooditem] = useState({ photo: '', name: '', type: '', amount: '', purchaseDate: '', dueDate: '', price: '', swapPossible: '' })
-    const { id } = useParams()
+    const { rid } = useParams()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -39,7 +40,7 @@ const AddFoodItem = () => {
         formData.append('price', newFooditem.price)
         formData.append('swapPossible', newFooditem.swapPossible)
 
-        axios.post(`http://localhost:5000/api/fooditems/${id}/add`, formData)
+        axios.post(`http://localhost:5000/api/fooditems/${rid}`, formData)
             .then(res => {
                 console.log(res)
                 history.push('/fooditems')
@@ -71,6 +72,23 @@ const AddFoodItem = () => {
                 <label>
                     <TextField className={classes.field} fullWidth variant='outlined' required label='name' type='text' name='name' onChange={handleChange} value={newFooditem.name} />
                 </label>
+                <FormControl fullWidth>
+                    <InputLabel id='select-type'>type</InputLabel>
+                    <Select value={newFooditem.type} label='type' onChange={handleChange}>
+                        <MenuItem /*value={10}*/>vegetables</MenuItem>
+                        <MenuItem>fruits</MenuItem>
+                        <MenuItem>breads</MenuItem>
+                        <MenuItem>dairy products</MenuItem>
+                        <MenuItem>other</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">swap possible?</FormLabel>
+                    <RadioGroup aria-label='swapPossible' name='swapPossible' value={newFooditem.swapPossible} onChange={handleChange}>
+                        <FormControlLabel value='false' control={<Radio />} label='no' />
+                        <FormControlLabel value='true' control={<Radio />} label='yes' />
+                    </RadioGroup>
+                </FormControl>
                 <label>
                     <div id='imgfile' /*id={dropbox}*/>
                         <input type='file' id='fileElem' /*multiple accept='image/*'*/ className='visually-hidden' accept='.png, .jpg, .jpeg' name='photo' onChange={handlePhoto} />

@@ -13,7 +13,7 @@ const FooditemSchema = new mongoose.Schema({
         required: true,
     },
     amount: {
-        type: Schema.Types.Decimal128,
+        type: /*Schema.Types.Decimal128*/ Number,
         required: true,
     },
     purchaseDate: {
@@ -57,7 +57,7 @@ const FooditemSchema = new mongoose.Schema({
         },
     },
     price: {
-        type: Schema.Types.Decimal128,
+        type: /*Schema.Types.Decimal128*/ Number,
         required: true,
     },
     swapPossible: {
