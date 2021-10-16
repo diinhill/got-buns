@@ -1,44 +1,40 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import axios from 'axios'
-import MyRestaurant from '../components/restaurants/MyRestaurant'
 import AddRestaurant from '../components/restaurants/AddRestaurant'
-import { AuthContext } from '../context/authContext'
+import Restaurant from '../components/restaurants/Restaurant'
 import { Typography, Button, Container, Paper } from '@material-ui/core'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 
 
 
-const MyRestaurantsView = () => {
+const RestaurantsView = () => {
 
     const history = useHistory()
-    const { user } = useContext(AuthContext)
     const [restaurants, setRestaurants] = useState([])
 
     useEffect(() => {
-        user &&
-            fetchRestaurantData()
-    }, [user])
+        const getRestaurants = async () => {
+            const res = await axios.get('http://localhost:5000/api/restaurants/')
+            console.log('res:', res.data)
+            const data = res.data
+            console.log('data:', data)
+            setRestaurants(data)
+        }
+        getRestaurants()
+    }, [restaurants])
 
-    const fetchRestaurantData = async () => {
-        const restaurants = []
-        const response = await Promise.all(user.restaurants.map(rid => axios.get(`http://localhost:5000/api/restaurants/${rid}`)))
-            .then(async (res) => Promise.all(res.map(data => restaurants.push(data))))
-        console.log('restaurant data:', restaurants)
-        // populate ??
-        setRestaurants(restaurants)
-    }
 
     return (
 
         <Container>
-            <Typography variant='h2' color='default' component='h4' align='center'>my restaurants</Typography>
+            <Typography variant='h2' color='default' component='h4' align='center'>restaurants</Typography>
             <Button variant='contained' onClick={(() => <AddRestaurant />)} type='submit' endIcon={<KeyboardArrowRightIcon />}>add new restaurant</Button>
 
             {restaurants ?
                 restaurants.map((restaurant, i) => {
                     return (
-                        <MyRestaurant key={i} restaurant={restaurant} />
+                        <Restaurant key={i} restaurant={restaurant} />
                     )
                 })
                 : <Typography>loading...</Typography>
@@ -48,4 +44,4 @@ const MyRestaurantsView = () => {
     )
 
 }
-export default MyRestaurantsView
+export default RestaurantsView

@@ -9,7 +9,7 @@ import AddFooditem from '../components/fooditems/AddFooditem'
 
 
 
-const FoodView = () => {
+const FooditemsView = () => {
 
     const [fooditems, setFooditems] = useState([])
 
@@ -18,9 +18,9 @@ const FoodView = () => {
         const getFooditems = async () => {
             const res = await axios.get('http://localhost:5000/api/fooditems/')
             console.log('res:', res.data)
-            const data = res.data
-            console.log('data:', data)
-            setFooditems(data)
+            // const data = res.data
+            // console.log('data:', data)
+            setFooditems(res.data)
         }
         getFooditems()
     }, [fooditems])
@@ -44,4 +44,4 @@ const FoodView = () => {
     )
 }
 
-export default FoodView
+export default FooditemsView

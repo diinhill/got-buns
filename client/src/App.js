@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import Layout from './components/nav/Layout'
 import HomeView from './views/HomeView'
-import FoodView from './views/FoodView'
+import FooditemsView from './views/FooditemsView'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Logout from './components/auth/Logout'
@@ -15,6 +15,8 @@ import { FooditemContextProvider } from './context/fooditemContext'
 import { AuthContextProvider, AuthContext } from './context/authContext'
 import { ThemeContextProvider } from './context/themeContext'
 import MyFoodalertsView from './views/MyFoodalertsView'
+import FoodalertsView from './views/FoodalertsView'
+import MyFooditemsView from './views/MyFooditemsView'
 
 
 // console.log(`process.env.REACT_APP_GOOGLE_API_KEY`, process.env.REACT_APP_GOOGLE_API_KEY)
@@ -48,7 +50,10 @@ function App() {
                     <HomeView />
                   </Route>
                   <Route exact path='/fooditems'>
-                    <FoodView />
+                    <FooditemsView />
+                  </Route>
+                  <Route exact path='/foodalerts'>
+                    <FoodalertsView />
                   </Route>
                   <Route exact path='/register'>
                     <Register />
@@ -62,8 +67,9 @@ function App() {
                   <PrivateRoute component={MyUserProfileView} exact path='/users/profile' />
                   <PrivateRoute component={MyRestaurantsView} exact path='/users/profile/restaurants' />
                   <PrivateRoute component={MyRestaurant} exact path={`/users/profile/restaurants/:rid`} />
-                  <PrivateRoute component={MyFoodalertsView} exact path={`/users/profile/restaurants/foodalerts/:rid`}
-                  <PrivateRoute component={MailboxView} exact path='/users/profile/messages' />
+                  <PrivateRoute component={MyFoodalertsView} exact path={`/users/profile/restaurants/foodalerts/:rid`} />
+                  <PrivateRoute component={MyFooditemsView} exact path={`/users/profile/restaurants/fooditems/:rid`} />
+                  <PrivateRoute component={MailboxView} exact path={`/users/profile/restaurants/messages/:rid`} />
                 </Switch>
               </FooditemContextProvider>
             </Layout>

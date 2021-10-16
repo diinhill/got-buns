@@ -1,7 +1,7 @@
 import { Typography, Button, Container, Paper } from '@material-ui/core'
 import { useHistory } from 'react-router'
-import MyRestaurant from './MyRestaurant'
-import AddRestaurant from './AddRestaurant'
+import MyRestaurant from '../client/src/components/restaurants/MyRestaurant'
+import AddRestaurant from '../client/src/components/restaurants/AddRestaurant'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 
 

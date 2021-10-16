@@ -59,19 +59,19 @@ const AddFoodalert = () => {
 
         <Container /*className={classes.root}*/>
             <form onSubmit={handleSubmit} encType='multipart/form-data'>
-                <label>title
+                <label>
                     <TextField className={classes.field} fullWidth variant='outlined' required label='title' type='text' name='title' onChange={handleChange} value={newFoodalert.title} />
                 </label>
                 <FormControl component="fieldset">
                     <FormLabel component="legend">swap possible?</FormLabel>
-                    <RadioGroup aria-label='swapPossible' name='swapPossible' value={newFooditem.swapPossible} onChange={handleChange}>
+                    <RadioGroup aria-label='swapPossible' name='swapPossible' value={newFoodalert.swapPossible} onChange={handleChange}>
                         <FormControlLabel value='false' control={<Radio />} label='no' />
                         <FormControlLabel value='true' control={<Radio />} label='yes' />
                     </RadioGroup>
                 </FormControl>
                 <FormControl component="fieldset">
                     <FormLabel component="legend">as soon as possible?</FormLabel>
-                    <RadioGroup aria-label='asap' name='asap' value={newFooditem.asap} onChange={handleChange}>
+                    <RadioGroup aria-label='asap' name='asap' value={newFoodalert.asap} onChange={handleChange}>
                         <FormControlLabel value='false' control={<Radio />} label='no' />
                         <FormControlLabel value='true' control={<Radio />} label='yes' />
                     </RadioGroup>

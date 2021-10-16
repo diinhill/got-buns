@@ -3,7 +3,7 @@ import { useHistory } from 'react-router'
 
 
 
-const MyRestaurant = ({ restaurant }) => {
+const Restaurant = ({ restaurant }) => {
 
     const history = useHistory()
     console.log('restaurant:', restaurant)
@@ -26,14 +26,9 @@ const MyRestaurant = ({ restaurant }) => {
             <Map ...
             <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script> */}
 
-
-            <Button onClick={(() => history.push(`/users/profile/restaurants/${restaurant._id}`))}><Typography>edit restaurant information</Typography></Button>
-            <Button onClick={(() => history.push(`/users/profile/restaurants/fooditems/${restaurant._id}`))}><Typography>my fooditems</Typography></Button>
-            <Button onClick={(() => history.push(`/users/profile/restaurants/foodalerts/${restaurant._id}`))}><Typography>my foodalerts</Typography></Button>
-            <Button onClick={(() => history.push(`/users/profile/restaurants/messages/${restaurant._id}`))}><Typography>my messages</Typography></Button>
         </Container>
 
     )
 
 }
-export default MyRestaurant
+export default Restaurant
