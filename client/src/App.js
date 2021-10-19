@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import Layout from './components/nav/Layout'
 import HomeView from './views/HomeView'
 import FooditemsView from './views/FooditemsView'
+import AddFooditem from './components/fooditems/AddFooditem'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Logout from './components/auth/Logout'
@@ -51,6 +52,9 @@ function App() {
                   </Route>
                   <Route exact path='/fooditems'>
                     <FooditemsView />
+                  </Route>
+                  <Route exact path='/fooditems/add'>
+                    <AddFooditem />
                   </Route>
                   <Route exact path='/foodalerts'>
                     <FoodalertsView />

@@ -25,7 +25,7 @@ const MyFooditemsView = () => {
             setFooditems(data)
         }
         getFooditems()
-    }, [fooditems])
+    }, [])
 
 
     return (

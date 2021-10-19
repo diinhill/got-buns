@@ -73,13 +73,13 @@ const AddFoodItem = () => {
                     <TextField className={classes.field} fullWidth variant='outlined' required label='name' type='text' name='name' onChange={handleChange} value={newFooditem.name} />
                 </label>
                 <FormControl fullWidth>
-                    <InputLabel id='select-type'>type</InputLabel>
-                    <Select value={newFooditem.type} label='type' onChange={handleChange}>
-                        <MenuItem /*value={10}*/>vegetables</MenuItem>
-                        <MenuItem>fruits</MenuItem>
-                        <MenuItem>breads</MenuItem>
-                        <MenuItem>dairy products</MenuItem>
-                        <MenuItem>other</MenuItem>
+                    <InputLabel id='label'>type</InputLabel>
+                    <Select labelId='label' value={newFooditem.type} name="type" onChange={handleChange}>
+                        <MenuItem value='vegetables'>vegetables</MenuItem>
+                        <MenuItem value='fruits'>fruits</MenuItem>
+                        <MenuItem value='breads'>breads</MenuItem>
+                        <MenuItem value='dairy products'>dairy products</MenuItem>
+                        <MenuItem value='other'>other</MenuItem>
                     </Select>
                 </FormControl>
                 <FormControl component="fieldset">

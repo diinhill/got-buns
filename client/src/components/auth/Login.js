@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Button, TextField, Container, FormControl, FormLabel } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import axios from 'axios'
+import { AuthContext } from '../../context/authContext'
 
 
 const useStyles = makeStyles({
@@ -19,7 +20,7 @@ const Login = () => {
     const classes = useStyles()
     const history = useHistory()
     const [state, setState] = useState({ email: '', password: '' })
-    const [user, setUser] = useState(null)
+    const { setUser, user } = useContext(AuthContext)
 
 
     const handleChange = (e) => {
@@ -33,7 +34,8 @@ const Login = () => {
         if (response.data.token) {
             localStorage.setItem('token', response.data.token)
             setUser(response.data.user)
-            history.push(`/users/${response.data.user._id}`)
+            console.log('user:', user)
+            history.push(`/users/profile`)
         } else {
             history.push('/login')
         }
@@ -50,7 +52,7 @@ const Login = () => {
                     <TextField className={classes.field} fullWidth variant='outlined' required label='password' type='password' name='password' onChange={handleChange} value={state.password} />
                 </FormLabel>
                 <Container>
-                    <Button className={classes.field} variant='contained' /*color='default'*/ /*disableElevation*/ type='submit' /* href='#contained-buttons' */>submit</Button>
+                    <Button className={classes.field} variant='contained' /*color='default'*/ /*disableElevation*/ type='submit' /* href='#contained-buttons' */ onClick={handleSubmit}>submit</Button>
                 </Container>
             </FormControl>
         </Container>

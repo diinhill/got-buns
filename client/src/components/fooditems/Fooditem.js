@@ -20,6 +20,10 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 345,
+        background: 'linear-gradient(90deg, transparent 24%, #ff0000 25%, #ff0000 30%, transparent 31%, transparent 39%, #ff0000 40%, #ff0000 45%, transparent 45%), linear-gradient(180deg, transparent 24%, #ff0000 25%, #ff0000 30%, transparent 31%, transparent 39%, #ff0000 40%, #ff0000 45%, transparent 45%)',
+        backgroundSize: '2em 2em',
+        backgroundColor: '#f9f9ff',
+        opacity: '0.55',
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -31,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
+    header: {
+        backgroundColor: '#f9f9ff',
+    }
 }))
 
 
@@ -52,8 +59,8 @@ const Fooditem = ({ fooditem }) => {
 
     return (
 
-        <Card>
-            <CardHeader
+        <Card className={classes.root}>
+            <CardHeader className={classes.header}
                 title={fooditem.name}
                 subheader={<i>{fooditem.type}</i>}
             />
@@ -63,18 +70,15 @@ const Fooditem = ({ fooditem }) => {
 
             <CardContent>
                 <Paper>
-                    {/* <Typography>purchased on: {fooditem.purchaseDate}</Typography>
-                    <Typography>due on: {fooditem.dueDate}</Typography> */}
+                    <Typography>purchased on: {fooditem.purchaseDate.day}th {fooditem.purchaseDate.month} {fooditem.purchaseDate.year}</Typography>
+                    <Typography>due on: {fooditem.dueDate.day}th {fooditem.dueDate.month} {fooditem.dueDate.year}</Typography>
                     <Typography>amount: {fooditem.amount}</Typography>
-                    <Typography>price: {fooditem.price}</Typography>
+                    <Typography>price: {fooditem.price} €</Typography>
                     <Typography>optional swap: {fooditem.swapPossible}</Typography>
                     <Typography>reserved: {fooditem.reserved}</Typography>
 
                     <Typography><i>last updated on: {fooditem.updated}</i></Typography>
                     <Typography>likes: {fooditem.likes}</Typography>
-                    <IconButton aria-label='show list of comments' endIcon={<KeyboardArrowRight />}>
-                        <Typography>comments: {fooditem?.comments}</Typography>
-                    </IconButton>
                 </Paper>
             </CardContent>
 
@@ -84,7 +88,7 @@ const Fooditem = ({ fooditem }) => {
                         className={clsx(classes.expand, { [classes.expandOpen]: expanded, })}
                         onClick={handleExpandClick}
                         aria-expanded={expanded}
-                        aria-label='read comments'
+                        aria-label='see comments'
                     >
                         <ExpandMoreIcon />
                     </IconButton>
