@@ -9,10 +9,13 @@ import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Logout from './components/auth/Logout'
 import MyRestaurantsView from './views/MyRestaurantsView'
+import RestaurantsView from './views/RestaurantsView'
+import Restaurant from './components/restaurants/Restaurant'
 import MyRestaurant from './components/restaurants/MyRestaurant'
+import AddRestaurant from './components/restaurants/AddRestaurant'
 import MailboxView from './views/MailboxView'
 import MyUserProfileView from './views/MyUserProfileView'
-import { FooditemContextProvider } from './context/fooditemContext'
+import { PrivaterouteContextProvider } from './context/privaterouteContext'
 import { AuthContextProvider, AuthContext } from './context/authContext'
 import { ThemeContextProvider } from './context/themeContext'
 import MyFoodalertsView from './views/MyFoodalertsView'
@@ -45,16 +48,22 @@ function App() {
         <AuthContextProvider>
           <Router>
             <Layout>
-              <FooditemContextProvider>
+              <PrivaterouteContextProvider>
                 <Switch>
                   <Route exact path='/'>
                     <HomeView />
                   </Route>
+                  <Route exact path='/restaurants'>
+                    <RestaurantsView />
+                  </Route>
+                  <Route exact path={`/restaurants/:rid`}>
+                    <Restaurant />
+                  </Route>
                   <Route exact path='/fooditems'>
                     <FooditemsView />
                   </Route>
-                  <Route exact path='/fooditems/add'>
-                    <AddFooditem />
+                  <Route exact path='/fooditems'>
+                    <FooditemsView />
                   </Route>
                   <Route exact path='/foodalerts'>
                     <FoodalertsView />
@@ -71,11 +80,13 @@ function App() {
                   <PrivateRoute component={MyUserProfileView} exact path='/users/profile' />
                   <PrivateRoute component={MyRestaurantsView} exact path='/users/profile/restaurants' />
                   <PrivateRoute component={MyRestaurant} exact path={`/users/profile/restaurants/:rid`} />
+                  <PrivateRoute component={AddRestaurant} exact path='/users/profile/restaurants/add' />
                   <PrivateRoute component={MyFoodalertsView} exact path={`/users/profile/restaurants/foodalerts/:rid`} />
                   <PrivateRoute component={MyFooditemsView} exact path={`/users/profile/restaurants/fooditems/:rid`} />
+                  <PrivateRoute component={AddFooditem} exact path={`/users/profile/restaurants/fooditems/add/:rid`} />
                   <PrivateRoute component={MailboxView} exact path={`/users/profile/restaurants/messages/:rid`} />
                 </Switch>
-              </FooditemContextProvider>
+              </PrivaterouteContextProvider>
             </Layout>
           </Router>
         </AuthContextProvider>

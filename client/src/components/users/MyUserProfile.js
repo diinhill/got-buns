@@ -34,7 +34,7 @@ const MyUserProfile = ({ user }) => {
                 subheader={<i>{user.profession}</i>}
             />
             <CardMedia className={classes.media} title='profile pic' align='center'>
-                <img src={user.photo} alt='' />
+                <img fullWidth src={user.photo} alt='' />
             </CardMedia>
 
             <CardContent>

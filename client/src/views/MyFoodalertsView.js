@@ -24,7 +24,7 @@ const MyFoodalertsView = () => {
             setFoodalerts(data)
         }
         getFoodalerts()
-    }, [foodalerts])
+    }, [])
 
 
     return (

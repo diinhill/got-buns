@@ -65,7 +65,7 @@ const Fooditem = ({ fooditem }) => {
                 subheader={<i>{fooditem.type}</i>}
             />
             <CardMedia className={classes.media} title='foodpic' align='center'>
-                <img src={fooditem.photo} alt='' />
+                <img fullWidth src={fooditem.photo} alt='' />
             </CardMedia>
 
             <CardContent>

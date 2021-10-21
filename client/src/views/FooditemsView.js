@@ -8,7 +8,6 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Fooditem from '../components/fooditems/Fooditem'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 import axios from 'axios'
-import AddFooditem from '../components/fooditems/AddFooditem'
 
 
 
@@ -33,7 +32,7 @@ const FooditemsView = () => {
 
         <Container>
             <Typography variant='h2' color='default' component='h4' align='center'>fooditems</Typography>
-            <Button variant='contained' onClick={(() => history.push('/fooditems/add'))} type='submit' endIcon={<KeyboardArrowRightIcon />}>add new fooditem</Button>
+            <Button variant='contained' onClick={(() => history.push('/users/profile/restaurants'))} type='submit' endIcon={<KeyboardArrowRightIcon />}>add new fooditem</Button>
 
             {fooditems ?
                 fooditems.map((fooditem, i) => {
@@ -42,6 +41,7 @@ const FooditemsView = () => {
                             <CardHeader title={fooditem.name} subheader={<i>{fooditem.type}</i>} />
                             <CardMedia title='foodpic' align='center'>
                                 <img src={fooditem.photo} alt='' />
+                                {/* this needs to be a thumbnail picture */}
                             </CardMedia>
                             <Button variant='contained' onClick={(() => <Fooditem key={i} fooditem={fooditem} />)} type='submit' endIcon={<KeyboardArrowRightIcon />}>see fooditem</Button>
                         </Card >

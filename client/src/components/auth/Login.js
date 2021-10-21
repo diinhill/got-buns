@@ -35,7 +35,7 @@ const Login = () => {
             localStorage.setItem('token', response.data.token)
             setUser(response.data.user)
             console.log('user:', user)
-            history.push(`/users/profile`)
+            history.push('/users/profile/restaurants')
         } else {
             history.push('/login')
         }
@@ -53,6 +53,9 @@ const Login = () => {
                 </FormLabel>
                 <Container>
                     <Button className={classes.field} variant='contained' /*color='default'*/ /*disableElevation*/ type='submit' /* href='#contained-buttons' */ onClick={handleSubmit}>submit</Button>
+                </Container>
+                <Container>
+                    <Button className={classes.field} variant='contained' type='submit' onClick={(() => history.push('/register'))}>create new account</Button>
                 </Container>
             </FormControl>
         </Container>

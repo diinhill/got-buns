@@ -92,7 +92,7 @@ const AddRestaurant = () => {
                     <TextField className={classes.field} fullWidth variant='outlined' required label='phone' type='text' name='phone' onChange={handleChange} value={newRestaurant.phone} />
                 </label>
                 <div>
-                    <Button className={classes.field} variant='contained' type='submit'>submit</Button>
+                    <Button className={classes.field} variant='contained' type='submit' onClick={handleSubmit}>submit</Button>
                 </div>
             </form>
         </Container>

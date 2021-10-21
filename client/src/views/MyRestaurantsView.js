@@ -38,11 +38,22 @@ const MyRestaurantsView = () => {
             {restaurants ?
                 restaurants.map((restaurant, i) => {
                     return (
-                        <MyRestaurant key={i} restaurant={restaurant} />
+                        <Container>
+                            <Typography>{restaurant.name}</Typography>
+                            <Paper>
+                                <Typography>{restaurant.street} {restaurant.number}</Typography>
+                                <Typography>{restaurant.postal} {restaurant.town}</Typography>
+                                <br></br>
+                            </Paper>
+                            <img src={restaurant.photo} />
+                            {/* I need a thumbnail picture here */}
+                            <Button onClick={(() => <MyRestaurant key={i} restaurant={restaurant} />)}><Typography>see restaurant information</Typography></Button>
+                        </Container>
                     )
                 })
                 : <Typography>loading...</Typography>
             }
+
         </Container>
 
     )
