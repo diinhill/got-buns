@@ -29,7 +29,7 @@ router.get('/',
 router.route('/:rid')
     .post(passport.authenticate('jwt', { session: false }), upload.single('photo'), (req, res) => {
         const { rid } = req.params
-        const { photo } = req.file.filename
+        const photo = req.file.filename
         const { name, type, amount, purchaseDate, dueDate, price, swapPossible } = req.body
         // am I only adding the parameters that the user needs to set or also those that are set automatically during doc creation or added later like comments ??
         let addFooditem = new fooditemModel({

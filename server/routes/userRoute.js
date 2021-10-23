@@ -26,54 +26,58 @@ router.get('/',
 
 
 // register 
-router.route('/register').post(upload.single('photo'), (req, res) => {
-    const reqemail = req.body.email
-    const reqpassword = req.body.password
-    const { name } = req.body.name
-    const photo = req.file.filename
-    console.log('photo:', photo)
-    console.log('req.body:', req.body)
+router.route('/register')
+    .post(upload.single('photo'), (req, res) => {
+        const reqemail = req.body.email
+        const reqpassword = req.body.password
+        const reqname = req.body.name
+        const reqprofession = req.body.profession
+        const photo = req.file.filename
+        console.log('photo:', photo)
+        console.log('req.body:', req.body)
 
-    UserSchema.findOne({ email: reqemail }, (err, user) => {
-        if (err) {
-            res.send(err)
-        }
-        if (user) {
-            res.send({ msg: 'email is already used' })
-        } else {
-            bcrypt.genSalt(10, function (err, salt) {
-                bcrypt.hash(reqpassword, salt, function (err, hash) {
-                    if (err) {
-                        res.send(err)
-                    } else {
-                        console.log('hash:', hash)
-                        const newUser = new UserSchema({ photo, name, email: reqemail, password: hash })
-                        newUser
-                            .save()
-                            .then((user) => {
-                                res.send(user)
-                            })
-                            .catch((err) => {
-                                res.send(err)
-                            })
-                    }
+        UserSchema.findOne({ email: reqemail }, (err, user) => {
+            if (err) {
+                res.send(err)
+            } else if (user) {
+                res.send({ msg: 'email is already used' })
+            } else {
+                bcrypt.genSalt(10, function (err, salt) {
+                    bcrypt.hash(reqpassword, salt, function (err, hash) {
+                        if (err) {
+                            res.send(err)
+                        } else {
+                            console.log('hash:', hash)
+                            let newUser = new UserSchema({ photo: photo, name: reqname, email: reqemail, password: hash, profession: reqprofession })
+                            console.log('newUser:', newUser)
+                            newUser
+                                .save()
+                                .then(files => {
+                                    res.send(files)
+                                })
+                                .catch(err => {
+                                    res.send(err)
+                                })
+                        }
+                    })
                 })
-            })
-        }
+            }
+        })
     })
-})
+
 
 
 // login
 router.post('/login', (req, res) => {
     const reqemail = req.body.email
     const reqpassword = req.body.password
-    console.log(`req,body`, req.body)
+    console.log(`req.body:`, req.body)
     UserSchema.findOne({ email: reqemail }, (err, user) => {
         if (err) {
             res.send(err)
         }
         if (user) {
+            // if (user.loggedIn === false) {
             // Load hash from your password DB.
             bcrypt.compare(reqpassword, user.password, function (err, result) {
                 if (result) {
@@ -87,6 +91,8 @@ router.post('/login', (req, res) => {
                         if (err) {
                             res.send(err)
                         } else {
+                            // user.update({ loggedIn: true })
+                            // user.loggedIn is still false in response
                             res.status(200).json({ success: true, token, user })
                         }
                     }

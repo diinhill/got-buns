@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { AuthContext } from '../../context/authContext'
-import { useHistory } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router'
+import { PrivaterouteContext } from '../../context/privaterouteContext'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, TextField, Button, Container, Typography } from '@material-ui/core'
-import axios from 'axios'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,36 +21,36 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
 
-    const classes = useStyles()
     const history = useHistory()
-    const [newUser, setNewUser] = useState({ email: '', password: '', name: '', photo: '' })
-    // const { register, user } = useContext(AuthContext)
+    const classes = useStyles()
+    const { register } = useContext(PrivaterouteContext)
+    const [newUser, setNewUser] = useState({ email: '', password: '', name: '', photo: '', profession: '' })
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const formData = new FormData()
         formData.append('photo', newUser.photo)
         formData.append('email', newUser.email)
         formData.append('name', newUser.name)
         formData.append('password', newUser.password)
+        formData.append('profession', newUser.profession)
 
-        axios.post('http://localhost:5000/api/users/register', formData)
-            .then(res => {
-                console.log(res)
-                // do I reroute to login here or setUser(user) ??
-                history.push('/login')
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        try {
+            await register(formData)
+            history.push('/login')
+        } catch (e) {
+            alert(e.message)
+        }
     }
+
 
     const handleChange = (e) => {
         setNewUser({ ...newUser, [e.target.name]: e.target.value })
     }
 
     const handlePhoto = (e) => {
-        setNewUser({ ...newUser, photo: e.target.files[0] })
+        setNewUser({ ...newUser, [e.target.name]: e.target.files[0] })
+        console.log('files:', e.target.files)
         console.log('filename:', e.target.files[0].name)
         const imgfile = document.getElementById('imgfile')
         imgfile.append(' >> ' + e.target.files[0].name)
@@ -69,7 +68,7 @@ const Register = () => {
                     <TextField className={classes.field} fullWidth variant='outlined' required label='name' type='text' name='name' onChange={handleChange} value={newUser.name} />
                 </label>
                 <label>
-                    <div id='imgfile' /*id={dropbox}*/>
+                    <div id='imgfile'>
                         <input type='file' id='fileElem' /*multiple accept='image/*'*/ className='visually-hidden' accept='.png, .jpg, .jpeg' name='photo' onChange={handlePhoto} />
                         <label for='fileElem'>choose profile picture</label>
                     </div>
@@ -80,6 +79,10 @@ const Register = () => {
                 <label>
                     <TextField className={classes.field} fullWidth variant='outlined' required label='password' type='password' name='password' onChange={handleChange} value={newUser.password} />
                 </label>
+                <label>
+                    <TextField className={classes.field} fullWidth variant='outlined' label='profession' type='text' name='profession' onChange={handleChange} value={newUser.profession} />
+                </label>
+
                 <div>
                     <Button className={classes.field} variant='contained' type='submit'>submit</Button>
                 </div>

@@ -37,6 +37,10 @@ const RestaurantSchema = new mongoose.Schema({
         type: [CommentSchema],
         default: undefined,
     },
+    admin: {
+        type: Schema.Types.ObjectId,
+        required: true,
+    },
     users: [Schema.Types.ObjectId],
     fooditems: [Schema.Types.ObjectId],
 })

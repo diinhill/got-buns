@@ -1,5 +1,6 @@
 import express from 'express'
 import restaurantModel from '../models/restaurantModel.js'
+import RestaurantSchema from '../models/restaurantModel.js'
 import upload from '../middlewares/imgUpload.js'
 import passport from 'passport'
 
@@ -22,27 +23,36 @@ router.get('/',
 // add a new restaurant 
 router.route('/')
     .post(passport.authenticate('jwt', { session: false }), upload.single('photo'), (req, res) => {
-        const newRestaurant = new restaurantModel({
-            name: req.body.name,
-            phone: req.body.phone,
-            street: req.body.street,
-            number: req.body.number,
-            postal: req.body.postal,
-            town: req.body.town,
-            photo: req.file.filename,
-            users: user._id
+        const user = req.user
+        console.log('user:', user)
+        res.send(user)
+        const photo = req.file.filename
+        const admin = user._id
+        const { name, phone, street, number, postal, town } = req.body
+        console.log('photo:', photo)
+        console.log('req.body:', req.body)
+        const newRestaurant = new RestaurantSchema({
+            name,
+            phone,
+            street,
+            number,
+            postal,
+            town,
+            photo,
+            // users: id
         })
         console.log('new restaurant:', newRestaurant)
         newRestaurant
             .save()
-            .then(() => {
-                res.send('restaurant successfully added')
+            .then(restaurant => {
+                res.send(restaurant)
             })
-            .catch(err => {
-                res.status(500).send('server error')
+            .catch((err) => {
+                res.send(err)
             })
     }
     )
+
 
 // // update restaurant information
 // router.put('/:id/:name',

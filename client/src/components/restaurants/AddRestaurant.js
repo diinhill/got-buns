@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { AuthContext } from '../../context/authContext'
+import { PrivaterouteContext } from '../../context/privaterouteContext'
 import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, TextField, Button, Container, Typography } from '@material-ui/core'
@@ -25,9 +25,10 @@ const AddRestaurant = () => {
 
     const classes = useStyles()
     const history = useHistory()
+    const { addRestaurant } = useContext(PrivaterouteContext)
     const [newRestaurant, setNewRestaurant] = useState({ photo: '', name: '', street: '', number: '', postal: '', town: '', phone: '' })
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const formData = new FormData()
         formData.append('photo', newRestaurant.photo)
@@ -38,14 +39,12 @@ const AddRestaurant = () => {
         formData.append('town', newRestaurant.town)
         formData.append('phone', newRestaurant.phone)
 
-        axios.post('http://localhost:5000/api/restaurants/', formData)
-            .then(res => {
-                console.log(res)
-                history.push('/users/profile/restaurants')
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        try {
+            await addRestaurant(formData)
+            history.push('/users/profile/restaurants')
+        } catch (e) {
+            alert(e.message)
+        }
     }
 
     const handleChange = (e) => {

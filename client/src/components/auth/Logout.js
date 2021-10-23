@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-// import { AuthContext } from '../../context/authContext'
+import { PrivaterouteContext } from '../../context/privaterouteContext'
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -8,21 +8,21 @@ import axios from 'axios'
 const Logout = () => {
 
     const history = useHistory()
-    const [user, setUser] = useState()
-    const [token, setToken] = useState()
-    // const { logout } = useContext(AuthContext)
+    const { logout } = useContext(PrivaterouteContext)
 
-    const handleLogout = (e) => {
+
+    const handleLogout = async (e) => {
         e.preventDefault()
-        const res = axios.get(`http://localhost:5000/api/users/${user._id}`, token)
-        const data = res.data
-        console.log('data:', data)
-        console.log('user:', data.user)
-        console.log('token:', data.token)
-        setUser(null)
-        setToken(null)
-        history.push('/login')
+
+        try {
+            await logout()
+            history.push('/login')
+        } catch (e) {
+            alert(e.message)
+        }
     }
+
+
 
 
     return (
