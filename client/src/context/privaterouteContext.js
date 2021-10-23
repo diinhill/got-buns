@@ -1,5 +1,4 @@
 import { createContext, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
 
@@ -10,10 +9,8 @@ export const PrivaterouteContext = createContext()
 export const PrivaterouteContextProvider = ({ children }) => {
 
     const [user, setUser] = useState(null)
-    const [myRestaurants, setMyRestaurants] = useState([])
     const [myFooditems, setMyFooditems] = useState([])
     const [myFoodalerts, setMyFoodalerts] = useState([])
-    const history = useHistory()
 
 
     const register = async (form) => {
@@ -22,19 +19,13 @@ export const PrivaterouteContextProvider = ({ children }) => {
         return response.data
     }
 
-    // state parameter is here: email and password
+    // state parameter means: email and password
     const login = async (state) => {
         const response = await axios.post('http://localhost:5000/api/users/login', state)
-        console.log('response:', response.data)
+        console.log('login response:', response.data)
         if (response.data.token) {
-            // localStorage.setItem('token', response.data.token)
-            // const authHeader = new Headers('Authorization', `Bearer ${response.data.token}`)
-            setUser(response.data.user)
-            console.log('user:', response.data.user)
-
-            // localStorage.setItem('user', JSON.stringify(response.data))
             localStorage.setItem('token', response.data.token)
-            return response.data
+            return getCurrentUser()
         } else {
             return null
         }
@@ -48,7 +39,7 @@ export const PrivaterouteContextProvider = ({ children }) => {
     const getAuthHeader = () => {
         const token = localStorage.getItem('token')
         console.log('token:', token)
-        if (user && token) {
+        if (token) {
             return { 'Authorization': `Bearer ${token}` }
         } else {
             console.log('warning: user cannot be authenticated')
@@ -56,23 +47,26 @@ export const PrivaterouteContextProvider = ({ children }) => {
         }
     }
 
-    const addRestaurant = async (form) => {
-        const response = await axios.post('http://localhost:5000/api/restaurants/', (form, { headers: getAuthHeader() }))
-        console.log('response:', response.data)
-        return response.data
+    const getCurrentUser = async () => {
+        const currentUser = await axios.get('http://localhost:5000/api/users/profile', { headers: getAuthHeader() })
+        console.log('current user:', currentUser.data)
+        setUser(currentUser.data)
+        return currentUser.data
     }
 
-    const getMyRestaurants = async () => {
-        if ((user.restaurants).length !== 0) {
-            const restaurants = []
-            await Promise.all((user.restaurants).map(rid => axios.get(`http://localhost:5000/api/restaurants/${rid}`, { headers: getAuthHeader() })))
-                .then(async (response) => Promise.all(response.map(data => restaurants.push(data))))
-            console.log('restaurant data:', restaurants)
-            return restaurants
-        } else {
-            return []
-        }
+
+    const addRestaurant = async (form) => {
+        const restaurant = await axios.post('http://localhost:5000/api/restaurants/', form, { headers: getAuthHeader() })
+        console.log('new restaurant:', restaurant.data)
+        return restaurant.data
     }
+
+    const getCurrentRestaurant = async (rid) => {
+        const currentRestaurant = await axios.get(`http://localhost:5000/api/restaurants/${rid}`)
+        console.log('current restaurant:', currentRestaurant.data)
+        return currentRestaurant.data
+    }
+
 
     const getMyFooditems = async (rid) => {
         const res = await axios.get(`http://localhost:5000/api/fooditems/${rid}`)
@@ -95,8 +89,8 @@ export const PrivaterouteContextProvider = ({ children }) => {
 
     return (
         <PrivaterouteContext.Provider value={{
-            register, login, logout, getAuthHeader, addRestaurant, user, setUser, getMyRestaurants, myRestaurants, setMyRestaurants,
-            getMyFooditems, myFooditems, setMyFooditems, getMyFoodalerts, myFoodalerts, setMyFoodalerts
+            register, login, logout, getAuthHeader, user, setUser, getCurrentUser, addRestaurant, getCurrentRestaurant
+            // getMyFooditems, myFooditems, setMyFooditems, getMyFoodalerts, myFoodalerts, setMyFoodalerts
         }}>
             {children}
         </PrivaterouteContext.Provider>

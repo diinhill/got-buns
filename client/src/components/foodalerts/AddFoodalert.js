@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { AuthContext } from '../../context/authContext'
+import React, { useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, TextField, Button, Container, Typography } from '@material-ui/core'

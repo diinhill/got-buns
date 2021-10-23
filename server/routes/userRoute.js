@@ -115,14 +115,6 @@ router.get('/profile',
         const user = req.user
         console.log('user:', user)
         res.send(user)
-        // userModel.findById({ _id: req.params.uid }, (err, user, token) => {
-        //     if (err) {
-        //         res.status(404).json({ error: 'user does not exist' })
-        //     } else {
-        //         res.send(user)
-        //         res.send(token)
-        //     }
-        // })
     }
 )
 

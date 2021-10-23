@@ -25,9 +25,7 @@ router.route('/')
     .post(passport.authenticate('jwt', { session: false }), upload.single('photo'), (req, res) => {
         const user = req.user
         console.log('user:', user)
-        res.send(user)
         const photo = req.file.filename
-        const admin = user._id
         const { name, phone, street, number, postal, town } = req.body
         console.log('photo:', photo)
         console.log('req.body:', req.body)
@@ -39,6 +37,7 @@ router.route('/')
             postal,
             town,
             photo,
+            admin: user._id
             // users: id
         })
         console.log('new restaurant:', newRestaurant)
@@ -78,24 +77,25 @@ router.route('/')
 //     }
 // )
 
-// // get just one restaurant using the URL parameter
-// router.get('/:id/:name',
-//     (req, res) => {
-//         restaurantModel
-//             .findById(req.params.id)
-//             // how do I have to populate to get all the data, if at all
-//             .populate('name', 'phone', 'street', 'number', 'postal', 'town', 'photo')
-//             .exec(function (err, restaurant) {
-//                 if (err) {
-//                     console.log(err)
-//                     res.send(err)
-//                 } else {
-//                     console.log(restaurant)
-//                     res.send(restaurant)
-//                 }
-//             })
-//     }
-// )
+// get just one restaurant using the URL parameter
+router.get('/:rid',
+    (req, res) => {
+        restaurantModel
+            .findById(req.params.rid)
+            .populate('admin')
+            .populate('users')
+            .populate('fooditems')
+            .exec(function (err, restaurant) {
+                if (err) {
+                    console.log(err)
+                    res.send(err)
+                } else {
+                    console.log(restaurant)
+                    res.send(restaurant)
+                }
+            })
+    }
+)
 
 // // delete restaurant
 // router.delete('/:id/:name',

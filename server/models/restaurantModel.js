@@ -39,10 +39,11 @@ const RestaurantSchema = new mongoose.Schema({
     },
     admin: {
         type: Schema.Types.ObjectId,
+        ref: 'user',
         required: true,
     },
-    users: [Schema.Types.ObjectId],
-    fooditems: [Schema.Types.ObjectId],
+    users: [{ type: Schema.Types.ObjectId, ref: 'user' }],
+    fooditems: [{ type: Schema.Types.ObjectId, ref: 'fooditem' }],
 })
 
 export default mongoose.model('restaurant', RestaurantSchema)

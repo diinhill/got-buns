@@ -9,7 +9,6 @@ import AddFooditem from './components/fooditems/AddFooditem'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Logout from './components/auth/Logout'
-// import MyRestaurantsView from './views/MyRestaurantsView'
 import RestaurantsView from './views/RestaurantsView'
 import Restaurant from './components/restaurants/Restaurant'
 import MyRestaurant from './components/restaurants/MyRestaurant'
@@ -24,7 +23,7 @@ import FoodalertsView from './views/FoodalertsView'
 import MyFooditemsView from './views/MyFooditemsView'
 
 
-// console.log(`process.env.REACT_APP_GOOGLE_API_KEY`, process.env.REACT_APP_GOOGLE_API_KEY)
+
 const PrivateRoute = ({ component: Component, ...rest }) => {
   console.log('rest:', rest)
   const { user } = useContext(PrivaterouteContext)
@@ -80,8 +79,9 @@ function App() {
                 </Route>
                 <PrivateRoute component={MyUserProfileView} exact path='/users/profile' />
                 <PrivateRoute component={MyHomeView} exact path='/users/profile/restaurants' />
-                <PrivateRoute component={MyRestaurant} exact path={`/users/profile/restaurants/:rid`} />
                 <PrivateRoute component={AddRestaurant} exact path='/users/profile/restaurants/add' />
+                <PrivateRoute component={MyRestaurant} exact path={`/users/profile/restaurants/:rid`} />
+                {/* <PrivateRoute component={EditRestaurant} exact path={`/users/profile/restaurants/edit/:rid`} /> */}
                 <PrivateRoute component={MyFoodalertsView} exact path={`/users/profile/restaurants/foodalerts/:rid`} />
                 <PrivateRoute component={MyFooditemsView} exact path={`/users/profile/restaurants/fooditems/:rid`} />
                 <PrivateRoute component={AddFooditem} exact path={`/users/profile/restaurants/fooditems/add/:rid`} />

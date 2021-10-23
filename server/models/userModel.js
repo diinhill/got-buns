@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     photo: {
         type: String,
     },
-    restaurants: [Schema.Types.ObjectId],
+    restaurants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'restaurant' }],
     profession: {
         type: String,
     },

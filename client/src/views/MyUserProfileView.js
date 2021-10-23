@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import axios from 'axios'
 import MyUserProfile from '../components/users/MyUserProfile'
-import { AuthContext } from '../context/authContext'
+import { PrivaterouteContext } from '../context/privaterouteContext'
 
 
 const MyUserProfileView = () => {
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(PrivaterouteContext)
 
 
     return (
