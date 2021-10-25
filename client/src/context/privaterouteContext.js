@@ -9,7 +9,6 @@ export const PrivaterouteContext = createContext()
 export const PrivaterouteContextProvider = ({ children }) => {
 
     const [user, setUser] = useState(null)
-    const [myFooditems, setMyFooditems] = useState([])
     const [myFoodalerts, setMyFoodalerts] = useState([])
 
 
@@ -69,12 +68,9 @@ export const PrivaterouteContextProvider = ({ children }) => {
 
 
     const getMyFooditems = async (rid) => {
-        const res = await axios.get(`http://localhost:5000/api/fooditems/${rid}`)
-        console.log('res:', res.data)
-        const data = res.data
-        console.log('data:', data)
-        setMyFooditems(data)
-        return data
+        const fooditems = await axios.get(`http://localhost:5000/api/fooditems/${rid}`, { headers: getAuthHeader() })
+        console.log('fooditems:', fooditems.data)
+        return fooditems.data
     }
 
     const getMyFoodalerts = async (rid) => {
@@ -89,7 +85,8 @@ export const PrivaterouteContextProvider = ({ children }) => {
 
     return (
         <PrivaterouteContext.Provider value={{
-            register, login, logout, getAuthHeader, user, setUser, getCurrentUser, addRestaurant, getCurrentRestaurant
+            register, login, logout, getAuthHeader, user, setUser, getCurrentUser, addRestaurant, getCurrentRestaurant,
+            getMyFooditems
             // getMyFooditems, myFooditems, setMyFooditems, getMyFoodalerts, myFoodalerts, setMyFoodalerts
         }}>
             {children}

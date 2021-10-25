@@ -24,7 +24,7 @@ const MyRestaurant = () => {
     return (
 
         <Container>
-            <CardMedia component='img' image={`server/images/${restaurant?.photo}`} height='140' alt='' />
+            <CardMedia component='img' image={`http://localhost:5000/images/${restaurant?.photo}`} height='140' alt='' />
             <Typography>{restaurant?.name}</Typography>
             <Paper>
                 <Typography>contact</Typography>

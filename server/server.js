@@ -21,6 +21,7 @@ app.use(express.urlencoded({
     extended: true
 }))
 
+app.use('/images', express.static('images'))
 
 //using the routes for a specific api
 app.use('/api/fooditems', fooditemRoutes)
@@ -41,6 +42,8 @@ const port = process.env.PORT || 5000
 app.get('/test', (req, res) => {
     res.send({ msg: 'Test route.' })
 })
+
+
 
 app.listen(port, () => console.log(`Server started on port ${port}`))
 

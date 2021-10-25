@@ -42,7 +42,7 @@ const AddFoodItem = () => {
         axios.post(`http://localhost:5000/api/fooditems/${rid}`, formData)
             .then(res => {
                 console.log(res)
-                history.push('/fooditems')
+                history.push(`/users/profile/restaurants/fooditems/${rid}`)
             })
             .catch(err => {
                 console.log(err)

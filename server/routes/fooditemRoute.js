@@ -57,19 +57,13 @@ router.route('/:rid')
         const { rid } = req.params
         fooditemModel
             .findById({ restaurant: rid })
-            // populate with data how ??
-            .populate('details')
-            .exec(function (err, fooditem) {
-                if (err) {
-                    console.log(err)
-                    res.send(err)
-                } else {
-                    console.log(fooditem.details)
-                    res.send(fooditem)
-                }
+            .then(files => {
+                res.send(files)
             })
+            .catch(err => console.log(err))
     }
     )
+
 
 // update fooditem
 // router.put('/:id-:fodid',

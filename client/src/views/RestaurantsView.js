@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import axios from 'axios'
-import Restaurant from '../components/restaurants/Restaurant'
-import { Typography, Button, Container, Paper } from '@material-ui/core'
+import { Typography, Button, Container, Paper, Link } from '@material-ui/core'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 
 
@@ -41,9 +40,9 @@ const RestaurantsView = () => {
                                 <br></br>
                                 {/* I need to calculate the distance between user restaurant and the restaurant in the list and filter according to closest first */}
                             </Paper>
-                            <img src={restaurant.photo} />
+                            <img src={`http://localhost:5000/images/${restaurant.photo}`} />
                             {/* I need this as a thumbnail  */}
-                            <Button variant='contained' onClick={(() => <Restaurant key={i} restaurant={restaurant} />)} type='submit' endIcon={<KeyboardArrowRightIcon />}>see restaurant</Button>
+                            <Button variant='contained' onClick={(() => history.push(`/restaurants/${restaurant._id}`))} type='submit' endIcon={<KeyboardArrowRightIcon />}>see restaurant</Button>
                         </Container>
                     )
                 })

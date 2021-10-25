@@ -1,18 +1,19 @@
 // move all hooks and states to views, use Fooditem mainly for rendering, handing down props
 import React, { useContext, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { TextField, Typography, Button, Container } from '@material-ui/core'
 import Fooditem from '../components/fooditems/Fooditem'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 import axios from 'axios'
-import AddFooditem from '../components/fooditems/AddFooditem'
-
+import { PrivaterouteContext } from '../context/privaterouteContext'
 
 
 
 const MyFooditemsView = () => {
 
     const [fooditems, setFooditems] = useState([])
+    const { getMyFooditems } = useContext(PrivaterouteContext)
+    const history = useHistory()
     const { rid } = useParams()
 
 
@@ -25,14 +26,14 @@ const MyFooditemsView = () => {
             setFooditems(data)
         }
         getFooditems()
-    }, [])
+    }, [rid])
 
 
     return (
 
         <Container>
             <Typography variant='h2' color='default' component='h4' align='center'>my fooditems</Typography>
-            <Button variant='contained' onClick={(() => <AddFooditem />)} type='submit' endIcon={<KeyboardArrowRightIcon />}>add new fooditem</Button>
+            <Button variant='contained' onClick={(() => history.push(`/users/profile/restaurants/fooditems/add/:rid`))} type='submit' endIcon={<KeyboardArrowRightIcon />}>add new fooditem</Button>
 
             {fooditems ?
                 fooditems.map((fooditem, i) => {

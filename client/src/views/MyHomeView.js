@@ -31,7 +31,7 @@ const MyHomeView = () => {
                             {restaurant ?
                                 <><Paper key={i}>
                                     <Typography>{restaurant.name}</Typography>
-                                    <img src={restaurant.photo} />
+                                    <img src={`http://localhost:5000/images/${restaurant.photo}`} />
                                     {/* I need a thumbnail picture here  */}
                                     <br></br>
                                     <Typography>{restaurant.street} {restaurant.number}</Typography>
