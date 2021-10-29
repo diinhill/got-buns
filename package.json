@@ -4,7 +4,7 @@
     "description": "",
     "main": "server.js",    
     "scripts": {
-      "front": "npm start -prefix client",
+      "front": "npm start -prefix ts-client",
       "server": "npm server -prefix server"
     }
 }
