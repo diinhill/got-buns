@@ -1,34 +1,38 @@
 .App {
-  text-align: center;
+  min-height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
+.body {
+  line-height: unset;
+}
+
+.is-rounded {
+  height: 85vmin;
   pointer-events: none;
+  display: block;
+  position: absolute;
+  top: 55vmin;
+  left: 17vmin;
+}
+
+.image {
+  display: block;
+  position: absolute;
+  height: 80vmin;
+  top: -5vmin; 
+  right: -30vmin; 
+  box-shadow: inset 1px -12em 20em 0em #4a00ff17, inset -20px 7px 20px 20px rgb(31 64 203 / 10%);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+  .is-rounded {
+    animation: Bun-spin infinite 50s linear;
+  }
+  .image {
+    animation: Bun-spin infinite 300s linear reverse;
   }
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
+@keyframes Bun-spin {
   from {
     transform: rotate(0deg);
   }
@@ -36,3 +40,24 @@
     transform: rotate(360deg);
   }
 }
+
+.bulma-overlay-mixin-parent {
+  background-color: #ff7c00a3;
+  position: absolute;
+  top: 90vmin;
+  box-shadow: 20px -10em 2em 13em #00ffdb5e, inset -8px 3px 20px 17px rgb(41 31 203);
+  border-radius: 0px;
+  /* width: 100%;
+  height: 70%; */
+}
+
+.bulma-overlay-mixin {
+  box-shadow: -20px -1em 0em 5em #00c37e12, 20px -20px 6px 0px #002e746e;
+  font-family: 'Canadianbrusher';
+  font-size: 4em;
+  color: rgb(255, 248, 234);
+  padding: unset;
+  text-align: center;
+  /* padding-left: 15vmin; */
+}
+
