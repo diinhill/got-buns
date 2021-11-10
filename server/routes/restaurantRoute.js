@@ -1,4 +1,5 @@
 import express from 'express'
+import userModel from '../models/userModel.js'
 import restaurantModel from '../models/restaurantModel.js'
 import upload from '../middlewares/imgUpload.js'
 import passport from 'passport'
@@ -10,8 +11,8 @@ const router = express.Router()
 router.route('/')
     // get all restaurants
     .get(
-        (req, res) => {
-            restaurantModel.find().select("name street fooditems")
+        async (req, res) => {
+            await restaurantModel.find().select("name street fooditems")
                 .then(files => {
                     res.send(files)
                 })
@@ -19,36 +20,39 @@ router.route('/')
         }
     )
     // add new restaurant, then update restaurant array in userModel
-    .post(passport.authenticate('jwt', { session: false }), upload.single('photo'), (req, res) => {
-        const user = req.user
-        console.log('user:', user)
-        const photo = req.file.filename
-        const { name, phone, street, number, postal, town } = req.body
-        console.log('photo:', photo)
-        console.log('req.body:', req.body)
-        const newRestaurant = new restaurantModel({
-            name,
-            phone,
-            street,
-            number,
-            postal,
-            town,
-            photo,
-            admin: user._id,
-            fooditems: []
-        })
-        console.log('new restaurant:', newRestaurant)
-        newRestaurant
-            .save()
-            .then(restaurant => {
-                res.send(restaurant)
+    .post(passport.authenticate('jwt', { session: false }), upload.single('photo'),
+        async (req, res) => {
+            const user = req.user
+            console.log('user:', user)
+            const photo = req.file.filename
+            const { name, phone, street, number, postal, town } = req.body
+            console.log('photo:', photo)
+            console.log('req.body:', req.body)
+            const newRestaurant = new restaurantModel({
+                name,
+                phone,
+                street,
+                number,
+                postal,
+                town,
+                photo,
+                admin: user._id,
+                fooditems: []
             })
-            .catch((err) => {
-                res.send(err)
-            })
-    }
+            console.log('new restaurant:', newRestaurant)
+            newRestaurant.save()
+            try {
+                const currentUser = await userModel.findById(user._id)
+                console.log('current user:', currentUser)
+                currentUser?.restaurants.push(newRestaurant._id)
+                currentUser.save()
+                res.send(currentUser)
+            } catch (error) {
+                console.log('error:', error)
+                res.send(error)
+            }
+        }
     )
-
 
 
 router.route('/:rid')
