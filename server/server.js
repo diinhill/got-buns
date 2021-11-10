@@ -5,7 +5,7 @@ import passport from 'passport'
 import cors from 'cors'
 import fooditemRoutes from './routes/fooditemRoute.js'
 import restaurantRoutes from './routes/restaurantRoute.js'
-import foodalertRoutes from './routes/foodalertRoute.js'
+// import foodalertRoutes from './routes/foodalertRoute.js'
 import userRoutes from './routes/userRoute.js'
 import { jwtStrategy } from './passport.js'
 
@@ -24,10 +24,10 @@ app.use(express.urlencoded({
 app.use('/images', express.static('images'))
 
 //using the routes for a specific api
-app.use('/api/fooditems', fooditemRoutes)
-app.use('/api/restaurants', restaurantRoutes)
-app.use('/api/foodalerts', foodalertRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/restaurants', restaurantRoutes)
+app.use('/api/restaurants', fooditemRoutes)
+// app.use('/api/foodalerts', foodalertRoutes)
 
 console.log(`proce.,en.DB`, process.env.DB)
 //connect to mongodb / .env file

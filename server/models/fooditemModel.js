@@ -17,44 +17,44 @@ export const FooditemSchema = new mongoose.Schema({
         required: true,
     },
     purchaseDate: {
-        type: Object,
+        type: /* Object */ Date,
         required: true,
-        day: {
-            type: Number,
-            min: 1,
-            max: 31,
-            required: true,
-        },
-        month: {
-            type: String,
-            required: true,
-        },
-        year: {
-            type: Number,
-            min: 2021,
-            max: 2050,
-            required: true,
-        },
+        // day: {
+        //     type: Number,
+        //     min: 1,
+        //     max: 31,
+        //     required: true,
+        // },
+        // month: {
+        //     type: String,
+        //     required: true,
+        // },
+        // year: {
+        //     type: Number,
+        //     min: 2021,
+        //     max: 2050,
+        //     required: true,
+        // },
     },
     dueDate: {
-        type: Object,
+        type: Date,
         required: true,
-        day: {
-            type: Number,
-            min: 1,
-            max: 31,
-            required: true,
-        },
-        month: {
-            type: String,
-            required: true,
-        },
-        year: {
-            type: Number,
-            min: 2021,
-            max: 2050,
-            required: true,
-        },
+        // day: {
+        //     type: Number,
+        //     min: 1,
+        //     max: 31,
+        //     required: true,
+        // },
+        // month: {
+        //     type: String,
+        //     required: true,
+        // },
+        // year: {
+        //     type: Number,
+        //     min: 2021,
+        //     max: 2050,
+        //     required: true,
+        // },
     },
     price: {
         type: /*Schema.Types.Decimal128*/ Number,
@@ -67,16 +67,12 @@ export const FooditemSchema = new mongoose.Schema({
     reserved: {
         type: Boolean,
         required: true,
+        default: false,
     },
     updated: {
         type: Date,
         default: Date.now,
     },
-    // restaurant: {
-    //     type: Schema.Types.ObjectId,
-    //     // this is only pointing to an object in another collection.
-    //     required: true,
-    // },
     photo: {
         type: String,
     },
@@ -92,7 +88,7 @@ export const FooditemSchema = new mongoose.Schema({
 })
 
 
-export default mongoose.model('fooditem', FooditemSchema)
+// export default mongoose.model('fooditem', FooditemSchema)
 
 
 

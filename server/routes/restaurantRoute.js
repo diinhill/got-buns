@@ -1,6 +1,5 @@
 import express from 'express'
 import restaurantModel from '../models/restaurantModel.js'
-import RestaurantSchema from '../models/restaurantModel.js'
 import upload from '../middlewares/imgUpload.js'
 import passport from 'passport'
 
@@ -12,14 +11,14 @@ router.route('/')
     // get all restaurants
     .get(
         (req, res) => {
-            restaurantModel.find().select("name street")
+            restaurantModel.find().select("name street fooditems")
                 .then(files => {
                     res.send(files)
                 })
                 .catch(err => console.log(err))
         }
     )
-    // add new restaurant
+    // add new restaurant, then update restaurant array in userModel
     .post(passport.authenticate('jwt', { session: false }), upload.single('photo'), (req, res) => {
         const user = req.user
         console.log('user:', user)
@@ -27,7 +26,7 @@ router.route('/')
         const { name, phone, street, number, postal, town } = req.body
         console.log('photo:', photo)
         console.log('req.body:', req.body)
-        const newRestaurant = new RestaurantSchema({
+        const newRestaurant = new restaurantModel({
             name,
             phone,
             street,
@@ -35,7 +34,8 @@ router.route('/')
             postal,
             town,
             photo,
-            admin: user._id
+            admin: user._id,
+            fooditems: []
         })
         console.log('new restaurant:', newRestaurant)
         newRestaurant

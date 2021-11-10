@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
 import userModel from '../models/userModel.js'
-import UserSchema from '../models/userModel.js'
 import upload from '../middlewares/imgUpload.js'
 
 
@@ -80,7 +79,7 @@ router.route('/register')
                             res.send(err)
                         } else {
                             console.log('hash:', hash)
-                            let newUser = new UserSchema({ photo: photo, name: reqname, email: reqemail, password: hash, profession: reqprofession })
+                            let newUser = new userModel({ photo: photo, name: reqname, email: reqemail, password: hash, profession: reqprofession })
                             console.log('newUser:', newUser)
                             newUser
                                 .save()

@@ -36,7 +36,6 @@ const RestaurantSchema = new mongoose.Schema({
     },
     fooditems: {
         type: [FooditemSchema],
-        default: undefined,
     },
     comments: {
         type: [CommentSchema],
