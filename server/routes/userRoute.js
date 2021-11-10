@@ -12,15 +12,20 @@ const router = express.Router()
 // get all users
 router.get('/',
     // passport.authenticate('jwt', { session: false }),
-    (req, res) => {
+    async (req, res) => {
         console.log('req:', req)
-        userModel.find()
-            .then(files => {
-                res.send(files)
-            })
-            .catch(err => console.log(err))
+        try {
+            const users = await userModel.find().select('name photo profession')
+            console.log('users:', users)
+            res.send(users)
+        } catch (error) {
+            console.log(`error`, error)
+            res.send(error)
+        }
     }
 )
+
+
 // search in all users
 router.get('/search/:query',
     // passport.authenticate('jwt', { session: false }),
@@ -139,9 +144,8 @@ router.post('/login', (req, res) => {
 })
 
 
-// get one user profile, but only after authorisation (making sure user is logged in)
-router.get('/profile',
-    passport.authenticate('jwt', { session: false }),
+// get current user profile
+router.get('/profile', passport.authenticate('jwt', { session: false }),
     (req, res) => {
         const user = req.user
         console.log('user:', user)
@@ -149,42 +153,82 @@ router.get('/profile',
     }
 )
 
-
-// update user profile
-router.put('/profile/edit',
-    passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-        const user = req.user
-        console.log('user:', user)
-        userModel.findOneAndUpdate({
-            _id: user._id,
-            name: req.body.name,
-            password: bcrypt.hashSync(req.body.password, saltRounds),
-            photo: req.file.filename,
-            profession: req.body.profession,
-        }, req.body)
-            .then(() => {
-                userModel.findOne({
-                    _id: user._id
-                })
-                    .then(files => {
-                        res.send(files)
-                    })
-            })
+// get one user profile by uid
+router.get('/:uid', passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+        console.log('req:', req)
+        try {
+            const user = await userModel.findById(req.params.uid).select('name photo profession')
+            console.log('user:', user)
+            res.send(user)
+        } catch (error) {
+            console.log(`error`, error)
+            res.send(error)
+        }
     }
 )
 
 
-// delete account
-router.delete('/profile/delete',
-    passport.authenticate('jwt', { session: false }),
-    (req, res) => {
+// update user profile
+router.patch('/profile/edit', passport.authenticate('jwt', { session: false }), upload.single('photo'),
+    async (req, res) => {
         const user = req.user
-        console.log('user:', user)
-        userModel.findByIdAndRemove(user._id)
-            .then(files => {
-                res.send(files)
-            })
+        const photo = req.file?.filename
+        console.log(`photo`, photo)
+        const updateBody = {
+            ...req.body,
+            photo
+        }
+        try {
+            const updatedUser = await userModel.findOneAndUpdate({
+                _id: user._id           // filter
+            },
+                updateBody              // update 
+                , {
+                    new: true               // returns object AFTER update
+                })
+            console.log('updated user:', updatedUser)
+            res.send(updatedUser)
+        } catch (error) {
+            console.log(`error`, error)
+            res.send(error)
+        }
+    }
+)
+
+
+// delete current user account (what about the restaurants then?)
+router.delete('/profile/delete', passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+        const user = req.user
+        console.log(`user`, user)
+        try {
+            const currentUser = await userModel.findById(user._id)
+            console.log('current user:', currentUser)
+            currentUser.delete()
+            res.send(currentUser)
+        } catch (error) {
+            console.log('error:', error)
+            res.send(error)
+        }
+    }
+)
+
+// delete user account by id (as admin)
+router.delete('/:uid/delete', passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+        const user = req.user
+        console.log(`user`, user)
+        if (user.restaurants.includes({ admin: user._id, users: req.params.uid }))
+            try {
+                const user = await userModel.findById(req.params.uid)
+                console.log('user:', user)
+                user.delete()
+                res.send(user)
+            } catch (error) {
+                console.log('error:', error)
+                res.send(error)
+            }
     }
 )
 
