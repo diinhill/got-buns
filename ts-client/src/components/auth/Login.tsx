@@ -27,7 +27,7 @@ const Login = () => {
 
     return (
         <div>
-            <div className='field' onSubmit={handleSubmit}>
+            <div className='field'>
                 <label className='label'>email</label>
                 <div className='control'>
                     <input className='input' is-outlined required type='email' name='email' onChange={handleChange} value={state.email} />

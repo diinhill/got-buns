@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
     },
 })
+UserSchema.index({ name: 'text', email: 'text' });
 
 export default mongoose.model('user', UserSchema)
 

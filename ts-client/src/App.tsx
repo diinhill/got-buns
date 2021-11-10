@@ -3,10 +3,13 @@ import 'bulma/css/bulma.css'
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import AuthContextProvider, { AuthContext } from './context/AuthContext';
-import LandingPage from './layout/LandingPage';
+import LandingPageView from './views/LandingPageView';
 import Login from './components/auth/Login';
 import HomeView from './views/HomeView';
 import RestaurantContextProvider from './context/RestaurantContext';
+import Register from './components/auth/Register';
+import Logout from './components/auth/Logout';
+import MyRestaurantView from './views/MyRestaurantView';
 
 
 // const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -24,24 +27,36 @@ import RestaurantContextProvider from './context/RestaurantContext';
 
 function App() {
   return (
-    <div>
+    <Router>
       <AuthContextProvider>
         <RestaurantContextProvider>
-          <Router>
+          <Switch>
             <Route exact path='/'>
-              <LandingPage />
+              <LandingPageView />
             </Route>
-            <Route exact path='/users/profile/restaurants'>
-              <HomeView />
+            <Route exact path='/register'>
+              <Register />
             </Route>
             <Route exact path='/login'>
               <Login />
             </Route>
-          </Router>
+            <Route exact path='/logout'>
+              <Logout />
+            </Route>
+
+            <Route exact path='/users/profile/restaurants'>
+              <HomeView />
+            </Route>
+            <Route exact path={`/users/profile/restaurants/:rid`}>
+              <MyRestaurantView />
+            </Route>
+          </Switch>
+          {/* <PrivateRoute component={HomeView} exact path='/users/profile/restaurants' />
+          <PrivateRoute component={MyRestaurantView} exact path={`/users/profile/restaurants/:rid`} /> */}
         </RestaurantContextProvider>
       </AuthContextProvider>
-    </div>
-  );
+    </Router>
+  )
 }
 
-export default App;
+export default App

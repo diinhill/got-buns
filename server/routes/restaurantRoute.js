@@ -8,20 +8,18 @@ import passport from 'passport'
 const router = express.Router()
 
 
-// get all restaurants
-router.get('/',
-    (req, res) => {
-        restaurantModel.find()
-            .then(files => {
-                res.send(files)
-            })
-            .catch(err => console.log(err))
-    }
-)
-
-
-// add a new restaurant 
 router.route('/')
+    // get all restaurants
+    .get(
+        (req, res) => {
+            restaurantModel.find().select("name street")
+                .then(files => {
+                    res.send(files)
+                })
+                .catch(err => console.log(err))
+        }
+    )
+    // add new restaurant
     .post(passport.authenticate('jwt', { session: false }), upload.single('photo'), (req, res) => {
         const user = req.user
         console.log('user:', user)
@@ -38,7 +36,6 @@ router.route('/')
             town,
             photo,
             admin: user._id
-            // users: id
         })
         console.log('new restaurant:', newRestaurant)
         newRestaurant
@@ -53,58 +50,75 @@ router.route('/')
     )
 
 
-// // update restaurant information
-// router.put('/:id/:name',
-//     (req, res) => {
-//         restaurantModel.findOneAndUpdate({
-//             _id: req.params.id,
-//             name: req.body.name,
-//             phone: req.body.phone,
-//             street: req.body.street,
-//             number: req.body.number,
-//             postal: req.body.postal,
-//             town: req.body.town,
-//             photo: req.file.filename,
-//         }, req.body)
-//             .then(() => {
-//                 restaurantModel.findOne({
-//                     _id: req.params.id
-//                 })
-//                     .then(files => {
-//                         res.send(files)
-//                     })
-//             })
-//     }
-// )
 
-// get just one restaurant using the URL parameter
-router.get('/:rid',
-    (req, res) => {
-        restaurantModel
-            .findById(req.params.rid)
-            .populate('admin')
-            .populate('users')
-            .populate('fooditems')
-            .exec(function (err, restaurant) {
-                if (err) {
-                    console.log(err)
-                    res.send(err)
-                } else {
-                    console.log(restaurant)
-                    res.send(restaurant)
-                }
-            })
-    }
-)
+router.route('/:rid')
+    // update restaurant information
+    .patch(passport.authenticate('jwt', { session: false }), upload.single('photo'),
+        async (req, res) => {
+            const user = req.user
+            const photo = req.file?.filename
 
-// // delete restaurant
-// router.delete('/:id/:name',
-//     (req, res) => {
-//         restaurantModel.findByIdAndRemove({ _id: req.params.id })
-//             .then(files => {
-//                 res.send(files)
-//             })
-//     }
-// )
+            console.log(`photo`, photo)
+            const updateBody = {
+                ...req.body,
+                photo
+            }
+
+            try {
+                const updatedRest = await restaurantModel.findOneAndUpdate({
+                    admin: user._id,        // filter 
+                    _id: req.params.rid
+                },
+                    updateBody              // update 
+                    , {
+                        new: true           // returns object AFTER update
+                    })
+                console.log('updated restaurant:', updatedRest)
+                res.send(updatedRest)
+            } catch (error) {
+                console.log(`error`, error)
+                res.send(error)
+            }
+        }
+    )
+    // get just one restaurant using the URL parameter, check for logged in user and populate accordingly
+    .get(passport.authenticate('jwt', { session: false }),
+        async (req, res) => {
+            const user = req.user
+            console.log(`user`, user)
+            if (user.restaurants.includes(req.params.rid))
+                restaurantModel
+                    .findById(req.params.rid)
+                    .populate('admin')
+                    .populate('users')
+                    .exec(function (err, restaurant) {
+                        if (err) {
+                            console.log(err)
+                            res.send(err)
+                        } else {
+                            console.log(restaurant)
+                            res.send(restaurant)
+                        }
+                    })
+            else res.send(await restaurantModel
+                .findById(req.params.rid).select("name street"))
+        }
+    )
+    // delete restaurant
+    .delete(passport.authenticate('jwt', { session: false }),
+        async (req, res) => {
+            const user = req.user
+            console.log(`user`, user)
+            try {
+                res.send(await restaurantModel.findOneAndRemove({
+                    admin: user._id,        // filter 
+                    _id: req.params.rid
+                }))
+            } catch (error) {
+                res.send(error)
+            }
+
+        }
+    )
 
 export default router

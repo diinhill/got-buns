@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { createContext } from 'react'
-import { ObjectID, RestaurantContextInterface } from '../@types'
+import { RestaurantContextInterface } from '../@types'
 import { getAuthHeader } from '../components/utils/Helper'
 
 interface Props {
@@ -12,7 +12,7 @@ export const RestaurantContext = createContext<RestaurantContextInterface>({
     addRestaurant: () => {
         throw new Error('restaurant was not added')
     },
-    getCurrentRestaurant: () => {
+    getCurrentRestaurant: (rid: string) => {
         throw new Error('could not get current restaurant data')
     },
     getAuthHeader: () => {
@@ -29,7 +29,7 @@ const RestaurantContextProvider = (props: { children: React.ReactNode }) => {
         return restaurant.data
     }
 
-    const getCurrentRestaurant = async (rid: ObjectID) => {
+    const getCurrentRestaurant = async (rid: string) => {
         const currentRestaurant = await axios.get(`http://localhost:5000/api/restaurants/${rid}`)
         console.log('current restaurant:', currentRestaurant.data)
         return currentRestaurant.data

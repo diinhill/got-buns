@@ -2,9 +2,8 @@ import express from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
+import userModel from '../models/userModel.js'
 import UserSchema from '../models/userModel.js'
-import userModel from '../models/restaurantModel.js'
-import authenticate from '../middlewares/auth.js'
 import upload from '../middlewares/imgUpload.js'
 
 
@@ -13,7 +12,7 @@ const router = express.Router()
 
 // get all users
 router.get('/',
-    passport.authenticate('jwt', { session: false }),
+    // passport.authenticate('jwt', { session: false }),
     (req, res) => {
         console.log('req:', req)
         userModel.find()
@@ -23,6 +22,39 @@ router.get('/',
             .catch(err => console.log(err))
     }
 )
+// search in all users
+router.get('/search/:query',
+    // passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+        try {
+            console.log(`req.params.query`, req.params.query)
+            const users = await userModel.find({ $text: { $search: req.params.query } })
+                .limit(10).select("name email")
+            console.log(`users`, users)
+            res.send(users)
+        } catch (error) {
+            console.log(`error`, error)
+            res.send(error)
+        }
+    }
+)
+// // search in all users
+// router.get('/search/:query',
+//     // passport.authenticate('jwt', { session: false }),
+//     async (req, res) => {
+
+//         try {
+//             console.log(`req.params.query`, req.params.query)
+//             const user = await userModel.find({ $or: [{ email: req.params.query }, { name: req.params.query }] })
+//             console.log(`user`, user)
+//             res.send(user)
+//         } catch (error) {
+//             console.log(`error`, error)
+//             res.send(error)
+//         }
+
+//     }
+// )
 
 
 // register 
@@ -36,7 +68,7 @@ router.route('/register')
         console.log('photo:', photo)
         console.log('req.body:', req.body)
 
-        UserSchema.findOne({ email: reqemail }, (err, user) => {
+        userModel.findOne({ email: reqemail }, (err, user) => {
             if (err) {
                 res.send(err)
             } else if (user) {
@@ -72,7 +104,7 @@ router.post('/login', (req, res) => {
     const reqemail = req.body.email
     const reqpassword = req.body.password
     console.log(`req.body:`, req.body)
-    UserSchema.findOne({ email: reqemail }, (err, user) => {
+    userModel.findOne({ email: reqemail }, (err, user) => {
         if (err) {
             res.send(err)
         }
@@ -150,7 +182,7 @@ router.delete('/profile/delete',
     (req, res) => {
         const user = req.user
         console.log('user:', user)
-        userModel.findByIdAndRemove({ _id: user._id })
+        userModel.findByIdAndRemove(user._id)
             .then(files => {
                 res.send(files)
             })

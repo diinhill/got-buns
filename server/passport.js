@@ -14,13 +14,14 @@ const jwtOptions = {
 const jwtVerify = async (payload, next) => {
     console.log(`payload`, payload)
     try {
-        const user = await UserModel.findById(payload.id).populate('restaurants')
+        const user = await UserModel.findById(payload.id)
         console.log(user)
         if (!user) {
             return next(null, false)
         }
         return next(null, user)
     } catch (error) {
+        console.log(`error`, error)
         next(error, false)
     }
 }

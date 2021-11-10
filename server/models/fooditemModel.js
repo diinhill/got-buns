@@ -3,7 +3,7 @@ import Schema from 'mongoose'
 import { CommentSchema } from './commentModel.js'
 
 
-const FooditemSchema = new mongoose.Schema({
+export const FooditemSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -72,11 +72,11 @@ const FooditemSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    restaurant: {
-        type: Schema.Types.ObjectId,
-        // this is only pointing to an object in another collection.
-        required: true,
-    },
+    // restaurant: {
+    //     type: Schema.Types.ObjectId,
+    //     // this is only pointing to an object in another collection.
+    //     required: true,
+    // },
     photo: {
         type: String,
     },

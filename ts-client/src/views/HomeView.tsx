@@ -1,33 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Restaurant } from '../@types'
 import { AuthContext } from '../context/AuthContext'
 
-interface Props {
 
-}
-
-const HomeView = (props: Props) => {
+const HomeView = () => {
 
     const history = useHistory()
-    const [restaurants, setRestaurants] = useState<Restaurant[] | any[]>([])
     const { user } = useContext(AuthContext)
-
-    useEffect(() => {
-
-        (user?.restaurants?.length !== 0) ?
-            setRestaurants(user.restaurants) : setRestaurants([])
-    }, [user])
 
 
     return (
 
+        user &&
         <div>
-            <p is-variant='h2' color='default' is-component='h4' has-text-centered>my page</p>
-            <button is-contained onClick={(() => history.push('/users/profile/restaurants/add'))}><p>add new restaurant</p></button>
+            <p is-variant='h2' color='default' is-component='h4' has-text-centered>{user?.name}</p>
+            <p is-variant='h2' color='default' is-component='h4' has-text-centered>{user?.profession}</p>
+            <img src={`http://localhost:5000/images/${user?.photo}`} />
 
-            {(restaurants?.length !== 0) ?
-                restaurants.map((restaurant, i) => {
+            {user.restaurants.length !== 0 ?
+                user.restaurants.map((restaurant, i) => {
                     return (
                         <div className='tile is-ancestor'>
                             {restaurant ?
@@ -48,10 +39,11 @@ const HomeView = (props: Props) => {
                 : <p>you have no restaurants yet.</p>
             }
 
+            <button is-contained onClick={(() => history.push('/users/profile/restaurants/add'))}><p>add new restaurant</p></button>
         </div>
     )
-}
 
+}
 export default HomeView
 
 

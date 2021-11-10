@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import Schema from 'mongoose'
 import { CommentSchema } from './commentModel.js'
+import { FooditemSchema } from './fooditemModel.js'
 
 
 
@@ -33,6 +34,10 @@ const RestaurantSchema = new mongoose.Schema({
     photo: {
         type: String,
     },
+    fooditems: {
+        type: [FooditemSchema],
+        default: undefined,
+    },
     comments: {
         type: [CommentSchema],
         default: undefined,
@@ -43,7 +48,6 @@ const RestaurantSchema = new mongoose.Schema({
         required: true,
     },
     users: [{ type: Schema.Types.ObjectId, ref: 'user' }],
-    fooditems: [{ type: Schema.Types.ObjectId, ref: 'fooditem' }],
 })
 
 export default mongoose.model('restaurant', RestaurantSchema)
