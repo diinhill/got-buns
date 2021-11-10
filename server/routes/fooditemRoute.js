@@ -7,11 +7,6 @@ import passport from 'passport'
 const router = express.Router()
 
 
-// create a test route
-router.get('/test', (req, res) => {
-    res.send({ msg: 'Test route.' })
-})
-
 
 // get all fooditems
 router.get('/',
@@ -31,7 +26,6 @@ router.route('/:rid')
         const { rid } = req.params
         const photo = req.file.filename
         const { name, type, amount, purchaseDate, dueDate, price, swapPossible } = req.body
-        // am I only adding the parameters that the user needs to set or also those that are set automatically during doc creation or added later like comments ??
         let addFooditem = new fooditemModel({
             name,
             type,
@@ -52,32 +46,27 @@ router.route('/:rid')
     )
 
 // get all fooditems by one restaurant using the URL parameter
-router.route('/:rid')
-    .get(passport.authenticate('jwt', { session: false }), (req, res) => {
-        const { rid } = req.params
-        fooditemModel
-            .findById({ restaurant: rid })
-            .then(files => {
-                res.send(files)
-            })
-            .catch(err => console.log(err))
-    }
-    )
+router.get('/restaurant/:rid', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const { rid } = req.params
+    fooditemModel
+        .findById({ restaurant: rid })
+        .then(files => {
+            res.send(files)
+        })
+        .catch(err => console.log(err))
+}
+)
 
 
 // update fooditem
-// router.put('/:id-:fodid',
-//     (req, res) => {
-//         fooditemModel.findByIdAndUpdate({ restaurant: req.params.id }, req.body
-//             .then(() => {
-//                 fooditemModel.findOne({ restaurant: req.params.id, _id: req.params.fodid })
-//                     .then(files => {
-//                         res.send(files)
-//                     })
-//             })
-//         )
-//     }
-// )
+router.patch('/:fid', passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+        fooditemModel.findByIdAndUpdate(
+            req.params.fid,     // filter
+            req.body            // update
+        )
+    }
+)
 
 // delete fooditem
 // router.delete('/:id-:fodid',
