@@ -10,6 +10,7 @@ import RestaurantContextProvider from './context/RestaurantContext';
 import Register from './components/auth/Register';
 import Logout from './components/auth/Logout';
 import MyRestaurantView from './views/MyRestaurantView';
+import AddRestaurant from './components/restaurants/AddRestaurant';
 
 
 // const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -46,6 +47,9 @@ function App() {
 
             <Route exact path='/users/profile/restaurants'>
               <HomeView />
+            </Route>
+            <Route exact path='/users/profile/restaurants/add'>
+              <AddRestaurant />
             </Route>
             <Route exact path={`/users/profile/restaurants/:rid`}>
               <MyRestaurantView />

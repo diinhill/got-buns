@@ -20,7 +20,7 @@ const HomeView = () => {
             {user.restaurants.length !== 0 ?
                 user.restaurants.map((restaurant, i) => {
                     return (
-                        <div className='tile is-ancestor'>
+                        <div className='tile is-ancestor' key={i}>
                             {restaurant ?
                                 <div className='tile is-parent is-vertical' key={i}>
                                     <p>{restaurant.name}</p>

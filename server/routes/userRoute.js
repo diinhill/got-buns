@@ -158,7 +158,7 @@ router.get('/:uid', passport.authenticate('jwt', { session: false }),
     async (req, res) => {
         console.log('req:', req)
         try {
-            const user = await userModel.findById(req.params.uid).select('name photo profession')
+            const user = await userModel.findById(req.params.uid).select('name profession photo')
             console.log('user:', user)
             res.send(user)
         } catch (error) {

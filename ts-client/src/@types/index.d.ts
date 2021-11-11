@@ -39,6 +39,16 @@ interface RegisterProps {
     profession?: string
 }
 
+interface RestaurantProps {
+    name: string
+    street: string
+    number: string
+    postal: string
+    town: string
+    phone: string
+    photo?: string
+}
+
 
 
 // context //
@@ -51,7 +61,7 @@ interface AuthContextInterface {
     logout: any
 }
 interface RestaurantContextInterface {
-    addRestaurant: (form: HTMLFormElement) => any;
+    addRestaurant: /* (state: RestaurantProps) => */ any;
     getCurrentRestaurant: (rid: string) => any;
     getAuthHeader?: () => any;
 

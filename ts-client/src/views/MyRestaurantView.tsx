@@ -31,7 +31,10 @@ const MyRestaurantView = () => {
 
     console.log(`restaurant`, restaurant)
     console.log(`user`, user)
+
+
     return (
+
         restaurant && user ?
             <div>
                 <img src={`http://localhost:5000/images/${restaurant?.photo}`} height='140' alt='' />
@@ -58,9 +61,9 @@ const MyRestaurantView = () => {
                 <button onClick={(() => history.push(`/users/profile/restaurants/foodalerts/${restaurant._id}`))}><p>my foodalerts</p></button>
                 <button onClick={(() => history.push(`/users/profile/restaurants/messages/${restaurant._id}`))}><p>my messages</p></button>
             </div> :
-            <div>
-                <h2>No restaurant</h2>
-            </div>
+
+            <h2>No restaurant</h2>
+
     )
 
 }

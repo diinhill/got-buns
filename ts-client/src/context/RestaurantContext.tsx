@@ -1,11 +1,9 @@
 import axios from 'axios'
 import React, { createContext } from 'react'
-import { RestaurantContextInterface } from '../@types'
+import { RestaurantContextInterface, RestaurantProps } from '../@types'
 import { getAuthHeader } from '../components/utils/Helper'
 
-interface Props {
 
-}
 
 export const RestaurantContext = createContext<RestaurantContextInterface>({
     // user: null,    ????
@@ -23,8 +21,8 @@ export const RestaurantContext = createContext<RestaurantContextInterface>({
 
 const RestaurantContextProvider = (props: { children: React.ReactNode }) => {
 
-    const addRestaurant = async (form: HTMLFormElement) => {
-        const restaurant = await axios.post('http://localhost:5000/api/restaurants/', form, { headers: getAuthHeader() })
+    const addRestaurant = async (state: RestaurantProps) => {
+        const restaurant = await axios.post('http://localhost:5000/api/restaurants/', state, { headers: getAuthHeader() })
         console.log('new restaurant:', restaurant.data)
         return restaurant.data
     }
