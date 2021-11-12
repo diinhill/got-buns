@@ -1,13 +1,16 @@
 import React, { useState, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { RestaurantContext } from '../../context/RestaurantContext'
 
+type RestaurantParams = {
+    rid: string
+}
 
-
-const AddRestaurant = () => {
+const EditRestaurant = () => {
 
     const history = useHistory()
-    const { addRestaurant } = useContext(RestaurantContext)
+    const { rid } = useParams<RestaurantParams>()
+    const { editRestaurant } = useContext(RestaurantContext)
     const [newRestaurant, setNewRestaurant] = useState({ photo: '', name: '', street: '', number: '', postal: '', town: '', phone: '' })
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -22,11 +25,10 @@ const AddRestaurant = () => {
         formData.append('phone', newRestaurant.phone)
 
         try {
-            await addRestaurant(formData)
-            history.push('/users/profile')
+            await editRestaurant(formData, rid)
+            history.push('/users/profile/restaurants')
         } catch (error) {
             console.log('error:', error)
-            history.push('/users/profile/restaurants/add')
         }
     }
 
@@ -52,49 +54,49 @@ const AddRestaurant = () => {
                 <div className='field'>
                     <label className='label'>name</label>
                     <div className='control'>
-                        <input className='input' is-outlined required type='text' name='name' onChange={handleChange} value={newRestaurant.name} />
+                        <input className='input' type='text' name='name' onChange={handleChange} value={newRestaurant.name} />
                     </div>
                 </div>
                 <div className='field'>
                     <label className='label'>choose restaurant picture</label>
                     <div className='control' id='imgfile'>
-                        <input className='input' is-outlined type='file' name='photo' /* accept='.png, .jpg, .jpeg' */ onChange={handlePhoto} />
+                        <input className='input' type='file' name='photo' /* accept='.png, .jpg, .jpeg' */ onChange={handlePhoto} />
                     </div>
                 </div>
                 <div className='field'>
                     <label className='label'>street</label>
                     <div className='control'>
-                        <input className='input' is-outlined required type='text' name='street' onChange={handleChange} value={newRestaurant.street} />
+                        <input className='input' type='text' name='street' onChange={handleChange} value={newRestaurant.street} />
                     </div>
                 </div>
                 <div className='field'>
                     <label className='label'>number</label>
                     <div className='control'>
-                        <input className='input' is-outlined required type='text' name='number' onChange={handleChange} value={newRestaurant.number} />
+                        <input className='input' type='text' name='number' onChange={handleChange} value={newRestaurant.number} />
                     </div>
                 </div>
                 <div className='field'>
                     <label className='label'>postal</label>
                     <div className='control'>
-                        <input className='input' is-outlined required type='text' name='postal' onChange={handleChange} value={newRestaurant.postal} />
+                        <input className='input' type='text' name='postal' onChange={handleChange} value={newRestaurant.postal} />
                     </div>
                 </div>
                 <div className='field'>
                     <label className='label'>town</label>
                     <div className='control'>
-                        <input className='input' is-outlined required type='text' name='town' onChange={handleChange} value={newRestaurant.town} />
+                        <input className='input' type='text' name='town' onChange={handleChange} value={newRestaurant.town} />
                     </div>
                 </div>
                 <div className='field'>
                     <label className='label'>phone</label>
                     <div className='control'>
-                        <input className='input' is-outlined required type='text' name='phone' onChange={handleChange} value={newRestaurant.phone} />
+                        <input className='input' type='text' name='phone' onChange={handleChange} value={newRestaurant.phone} />
                     </div>
                 </div>
-                <button className='button' is-contained type='submit' onClick={handleSubmit}>submit</button>
+                <button className='button' type='submit' onClick={handleSubmit}>submit</button>
             </form>
         </div>
     )
 }
 
-export default AddRestaurant
+export default EditRestaurant

@@ -11,6 +11,9 @@ import Register from './components/auth/Register';
 import Logout from './components/auth/Logout';
 import MyRestaurantView from './views/MyRestaurantView';
 import AddRestaurant from './components/restaurants/AddRestaurant';
+import EditRestaurant from './components/restaurants/EditRestaurant';
+import UserContextProvider from './context/UserContext';
+import EditUserProfile from './components/users/EditUserProfile';
 
 
 // const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -30,34 +33,42 @@ function App() {
   return (
     <Router>
       <AuthContextProvider>
-        <RestaurantContextProvider>
-          <Switch>
-            <Route exact path='/'>
-              <LandingPageView />
-            </Route>
-            <Route exact path='/register'>
-              <Register />
-            </Route>
-            <Route exact path='/login'>
-              <Login />
-            </Route>
-            <Route exact path='/logout'>
-              <Logout />
-            </Route>
+        <UserContextProvider>
+          <RestaurantContextProvider>
+            <Switch>
+              <Route exact path='/'>
+                <LandingPageView />
+              </Route>
+              <Route exact path='/register'>
+                <Register />
+              </Route>
+              <Route exact path='/login'>
+                <Login />
+              </Route>
+              <Route exact path='/logout'>
+                <Logout />
+              </Route>
 
-            <Route exact path='/users/profile/restaurants'>
-              <HomeView />
-            </Route>
-            <Route exact path='/users/profile/restaurants/add'>
-              <AddRestaurant />
-            </Route>
-            <Route exact path={`/users/profile/restaurants/:rid`}>
-              <MyRestaurantView />
-            </Route>
-          </Switch>
-          {/* <PrivateRoute component={HomeView} exact path='/users/profile/restaurants' />
+              <Route exact path='/users/profile'>
+                <HomeView />
+              </Route>
+              <Route exact path='/users/profile/edit'>
+                <EditUserProfile />
+              </Route>
+              <Route exact path='/users/profile/restaurants/add'>
+                <AddRestaurant />
+              </Route>
+              <Route exact path={`/users/profile/restaurants/:rid`}>
+                <MyRestaurantView />
+              </Route>
+              <Route exact path={`/users/profile/restaurants/edit/:rid`}>
+                <EditRestaurant />
+              </Route>
+            </Switch>
+            {/* <PrivateRoute component={HomeView} exact path='/users/profile/restaurants' />
           <PrivateRoute component={MyRestaurantView} exact path={`/users/profile/restaurants/:rid`} /> */}
-        </RestaurantContextProvider>
+          </RestaurantContextProvider>
+        </UserContextProvider>
       </AuthContextProvider>
     </Router>
   )

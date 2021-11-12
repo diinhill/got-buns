@@ -10,7 +10,7 @@ export const AuthContext = createContext<AuthContextInterface>({
     register: () => {
         throw new Error('no register yet')
     },
-    login: () => {
+    login: (state: LoginProps) => {
         throw new Error('no login yet')
     },
     getCurrentUser: () => {

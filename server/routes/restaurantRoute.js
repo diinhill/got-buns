@@ -24,36 +24,40 @@ router.route('/')
         async (req, res) => {
             const user = req.user
             console.log('user:', user)
-            const photo = req.file.filename
+            const photo = req.file?.filename
             const { name, phone, street, number, postal, town } = req.body
             console.log('photo:', photo)
             console.log('req.body:', req.body)
-            const newRestaurant = new restaurantModel({
-                name,
-                phone,
-                street,
-                number,
-                postal,
-                town,
-                photo,
-                admin: user._id,
-                fooditems: []
-            })
-            console.log('new restaurant:', newRestaurant)
-            newRestaurant.save()
             try {
-                const currentUser = await userModel.findById(user._id)
-                console.log('current user:', currentUser)
-                currentUser?.restaurants.push(newRestaurant._id)
-                currentUser.save()
-                res.send(currentUser)
+                const newRestaurant = new restaurantModel({
+                    name,
+                    phone,
+                    street,
+                    number,
+                    postal,
+                    town,
+                    photo,
+                    admin: user._id,
+                    fooditems: []
+                })
+                console.log('new restaurant:', newRestaurant)
+                newRestaurant.save()
+
+                const updatedUser = await userModel.findOneAndUpdate({
+                    _id: user._id
+                }, {
+                    $push: { restaurants: newRestaurant?._id }
+                }, {
+                    new: true
+                })
+                console.log('updated user:', updatedUser)
+                res.send(updatedUser)
             } catch (error) {
                 console.log('error:', error)
                 res.send(error)
             }
         }
     )
-
 
 router.route('/:rid')
     // update restaurant information
@@ -69,7 +73,7 @@ router.route('/:rid')
             }
 
             try {
-                const updatedRest = await restaurantModel.findOneAndUpdate({
+                const updatedRestaurant = await restaurantModel.findOneAndUpdate({
                     admin: user._id,        // filter 
                     _id: req.params.rid
                 },
@@ -77,8 +81,8 @@ router.route('/:rid')
                     , {
                         new: true           // returns object AFTER update
                     })
-                console.log('updated restaurant:', updatedRest)
-                res.send(updatedRest)
+                console.log('updated restaurant:', updatedRestaurant)
+                res.send(updatedRestaurant)
             } catch (error) {
                 console.log(`error`, error)
                 res.send(error)
@@ -114,6 +118,14 @@ router.route('/:rid')
             const user = req.user
             console.log(`user`, user)
             try {
+                const updatedUser = await userModel.findOneAndUpdate({
+                    _id: user._id
+                }, {
+                    $pull: { restaurants: req.params.rid }
+                }, {
+                    new: true
+                })
+                console.log(`updatedUser`, updatedUser)
                 res.send(await restaurantModel.findOneAndRemove({
                     admin: user._id,        // filter 
                     _id: req.params.rid

@@ -3,7 +3,6 @@ import { useHistory } from 'react-router'
 import { AuthContext } from '../../context/AuthContext'
 
 
-
 const Register = () => {
 
     const history = useHistory()
@@ -34,6 +33,7 @@ const Register = () => {
             history.push('/login')
         } catch (error) {
             console.log('error register:', error)
+            alert('registration failed')
             history.push('/register')
         }
     }
@@ -47,7 +47,7 @@ const Register = () => {
                 <div className='field'>
                     <label className='label'>name</label>
                     <div className='control'>
-                        <input className='input' is-outlined type='text' name='name' onChange={handleChange} value={newUser.name} />
+                        <input className='input' is-outlined is-required type='text' name='name' onChange={handleChange} value={newUser.name} />
                     </div>
                 </div>
                 <div className='field'>
@@ -59,13 +59,13 @@ const Register = () => {
                 <div className='field'>
                     <label className='label'>email</label>
                     <div className='control'>
-                        <input className='input' is-outlined required type='email' name='email' onChange={handleChange} value={newUser.email} />
+                        <input className='input' is-outlined is-required type='email' name='email' onChange={handleChange} value={newUser.email} />
                     </div>
                 </div>
                 <div className='field'>
                     <label className='label'>password</label>
                     <div className='control'>
-                        <input className='input' is-outlined required type='password' name='password' onChange={handleChange} value={newUser.password} />
+                        <input className='input' is-outlined is-required type='password' name='password' onChange={handleChange} value={newUser.password} />
                     </div>
                 </div>
                 <div className='field'>

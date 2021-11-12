@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import passport from 'passport'
 import userModel from '../models/userModel.js'
 import upload from '../middlewares/imgUpload.js'
+import restaurantModel from '../models/restaurantModel.js'
 
 
 const router = express.Router()
@@ -63,43 +64,44 @@ router.get('/search/:query',
 
 // register 
 router.route('/register')
-    .post(upload.single('photo'), (req, res) => {
-        const reqemail = req.body.email
-        const reqpassword = req.body.password
-        const reqname = req.body.name
-        const reqprofession = req.body.profession
-        const photo = req.file.filename
-        console.log('photo:', photo)
-        console.log('req.body:', req.body)
-
-        userModel.findOne({ email: reqemail }, (err, user) => {
-            if (err) {
-                res.send(err)
-            } else if (user) {
-                res.send({ msg: 'email is already used' })
-            } else {
-                bcrypt.genSalt(10, function (err, salt) {
-                    bcrypt.hash(reqpassword, salt, function (err, hash) {
-                        if (err) {
-                            res.send(err)
-                        } else {
-                            console.log('hash:', hash)
-                            let newUser = new userModel({ photo: photo, name: reqname, email: reqemail, password: hash, profession: reqprofession })
-                            console.log('newUser:', newUser)
-                            newUser
-                                .save()
-                                .then(files => {
-                                    res.send(files)
-                                })
-                                .catch(err => {
-                                    res.send(err)
-                                })
-                        }
-                    })
+    .post(upload.single('photo'),
+        async (req, res) => {
+            console.log('req.body:', req.body)
+            await userModel.findOne({ email: req.body.email },
+                async (err, user) => {
+                    if (err) {
+                        res.send(err, { success: false })
+                    } else if (user) {
+                        res.send(err, { msg: 'email is already used' })
+                    } else {
+                        bcrypt.genSalt(10, function (err, salt) {
+                            bcrypt.hash(req.body.password, salt, function (err, hash) {
+                                if (err) {
+                                    res.send(err, { success: false })
+                                } else {
+                                    console.log('hash:', hash)
+                                    let newUser = new userModel({
+                                        photo: req.file?.filename,
+                                        name: req.body.name,
+                                        email: req.body.email,
+                                        password: hash,
+                                        profession: req.body?.profession
+                                    })
+                                    console.log('newUser:', newUser)
+                                    newUser
+                                        .save()
+                                        .then(newUser => {
+                                            res.send(newUser)
+                                        })
+                                        .catch(err => {
+                                            res.send(err, { success: false })
+                                        })
+                                }
+                            })
+                        })
+                    }
                 })
-            }
         })
-    })
 
 
 
@@ -143,7 +145,6 @@ router.post('/login', (req, res) => {
     })
 })
 
-
 // get current user profile
 router.get('/profile', passport.authenticate('jwt', { session: false }),
     (req, res) => {
@@ -152,6 +153,20 @@ router.get('/profile', passport.authenticate('jwt', { session: false }),
         res.send(user)
     }
 )
+
+// // get all restaurants by user._id
+// router.get('/profile/restaurants', passport.authenticate('jwt', { session: false }),
+//     async (req, res) => {
+//         const user = req.user
+//         try {
+//             const userPop = await userModel.findById(user._id).populate('restaurants')
+//             res.send(userPop)
+//         } catch (error) {
+//             console.log(`error`, error)
+//             res.send(error)
+//         }
+//     }
+// )
 
 // get one user profile by uid
 router.get('/:uid', passport.authenticate('jwt', { session: false }),
@@ -197,16 +212,14 @@ router.patch('/profile/edit', passport.authenticate('jwt', { session: false }), 
 )
 
 
-// delete current user account (what about the restaurants then?)
+// delete current user account
 router.delete('/profile/delete', passport.authenticate('jwt', { session: false }),
     async (req, res) => {
         const user = req.user
         console.log(`user`, user)
         try {
-            const currentUser = await userModel.findById(user._id)
-            console.log('current user:', currentUser)
-            currentUser.delete()
-            res.send(currentUser)
+            await restaurantModel.remove({ admin: user._id })
+            res.send(await userModel.findByIdAndDelete(user._id))
         } catch (error) {
             console.log('error:', error)
             res.send(error)

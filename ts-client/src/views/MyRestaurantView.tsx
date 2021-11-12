@@ -3,10 +3,11 @@ import { useHistory, useParams } from 'react-router'
 import { Restaurant } from '../@types'
 import { AuthContext } from '../context/AuthContext'
 import { RestaurantContext } from '../context/RestaurantContext'
+import chumbucket from '../layout/img_files/chumbucket.png'
 
 type RestaurantParams = {
-    rid: string;
-};
+    rid: string
+}
 
 
 const MyRestaurantView = () => {
@@ -14,7 +15,7 @@ const MyRestaurantView = () => {
     const { rid } = useParams<RestaurantParams>()
     const history = useHistory()
     const { user } = useContext(AuthContext)
-    const { getCurrentRestaurant } = useContext(RestaurantContext)
+    const { getCurrentRestaurant, deleteRestaurant } = useContext(RestaurantContext)
     const [restaurant, setRestaurant] = useState<Restaurant | undefined>()
 
     useEffect(() => {
@@ -29,6 +30,11 @@ const MyRestaurantView = () => {
         }
     }, [])
 
+    const handleDelete = () => {
+        deleteRestaurant(rid)
+        history.push('/users/profile')
+    }
+
     console.log(`restaurant`, restaurant)
     console.log(`user`, user)
 
@@ -37,7 +43,9 @@ const MyRestaurantView = () => {
 
         restaurant && user ?
             <div>
-                <img src={`http://localhost:5000/images/${restaurant?.photo}`} height='140' alt='' />
+                {restaurant.photo ?
+                    <img src={`http://localhost:5000/images/${restaurant.photo}`} height='140' alt='' />
+                    : <img src={chumbucket} height='140' alt='' />}
                 <p>{restaurant.name}</p>
                 <span>
                     <p>contact</p>
@@ -53,8 +61,11 @@ const MyRestaurantView = () => {
             <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script> */}
 
                 {(restaurant.admin === user._id) ?
-                    <button onClick={(() => history.push(`/users/profile/restaurants/edit/${restaurant._id}`))}><p>edit restaurant information</p></button>
-                    : <p>{restaurant?.admin?.name} is the admin for this restaurant</p>
+                    <div>
+                        <button onClick={(() => history.push(`/users/profile/restaurants/edit/${restaurant._id}`))}><p>edit restaurant information</p></button>
+                        <button onClick={handleDelete}><p>delete restaurant</p></button>
+                    </div>
+                    : <p>you are not the admin of this restaurant</p>
                 }
 
                 <button onClick={(() => history.push(`/users/profile/restaurants/fooditems/${restaurant._id}`))}><p>my fooditems</p></button>

@@ -18,9 +18,10 @@ const Login = () => {
         e.preventDefault()
         try {
             await login(state)
-            history.push('/users/profile/restaurants')
+            history.push('/users/profile')
         } catch (error) {
             console.log('error login:', error)
+            alert('wrong login details')
             history.push('/login')
         }
     }

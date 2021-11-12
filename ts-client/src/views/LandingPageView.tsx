@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import orangeSpiral from '../layout/img_files/spiralOrange.png'
+// import orangeSpiral from '../layout/img_files/spiralOrange.png'
 import bunPlanet from '../layout/img_files/bun-planet.png'
 import { AuthContext } from '../context/AuthContext'
 
@@ -12,7 +12,7 @@ const LandingPageView = () => {
     const { user } = useContext(AuthContext)
 
     const handleClick = () => {
-        user ? history.push('/users/profile/restaurants') : history.push('/login')
+        user ? history.push('/users/profile') : history.push('/login')
     }
 
     return (

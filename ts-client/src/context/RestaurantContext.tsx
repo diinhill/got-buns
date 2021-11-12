@@ -1,14 +1,21 @@
 import axios from 'axios'
-import React, { createContext } from 'react'
-import { RestaurantContextInterface, RestaurantProps } from '../@types'
+import React, { createContext, useContext } from 'react'
+import { RestaurantContextInterface, AddRestaurantProps, EditRestaurantProps } from '../@types'
 import { getAuthHeader } from '../components/utils/Helper'
+import { AuthContext } from './AuthContext'
 
 
 
 export const RestaurantContext = createContext<RestaurantContextInterface>({
     // user: null,    ????
-    addRestaurant: () => {
+    addRestaurant: (state: AddRestaurantProps) => {
         throw new Error('restaurant was not added')
+    },
+    editRestaurant: (state: EditRestaurantProps, rid: string) => {
+        throw new Error('restaurant could not be updated')
+    },
+    deleteRestaurant: (rid: string) => {
+        throw new Error('restaurant could not be deleted')
     },
     getCurrentRestaurant: (rid: string) => {
         throw new Error('could not get current restaurant data')
@@ -21,10 +28,26 @@ export const RestaurantContext = createContext<RestaurantContextInterface>({
 
 const RestaurantContextProvider = (props: { children: React.ReactNode }) => {
 
-    const addRestaurant = async (state: RestaurantProps) => {
+    const { getCurrentUser } = useContext(AuthContext)
+
+    const addRestaurant = async (state: AddRestaurantProps) => {
         const restaurant = await axios.post('http://localhost:5000/api/restaurants/', state, { headers: getAuthHeader() })
         console.log('new restaurant:', restaurant.data)
+        getCurrentUser()
         return restaurant.data
+    }
+
+    const editRestaurant = async (state: EditRestaurantProps, rid: string) => {
+        const updatedRestaurant = await axios.patch(`http://localhost:5000/api/restaurants/${rid}`, state, { headers: getAuthHeader() })
+        console.log('updatedRestaurant:', updatedRestaurant.data)
+        getCurrentUser()
+        return updatedRestaurant.data
+    }
+
+    const deleteRestaurant = async (rid: string) => {
+        const restaurant = await axios.delete(`http://localhost:5000/api/restaurants/${rid}`, { headers: getAuthHeader() })
+        console.log('restaurant:', restaurant.data)
+        getCurrentUser()
     }
 
     const getCurrentRestaurant = async (rid: string) => {
@@ -35,7 +58,7 @@ const RestaurantContextProvider = (props: { children: React.ReactNode }) => {
 
     return (
 
-        <RestaurantContext.Provider value={{ addRestaurant, getCurrentRestaurant }}>
+        <RestaurantContext.Provider value={{ addRestaurant, editRestaurant, deleteRestaurant, getCurrentRestaurant, getAuthHeader }}>
             {props.children}
         </RestaurantContext.Provider>
     )
