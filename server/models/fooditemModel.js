@@ -88,7 +88,7 @@ export const FooditemSchema = new mongoose.Schema({
 })
 
 
-// export default mongoose.model('fooditem', FooditemSchema)
+export default mongoose.model('fooditem', FooditemSchema)
 
 
 

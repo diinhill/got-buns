@@ -1,13 +1,13 @@
 import React, { useState, createContext, useEffect } from 'react'
 import axios from 'axios'
 import { getAuthHeader } from '../components/utils/Helper'
-import { AllUsers, AuthContextInterface, LoginProps, RegisterProps } from '../@types'
+import { AllUsers, AuthContextInterface, LoginProps } from '../@types'
 
 
 
 export const AuthContext = createContext<AuthContextInterface>({
     user: null,
-    register: () => {
+    register: (state: FormData) => {
         throw new Error('no register yet')
     },
     login: (state: LoginProps) => {
@@ -34,7 +34,7 @@ const AuthContextProvider = (props: { children: React.ReactNode }) => {
         getCurrentUser()
     }, [])
 
-    const register = async (state: RegisterProps) => {
+    const register = async (state: FormData) => {
         const response = await axios.post('http://localhost:5000/api/users/register', state)
         console.log('register response:', response.data)
         return response.data

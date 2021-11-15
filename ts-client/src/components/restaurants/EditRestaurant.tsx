@@ -16,17 +16,17 @@ const EditRestaurant = () => {
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault()
         const formData = new FormData()
-        formData.append('photo', newRestaurant.photo)
-        formData.append('name', newRestaurant.name)
-        formData.append('street', newRestaurant.street)
-        formData.append('number', newRestaurant.number)
-        formData.append('postal', newRestaurant.postal)
-        formData.append('town', newRestaurant.town)
-        formData.append('phone', newRestaurant.phone)
+        newRestaurant.photo && formData.append('photo', newRestaurant.photo)
+        newRestaurant.name && formData.append('name', newRestaurant.name)
+        newRestaurant.street && formData.append('street', newRestaurant.street)
+        newRestaurant.number && formData.append('number', newRestaurant.number)
+        newRestaurant.postal && formData.append('postal', newRestaurant.postal)
+        newRestaurant.town && formData.append('town', newRestaurant.town)
+        newRestaurant.phone && formData.append('phone', newRestaurant.phone)
 
         try {
             await editRestaurant(formData, rid)
-            history.push('/users/profile/restaurants')
+            history.push('/users/profile')
         } catch (error) {
             console.log('error:', error)
         }

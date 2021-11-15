@@ -8,23 +8,15 @@ namespace AllUsers {
         email: string
         profession?: string
         photo?: string
-        restaurants: /* string[] */ Restaurant[]
+        restaurants: Restaurant[]
     }
     type AllUsers = User[]
 }
-// interface UserPop {
-//     _id: String
-//     name: string
-//     email: string
-//     profession?: string
+// interface EditUserProps {
+//     name?: string
 //     photo?: string
-//     restaurants: Restaurant[]
+//     profession?: string
 // }
-interface EditUserProps {
-    name?: string
-    photo?: string
-    profession?: string
-}
 
 
 
@@ -33,13 +25,13 @@ interface LoginProps {
     email: string
     password: string
 }
-interface RegisterProps {
-    email: string
-    password: string
-    name: string
-    photo?: string
-    profession?: string
-}
+// interface RegisterProps {
+//     email: string
+//     password: string
+//     name: string
+//     photo?: string
+//     profession?: string
+// }
 
 
 
@@ -55,27 +47,27 @@ interface Restaurant {
     photo?: string
     comments?: Comment[]
     users?: User[]
-    fooditems?: Fooditem[]
+    fooditems: Fooditem[]
     admin: User
 }
-interface AddRestaurantProps {
-    name: string
-    street: string
-    number: string
-    postal: string
-    town: string
-    phone: string
-    photo?: string
-}
-interface EditRestaurantProps {
-    name?: string
-    street?: string
-    number?: string
-    postal?: string
-    town?: string
-    phone?: string
-    photo?: string
-}
+// interface AddRestaurantProps {
+//     name: string
+//     street: string
+//     number: string
+//     postal: string
+//     town: string
+//     phone: string
+//     photo?: string
+// }
+// interface EditRestaurantProps {
+//     name?: string
+//     street?: string
+//     number?: string
+//     postal?: string
+//     town?: string
+//     phone?: string
+//     photo?: string
+// }
 
 
 
@@ -83,20 +75,19 @@ interface EditRestaurantProps {
 interface AuthContextInterface {
     user: AllUsers.User | null
     login: (state: LoginProps) => any
-    register: any
+    register: (state: FormData) => any
     getCurrentUser: () => any
     getAuthHeader: () => any
     logout: () => any
 }
 interface UserContextInterface {
-    editUserProfile: any
+    editUserProfile: (state: FormData) => any
     deleteUserProfile: () => any
-    // getUserWithRestaurants: () => any
     getAuthHeader: () => any
 }
 interface RestaurantContextInterface {
-    addRestaurant: /* (state: AddRestaurantProps) => */ any
-    editRestaurant: /* (state: EditRestaurantProps, rid: string) => */ any
+    addRestaurant: (state: FormData) => any
+    editRestaurant: (state: FormData, rid: string) => any
     deleteRestaurant: (rid: string) => any
     getCurrentRestaurant: (rid: string) => any
     getAuthHeader: () => any

@@ -23,9 +23,9 @@ const EditUserProfile = () => {
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault()
         const formData = new FormData()
-        formData.append('photo', updatedUser.photo)
-        formData.append('name', updatedUser.name)
-        formData.append('profession', updatedUser.profession)
+        updatedUser.photo && formData.append('photo', updatedUser.photo)
+        updatedUser.name && formData.append('name', updatedUser.name)
+        updatedUser.profession && formData.append('profession', updatedUser.profession)
         try {
             await editUserProfile(formData)
             history.push('/users/profile')

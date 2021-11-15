@@ -1,6 +1,6 @@
 import express from 'express'
 import restaurantModel from '../models/restaurantModel.js'
-import { FooditemSchema } from '../models/fooditemModel.js'
+import fooditemModel from '../models/fooditemModel.js'
 import upload from '../middlewares/imgUpload.js'
 import passport from 'passport'
 
@@ -27,31 +27,55 @@ router.route('/:rid/addfooditem')
         async (req, res) => {
             const user = req.user
             const photo = req.file?.filename
-            console.log(`photo`, photo)
-            const { name, type, amount, purchaseDate, dueDate, price, swapPossible } = req.body
+            const { name, type, amount, price, swapPossible } = req.body
 
-            const newFooditem = {
+            const newFooditem = new fooditemModel({
                 name,
                 type,
                 amount,
-                purchaseDate,
-                dueDate,
                 price,
                 swapPossible,
                 photo,
-            }
+            })
+            console.log('newFooditem:', newFooditem)
             try {
-                const currentRestaurant = await restaurantModel.findById(req.params.rid)
-                console.log('current restaurant:', currentRestaurant)
-                currentRestaurant?.fooditems.push(newFooditem)
-                currentRestaurant.save()
-                res.send(currentRestaurant.fooditems)
+                const updatedRestaurant = await restaurantModel.findOneAndUpdate({
+                    _id: req.params.rid
+                }, {
+                    $push: { fooditems: newFooditem }
+                }, {
+                    new: true
+                })
+                console.log('updated restaurant:', updatedRestaurant)
+                res.send(updatedRestaurant)
             } catch (error) {
                 console.log('error:', error)
                 res.send(error)
             }
         }
     )
+
+// get one fooditem by id
+router.get('/:rid/fooditems/:fid', passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+        const user = req.user
+        console.log('user:', user)
+        if (user.restaurants.includes(req.params.rid))
+            try {
+                // const currentFooditem = await fooditemModel.findById(req.params.fid)
+                // console.log('current fooditem:', currentFooditem)
+                // res.send(currentFooditem)
+                const currentRestaurant = await restaurantModel.findById(req.params.rid)
+                console.log('current restaurant:', currentRestaurant)
+                const currentFooditem = currentRestaurant?.fooditems.id(req.params.fid)
+                console.log(`currentFooditem:`, currentFooditem)
+                res.send(currentFooditem)
+            } catch (error) {
+                console.log('error:', error)
+                res.send(error)
+            }
+    }
+)
 
 // edit fooditem  
 router.patch('/:rid/fooditems/:fid', passport.authenticate('jwt', { session: false }), upload.single('photo'),

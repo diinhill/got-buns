@@ -1,17 +1,16 @@
 import axios from 'axios'
 import React, { createContext, useContext } from 'react'
-import { RestaurantContextInterface, AddRestaurantProps, EditRestaurantProps } from '../@types'
+import { RestaurantContextInterface } from '../@types'
 import { getAuthHeader } from '../components/utils/Helper'
 import { AuthContext } from './AuthContext'
 
 
 
 export const RestaurantContext = createContext<RestaurantContextInterface>({
-    // user: null,    ????
-    addRestaurant: (state: AddRestaurantProps) => {
+    addRestaurant: (state: FormData) => {
         throw new Error('restaurant was not added')
     },
-    editRestaurant: (state: EditRestaurantProps, rid: string) => {
+    editRestaurant: (state: FormData, rid: string) => {
         throw new Error('restaurant could not be updated')
     },
     deleteRestaurant: (rid: string) => {
@@ -30,14 +29,14 @@ const RestaurantContextProvider = (props: { children: React.ReactNode }) => {
 
     const { getCurrentUser } = useContext(AuthContext)
 
-    const addRestaurant = async (state: AddRestaurantProps) => {
+    const addRestaurant = async (state: FormData) => {
         const restaurant = await axios.post('http://localhost:5000/api/restaurants/', state, { headers: getAuthHeader() })
         console.log('new restaurant:', restaurant.data)
         getCurrentUser()
         return restaurant.data
     }
 
-    const editRestaurant = async (state: EditRestaurantProps, rid: string) => {
+    const editRestaurant = async (state: FormData, rid: string) => {
         const updatedRestaurant = await axios.patch(`http://localhost:5000/api/restaurants/${rid}`, state, { headers: getAuthHeader() })
         console.log('updatedRestaurant:', updatedRestaurant.data)
         getCurrentUser()

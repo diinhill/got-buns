@@ -10,8 +10,12 @@ type RestaurantParams = {
     rid: string
 }
 
+type FooditemParams = {
+    fid: string
+}
 
-const MyRestaurantView = () => {
+
+const MyFooditemView = () => {
 
     const { rid } = useParams<RestaurantParams>()
     const history = useHistory()

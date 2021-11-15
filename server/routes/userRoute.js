@@ -67,40 +67,78 @@ router.route('/register')
     .post(upload.single('photo'),
         async (req, res) => {
             console.log('req.body:', req.body)
-            await userModel.findOne({ email: req.body.email },
-                async (err, user) => {
-                    if (err) {
-                        res.send(err, { success: false })
-                    } else if (user) {
-                        res.send(err, { msg: 'email is already used' })
-                    } else {
-                        bcrypt.genSalt(10, function (err, salt) {
-                            bcrypt.hash(req.body.password, salt, function (err, hash) {
-                                if (err) {
-                                    res.send(err, { success: false })
-                                } else {
-                                    console.log('hash:', hash)
-                                    let newUser = new userModel({
-                                        photo: req.file?.filename,
-                                        name: req.body.name,
-                                        email: req.body.email,
-                                        password: hash,
-                                        profession: req.body?.profession
+            try {
+                const user = await userModel.findOne({ email: req.body.email })
+                if (user) {
+                    res.send({ msg: 'email is already used' })
+                }
+                else {
+                    bcrypt.genSalt(10, function (err, salt) {
+                        bcrypt.hash(req.body.password, salt, function (err, hash) {
+                            if (err) {
+                                res.send(err, { success: false })
+                            } else {
+                                console.log('hash:', hash)
+                                let newUser = new userModel({
+                                    photo: req.file?.filename,
+                                    name: req.body.name,
+                                    email: req.body.email,
+                                    password: hash,
+                                    profession: req.body?.profession
+                                })
+
+                                newUser
+                                    .save()
+                                    .then(newUser => {
+                                        res.send(newUser)
                                     })
-                                    console.log('newUser:', newUser)
-                                    newUser
-                                        .save()
-                                        .then(newUser => {
-                                            res.send(newUser)
-                                        })
-                                        .catch(err => {
-                                            res.send(err, { success: false })
-                                        })
-                                }
-                            })
+                                    .catch(err => {
+                                        res.send(err)
+                                    })
+                                console.log('newUser:', newUser)
+                            }
                         })
-                    }
-                })
+                    })
+                }
+
+            } catch (err) {
+                res.send(err, { success: false })
+
+            }
+            // await userModel.findOne({ email: req.body.email },
+            //     async (err, user) => {
+            //         if (err) {
+            //             res.send(err, { success: false })
+            //         } else if (user) {
+            //             res.send(err, { msg: 'email is already used' })
+            //         } else {
+            //             bcrypt.genSalt(10, function (err, salt) {
+            //                 bcrypt.hash(req.body.password, salt, function (err, hash) {
+            //                     if (err) {
+            //                         res.send(err, { success: false })
+            //                     } else {
+            //                         console.log('hash:', hash)
+            //                         let newUser = new userModel({
+            //                             photo: req.file?.filename,
+            //                             name: req.body.name,
+            //                             email: req.body.email,
+            //                             password: hash,
+            //                             profession: req.body?.profession
+            //                         })
+            //                         console.log('newUser:', newUser)
+            //                         newUser
+            //                             .save()
+            //                             .then(newUser => {
+            //                                 res.send(newUser)
+            //                             })
+            //                             .catch(err => {
+            //                                 res.send(err, { success: false })
+            //                             })
+            //                     }
+            //                 })
+            //             })
+            //         }
+            //     })
         })
 
 
@@ -227,22 +265,22 @@ router.delete('/profile/delete', passport.authenticate('jwt', { session: false }
     }
 )
 
-// delete user account by id (as admin)
-router.delete('/:uid/delete', passport.authenticate('jwt', { session: false }),
-    async (req, res) => {
-        const user = req.user
-        console.log(`user`, user)
-        if (user.restaurants.includes({ admin: user._id, users: req.params.uid }))
-            try {
-                const user = await userModel.findById(req.params.uid)
-                console.log('user:', user)
-                user.delete()
-                res.send(user)
-            } catch (error) {
-                console.log('error:', error)
-                res.send(error)
-            }
-    }
-)
+// // delete user account by id (as admin)
+// router.delete('/:uid/delete', passport.authenticate('jwt', { session: false }),
+//     async (req, res) => {
+//         const user = req.user
+//         console.log(`user`, user)
+//         if (user.restaurants.includes({ admin: user._id, users: req.params.uid }))
+//             try {
+//                 const user = await userModel.findById(req.params.uid)
+//                 console.log('user:', user)
+//                 user.delete()
+//                 res.send(user)
+//             } catch (error) {
+//                 console.log('error:', error)
+//                 res.send(error)
+//             }
+//     }
+// )
 
 export default router
