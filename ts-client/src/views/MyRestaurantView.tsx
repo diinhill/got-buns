@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useHistory, useParams } from 'react-router'
 import { Restaurant } from '../@types'
 import { AuthContext } from '../context/AuthContext'
@@ -16,7 +16,7 @@ const MyRestaurantView = () => {
     const { rid } = useParams<RestaurantParams>()
     const history = useHistory()
     const { user } = useContext(AuthContext)
-    const { getCurrentRestaurant, deleteRestaurant } = useContext(RestaurantContext)
+    const { getCurrentRestaurant, deleteRestaurant, deleteFooditem } = useContext(RestaurantContext)
     const [restaurant, setRestaurant] = useState<Restaurant | undefined>()
 
     useEffect(() => {
@@ -31,9 +31,14 @@ const MyRestaurantView = () => {
         }
     }, [])
 
-    const handleDelete = () => {
+    const handleDeleteRestaurant = () => {
         deleteRestaurant(rid)
         history.push('/users/profile')
+    }
+
+    const handleDeleteFooditem = (rid: string, fid: string) => {
+        deleteFooditem(rid, fid)
+        history.push(`/users/profile/restaurants/${rid}`)
     }
 
     console.log(`restaurant`, restaurant)
@@ -64,7 +69,7 @@ const MyRestaurantView = () => {
                 {restaurant.admin === user._id ?
                     <div>
                         <button onClick={(() => history.push(`/users/profile/restaurants/edit/${restaurant._id}`))}><p>edit restaurant information</p></button>
-                        <button onClick={handleDelete}><p>delete restaurant</p></button>
+                        <button onClick={handleDeleteRestaurant}><p>delete restaurant</p></button>
                     </div>
                     : <p>you are not the admin of this restaurant</p>
                 }
@@ -80,13 +85,11 @@ const MyRestaurantView = () => {
                                             <p>{fooditem.name}</p>
                                             <p>{fooditem.type}</p>
                                             {fooditem.photo ?
-                                                <img src={`http://localhost:5000/images/${fooditem.photo}`} width='140' alt='' />
-                                                : <img src={food} width='140' alt='' />}
+                                                <img src={`http://localhost:5000/images/${fooditem.photo}`} width='40' alt='' />
+                                                : <img src={food} width='40' alt='' />}
                                             <article className='tile is-child is-vertical'>
-                                                <p>amount available: {fooditem.amount}</p>
-                                                <p>{fooditem.price}€</p>
-                                                <p>swap possible?: {fooditem.swapPossible}</p>
-                                                <button onClick={(() => history.push(`/users/profile/restaurants/${restaurant._id}/${fooditem._id}`))}><p>see information</p></button>
+                                                <button onClick={(() => handleDeleteFooditem(rid, fooditem._id))}><p>delete</p></button>
+                                                <button onClick={(() => history.push(`/users/profile/restaurants/${restaurant._id}/fooditems/${fooditem._id}`))}><p>see information</p></button>
                                             </article>
                                         </div>
                                         : <p>loading...</p>}

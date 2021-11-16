@@ -21,6 +21,15 @@ export const RestaurantContext = createContext<RestaurantContextInterface>({
     },
     getAuthHeader: () => {
         throw new Error('no header yet')
+    },
+    deleteFooditem: (rid: string, fid: string) => {
+        throw new Error('fooditem could not be deleted')
+    },
+    getCurrentFooditem: (rid: string, fid: string) => {
+        throw new Error('fooditem could not be sent')
+    },
+    editFooditem: (rid: string, fid: string) => {
+        throw new Error('fooditem could not be updated')
     }
 })
 
@@ -55,9 +64,30 @@ const RestaurantContextProvider = (props: { children: React.ReactNode }) => {
         return currentRestaurant.data
     }
 
+    const getCurrentFooditem = async (rid: string, fid: string) => {
+        const currentFooditem = await axios.get(`http://localhost:5000/api/restaurants/${rid}/fooditems/${fid}`, { headers: getAuthHeader() })
+        console.log('current fooditem:', currentFooditem.data)
+        return currentFooditem.data
+    }
+
+    const editFooditem = async (rid: string, fid: string) => {
+        const updatedRestaurant = await axios.patch(`http://localhost:5000/api/restaurants/${rid}/fooditems/${fid}`, { headers: getAuthHeader() })
+        console.log('updatedRestaurant:', updatedRestaurant.data)
+        return updatedRestaurant.data
+    }
+
+    const deleteFooditem = async (rid: string, fid: string) => {
+        const restaurant = await axios.delete(`http://localhost:5000/api/restaurants/${rid}/fooditems/${fid}`, { headers: getAuthHeader() })
+        console.log('restaurant:', restaurant.data)
+        return restaurant.data
+    }
+
     return (
 
-        <RestaurantContext.Provider value={{ addRestaurant, editRestaurant, deleteRestaurant, getCurrentRestaurant, getAuthHeader }}>
+        <RestaurantContext.Provider value={{
+            addRestaurant, editRestaurant, deleteRestaurant, getCurrentRestaurant,
+            getCurrentFooditem, editFooditem, deleteFooditem, getAuthHeader
+        }}>
             {props.children}
         </RestaurantContext.Provider>
     )

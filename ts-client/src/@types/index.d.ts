@@ -12,11 +12,6 @@ namespace AllUsers {
     }
     type AllUsers = User[]
 }
-// interface EditUserProps {
-//     name?: string
-//     photo?: string
-//     profession?: string
-// }
 
 
 
@@ -25,17 +20,10 @@ interface LoginProps {
     email: string
     password: string
 }
-// interface RegisterProps {
-//     email: string
-//     password: string
-//     name: string
-//     photo?: string
-//     profession?: string
-// }
 
 
 
-// restaurants //
+// restaurants and fooditems //
 interface Restaurant {
     _id: String
     name: string
@@ -50,24 +38,16 @@ interface Restaurant {
     fooditems: Fooditem[]
     admin: User
 }
-// interface AddRestaurantProps {
-//     name: string
-//     street: string
-//     number: string
-//     postal: string
-//     town: string
-//     phone: string
-//     photo?: string
-// }
-// interface EditRestaurantProps {
-//     name?: string
-//     street?: string
-//     number?: string
-//     postal?: string
-//     town?: string
-//     phone?: string
-//     photo?: string
-// }
+interface Fooditem {
+    _id: string
+    name: string
+    type: string
+    amount: number
+    price: number
+    swapPossible: boolean
+    photo?: string
+}
+
 
 
 
@@ -91,4 +71,7 @@ interface RestaurantContextInterface {
     deleteRestaurant: (rid: string) => any
     getCurrentRestaurant: (rid: string) => any
     getAuthHeader: () => any
+    deleteFooditem: (rid: string, fid: string) => any
+    getCurrentFooditem: (rid: string, fid: string) => any
+    editFooditem: (rid: string, fid: string) => any
 }

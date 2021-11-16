@@ -15,6 +15,8 @@ import EditRestaurant from './components/restaurants/EditRestaurant';
 import UserContextProvider from './context/UserContext';
 import EditUserProfile from './components/users/EditUserProfile';
 import AddFooditem from './components/fooditems/AddFooditem';
+import FooditemView from './views/FooditemView';
+import EditFooditem from './components/fooditems/EditFooditem';
 
 
 // const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -68,7 +70,12 @@ function App() {
               <Route exact path={`/users/profile/restaurants/addfooditem/:rid`}>
                 <AddFooditem />
               </Route>
-              <Route exact path={`/users/profile/restaurants/:rid/:fid`}
+              <Route exact path={`/users/profile/restaurants/:rid/fooditems/:fid`}>
+                <FooditemView />
+              </Route>
+              <Route exact path={`/users/profile/restaurants/:rid/fooditems/:fid/edit`}>
+                <EditFooditem />
+              </Route>
             </Switch>
             {/* <PrivateRoute component={HomeView} exact path='/users/profile/restaurants' />
           <PrivateRoute component={MyRestaurantView} exact path={`/users/profile/restaurants/:rid`} /> */}
