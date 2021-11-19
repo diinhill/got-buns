@@ -12,7 +12,7 @@ router.route('/')
     // get all restaurants
     .get(
         async (req, res) => {
-            await restaurantModel.find().select("name street fooditems")
+            await restaurantModel.find().select("name type cuisineType street number postal town photo fooditems")
                 .then(files => {
                     res.send(files)
                 })
@@ -25,12 +25,14 @@ router.route('/')
             const user = req.user
             console.log('user:', user)
             const photo = req.file?.filename
-            const { name, phone, street, number, postal, town } = req.body
+            const { name, type, cuisineType, phone, street, number, postal, town } = req.body
             console.log('photo:', photo)
             console.log('req.body:', req.body)
             try {
                 const newRestaurant = new restaurantModel({
                     name,
+                    type,
+                    cuisineType,
                     phone,
                     street,
                     number,

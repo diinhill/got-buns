@@ -7,6 +7,9 @@ import { AuthContext } from './AuthContext'
 
 
 export const RestaurantContext = createContext<RestaurantContextInterface>({
+    getAllRestaurants: () => {
+        throw new Error('could not load restaurants')
+    },
     addRestaurant: (state: FormData) => {
         throw new Error('restaurant was not added')
     },
@@ -30,6 +33,9 @@ export const RestaurantContext = createContext<RestaurantContextInterface>({
     },
     editFooditem: (rid: string, fid: string) => {
         throw new Error('fooditem could not be updated')
+    },
+    addFooditem: (formData: FormData, rid: string) => {
+        throw new Error('fooditem could not be added')
     }
 })
 
@@ -37,6 +43,12 @@ export const RestaurantContext = createContext<RestaurantContextInterface>({
 const RestaurantContextProvider = (props: { children: React.ReactNode }) => {
 
     const { getCurrentUser } = useContext(AuthContext)
+
+    const getAllRestaurants = async () => {
+        const restaurants = await axios.get('http://localhost:5000/api/restaurants/')
+        console.log('restaurants:', restaurants.data)
+        return restaurants.data
+    }
 
     const addRestaurant = async (state: FormData) => {
         const restaurant = await axios.post('http://localhost:5000/api/restaurants/', state, { headers: getAuthHeader() })
@@ -64,6 +76,12 @@ const RestaurantContextProvider = (props: { children: React.ReactNode }) => {
         return currentRestaurant.data
     }
 
+    const addFooditem = async (formData: FormData, rid: string) => {
+        const updatedRestaurant = await axios.patch(`http://localhost:5000/api/restaurants/${rid}/addfooditem`, formData, { headers: getAuthHeader() })
+        console.log('updatedRestaurant:', updatedRestaurant.data)
+        return updatedRestaurant.data
+    }
+
     const getCurrentFooditem = async (rid: string, fid: string) => {
         const currentFooditem = await axios.get(`http://localhost:5000/api/restaurants/${rid}/fooditems/${fid}`, { headers: getAuthHeader() })
         console.log('current fooditem:', currentFooditem.data)
@@ -85,8 +103,8 @@ const RestaurantContextProvider = (props: { children: React.ReactNode }) => {
     return (
 
         <RestaurantContext.Provider value={{
-            addRestaurant, editRestaurant, deleteRestaurant, getCurrentRestaurant,
-            getCurrentFooditem, editFooditem, deleteFooditem, getAuthHeader
+            getAllRestaurants, addRestaurant, editRestaurant, deleteRestaurant, getCurrentRestaurant,
+            addFooditem, getCurrentFooditem, editFooditem, deleteFooditem, getAuthHeader
         }}>
             {props.children}
         </RestaurantContext.Provider>

@@ -1,22 +1,22 @@
 import './App.css'
-import 'bulma/css/bulma.css'
-import React, { useContext } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import AuthContextProvider, { AuthContext } from './context/AuthContext';
-import LandingPageView from './views/LandingPageView';
-import Login from './components/auth/Login';
-import HomeView from './views/HomeView';
 import RestaurantContextProvider from './context/RestaurantContext';
-import Register from './components/auth/Register';
-import Logout from './components/auth/Logout';
-import MyRestaurantView from './views/MyRestaurantView';
-import AddRestaurant from './components/restaurants/AddRestaurant';
-import EditRestaurant from './components/restaurants/EditRestaurant';
 import UserContextProvider from './context/UserContext';
-import EditUserProfile from './components/users/EditUserProfile';
-import AddFooditem from './components/fooditems/AddFooditem';
 import FooditemView from './views/FooditemView';
-import EditFooditem from './components/fooditems/EditFooditem';
+import ProfileView from './views/ProfileView';
+import AddRestaurantView from './views/AddRestaurantView';
+import RestaurantView from './views/RestaurantView';
+import AddFooditemView from './views/AddFooditemView';
+import EditRestaurantView from './views/EditRestaurantView';
+import EditFooditemView from './views/EditFooditemView';
+import EditUserProfileView from './views/EditUserProfileView';
+import RegisterView from './views/RegisterView';
+import LoginView from './views/LoginView';
+import AllRestaurantsView from './views/AllRestaurantsView';
+import Logout from './components/users/Logout';
+import ScrollTransparentNavbar from './components/core/ScrollTransparentNavbar';
+import LandingPageView from './views/LandingPageView';
 
 
 // const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -38,43 +38,51 @@ function App() {
       <AuthContextProvider>
         <UserContextProvider>
           <RestaurantContextProvider>
+            <ScrollTransparentNavbar />
             <Switch>
               <Route exact path='/'>
                 <LandingPageView />
               </Route>
+              <Route exact path='/restaurants'>
+                <AllRestaurantsView />
+              </Route>
+              <Route exact path='/restaurants/fooditems/all'>
+                {/* <AllFooditemsView /> */}
+              </Route>
+
               <Route exact path='/register'>
-                <Register />
+                <RegisterView />
               </Route>
               <Route exact path='/login'>
-                <Login />
+                <LoginView />
               </Route>
               <Route exact path='/logout'>
                 <Logout />
               </Route>
 
               <Route exact path='/users/profile'>
-                <HomeView />
+                <ProfileView />
               </Route>
               <Route exact path='/users/profile/edit'>
-                <EditUserProfile />
+                <EditUserProfileView />
               </Route>
               <Route exact path='/users/profile/restaurants/add'>
-                <AddRestaurant />
+                <AddRestaurantView />
               </Route>
               <Route exact path={`/users/profile/restaurants/:rid`}>
-                <MyRestaurantView />
+                <RestaurantView />
               </Route>
               <Route exact path={`/users/profile/restaurants/edit/:rid`}>
-                <EditRestaurant />
+                <EditRestaurantView />
               </Route>
               <Route exact path={`/users/profile/restaurants/addfooditem/:rid`}>
-                <AddFooditem />
+                <AddFooditemView />
               </Route>
               <Route exact path={`/users/profile/restaurants/:rid/fooditems/:fid`}>
                 <FooditemView />
               </Route>
               <Route exact path={`/users/profile/restaurants/:rid/fooditems/:fid/edit`}>
-                <EditFooditem />
+                <EditFooditemView />
               </Route>
             </Switch>
             {/* <PrivateRoute component={HomeView} exact path='/users/profile/restaurants' />

@@ -1,4 +1,4 @@
-import { PrivateIdentifier } from "typescript";
+import { PrivateIdentifier } from "typescript"
 
 // users //
 namespace AllUsers {
@@ -6,6 +6,7 @@ namespace AllUsers {
         _id: String
         name: string
         email: string
+        password: string
         profession?: string
         photo?: string
         restaurants: Restaurant[]
@@ -24,13 +25,24 @@ interface LoginProps {
 
 
 // restaurants and fooditems //
+
+export enum RestaurantTypes {
+    'Buffet', 'Café', 'Bars and Pubs', 'Fastfood', 'Family-style', 'Fine dining', 'Casual'
+}
+export enum CuisineTypes {
+    'American', 'Indian', 'Chinese', 'Greek', 'Turkish', 'Israeli', 'Japanese', 'Italian', 'Mexican',
+    'Thai', 'Vietnamese', 'Libanese', 'Sudanese', 'Spanish', 'Austrian', 'French', 'Bavarian', 'Croatian',
+    'Argentinian', 'Georgian', 'Vegan/Vegetarian', 'Continental'
+}
 interface Restaurant {
-    _id: String
+    _id: string
     name: string
-    phone: number
+    type: string
+    cuisineType: string
+    phone: string
     street: string
-    number: number
-    postal: number
+    number: string
+    postal: string
     town: string
     photo?: string
     comments?: Comment[]
@@ -38,15 +50,25 @@ interface Restaurant {
     fooditems: Fooditem[]
     admin: User
 }
+
+export enum FooditemTypes {
+    'Vegetables', 'Fruits', 'Breads', 'Dairy Products', 'Meat'
+}
 interface Fooditem {
     _id: string
     name: string
+    restaurantID: string
     type: string
-    amount: number
-    price: number
-    swapPossible: boolean
+    amount: string | number
+    price: string
+    swapPossible: string | boolean
+    reserved?: boolean | string
     photo?: string
+    updated?: Date | string
+    purchaseDate: Date | string
+    dueDate: Date | string
 }
+
 
 
 
@@ -54,24 +76,26 @@ interface Fooditem {
 // context //
 interface AuthContextInterface {
     user: AllUsers.User | null
-    login: (state: LoginProps) => any
-    register: (state: FormData) => any
+    login: (state: LoginProps) => void
+    register: (state: FormData) => void
     getCurrentUser: () => any
-    getAuthHeader: () => any
+    getAuthHeader: () => void
     logout: () => any
 }
 interface UserContextInterface {
     editUserProfile: (state: FormData) => any
     deleteUserProfile: () => any
-    getAuthHeader: () => any
+    getAuthHeader: () => void
 }
 interface RestaurantContextInterface {
+    getAllRestaurants: () => any
+    getCurrentRestaurant: (rid: string) => any
     addRestaurant: (state: FormData) => any
     editRestaurant: (state: FormData, rid: string) => any
     deleteRestaurant: (rid: string) => any
-    getCurrentRestaurant: (rid: string) => any
-    getAuthHeader: () => any
-    deleteFooditem: (rid: string, fid: string) => any
-    getCurrentFooditem: (rid: string, fid: string) => any
     editFooditem: (rid: string, fid: string) => any
+    addFooditem: (formData: FormData, rid: string) => any
+    getCurrentFooditem: (rid: string, fid: string) => any
+    deleteFooditem: (rid: string, fid: string) => any
+    getAuthHeader: () => void
 }

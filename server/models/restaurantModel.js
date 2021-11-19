@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import Schema from 'mongoose'
 import { CommentSchema } from './commentModel.js'
-import { FooditemSchema } from './fooditemModel.js'
+import { FooditemSchema } from './fooditemSchema.js'
 
 
 
@@ -9,6 +9,14 @@ const RestaurantSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+    },
+    type: {
+        type: String,
+        required: true
+    },
+    cuisineType: {
+        type: String,
+        required: true
     },
     phone: {
         type: Number,

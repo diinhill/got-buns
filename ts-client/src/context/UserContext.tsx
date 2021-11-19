@@ -52,7 +52,6 @@ const UserContextProvider = (props: { children: React.ReactNode }) => {
 
 
     return (
-
         <UserContext.Provider value={{ editUserProfile, deleteUserProfile, getAuthHeader }}>
             {props.children}
         </UserContext.Provider>
