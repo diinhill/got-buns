@@ -12,22 +12,22 @@ const router = express.Router()
 
 
 // get all fooditems
-router.get('/fooditems',
-    async (req, res) => {
-        try {
-            const restaurants = await restaurantModel.find({}).select('fooditems')
-            console.log(`restaurants`, restaurants)
-            const allFooditems = []
-            restaurants?.forEach(restaurant => restaurant.fooditems.forEach(fooditem =>
-                (fooditem._id & fooditem.restaurantID) ? allFooditems.push(fooditem) : null))
-            console.log(`fooditems`, fooditems)
-            res.send(fooditems)
-        } catch (error) {
-            console.log('error:', error)
-            res.send(error)
-        }
-    }
-)
+// router.get('/fooditems',
+//     async (req, res) => {
+//         try {
+//             const restaurants = await restaurantModel.find({}).select('fooditems')
+//             console.log(`restaurants`, restaurants)
+//             const allFooditems = []
+//             restaurants?.forEach(restaurant => restaurant.fooditems.forEach(fooditem =>
+//                 (fooditem._id & fooditem.restaurantID) ? allFooditems.push(fooditem) : null))
+//             console.log(`fooditems`, fooditems)
+//             res.send(fooditems)
+//         } catch (error) {
+//             console.log('error:', error)
+//             res.send(error)
+//         }
+//     }
+// )
 
 
 // add fooditem = update fooditems array of respective restaurant
@@ -36,19 +36,16 @@ router.route('/:rid/addfooditem')
         async (req, res) => {
             const user = req.user
             const photo = req.file?.filename
-            const { name, type, amount, purchaseDate, dueDate, price, swapPossible } = req.body
+            const { name, amount, /* purchaseDate, dueDate,  */price } = req.body
 
             const newFooditem = {
                 name,
-                type,
                 restaurantID: req.params.rid,
                 amount,
-                purchaseDate,
-                dueDate,
+                // purchaseDate,
+                // dueDate,
                 price,
-                swapPossible,
-                photo,
-                updated
+                photo
             }
             console.log('newFooditem:', newFooditem)
             try {

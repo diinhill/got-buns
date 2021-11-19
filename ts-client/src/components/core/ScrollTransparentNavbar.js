@@ -84,8 +84,8 @@ function ScrollTransparentNavbar() {
                 {/* </p> */}
               </Button>
             </NavItem>
-            <NavbarBrand to="/" tag={Link} id="navbar-brand" className='bottom' right>
-              buns
+            <NavbarBrand to="/users/profile" tag={Link} id="navbar-brand" >
+              HOME
             </NavbarBrand>
             <UncontrolledTooltip target="navbar-brand">
               buns buns buns
@@ -116,7 +116,7 @@ function ScrollTransparentNavbar() {
                   onClick={(e) => e.preventDefault()}
                 >
                   {/* <i className="now-ui-icons design_app"></i> */}
-                  <p>HOME</p>
+                  <p>buns</p>
                 </DropdownToggle>
                 <DropdownMenu aria-labelledby="navbarDropdownMenuLink1" right>
                   <DropdownItem to='/restaurants' tag={Link}>

@@ -134,7 +134,7 @@ const FooditemForm: React.FC<Props> = ({ handlePhoto, handleChange, handleSubmit
                         // <br></br>
                         : <Switch value={true} name='swapPossible' offColor="" offText="" onColor="" onText="" onChange={handleChange}>Yes</Switch>}
                 </Col> */}
-                <Col className="mb-4" lg="3" sm="6">
+                {/* <Col className="mb-4" lg="3" sm="6">
                     <p className="category">Possible Swap</p>
                     {(newFooditem.swapPossible === false || 'false') ?
                         <FormGroup check className="form-check-radio">
@@ -164,7 +164,7 @@ const FooditemForm: React.FC<Props> = ({ handlePhoto, handleChange, handleSubmit
                                 Yes
                             </Label>
                         </FormGroup>}
-                </Col>
+                </Col> */}
 
 
                 {/*  <Col className="pr-2" md="6">

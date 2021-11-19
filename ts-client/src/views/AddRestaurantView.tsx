@@ -14,7 +14,7 @@ const AddRestaurantView = () => {
     const { user } = useContext(AuthContext)
     const { addRestaurant } = useContext(RestaurantContext)
     const [newRestaurant, setNewRestaurant] = useState({
-        photo: '', name: '', type: '', cuisineType: '',
+        photo: '', name: '', /* type: '', cuisineType: '', */
         street: '', number: '', postal: '', town: '', phone: ''
     })
     const [imgfile, setImgfile] = useState<File | string>('')
@@ -23,8 +23,8 @@ const AddRestaurantView = () => {
         e.preventDefault()
         const formData = new FormData()
         formData.append('name', newRestaurant.name)
-        formData.append('type', newRestaurant.type)
-        formData.append('cuisineType', newRestaurant.cuisineType)
+        // formData.append('type', newRestaurant.type)
+        // formData.append('cuisineType', newRestaurant.cuisineType)
         formData.append('street', newRestaurant.street)
         formData.append('number', newRestaurant.number)
         formData.append('postal', newRestaurant.postal)
@@ -68,7 +68,7 @@ const AddRestaurantView = () => {
         user ?
             <div className='wrapper'>
                 <HumongousHeader
-                    backgroundImage={user.restaurants[0].photo ? `http://localhost:5000/images/${user.restaurants[0].photo}` : defaultBgImage}
+                    backgroundImage={user.restaurants[0]?.photo ? `http://localhost:5000/images/${user.restaurants[0].photo}` : defaultBgImage}
                     avatar={user.photo ? `http://localhost:5000/images/${user.photo}` : defaultAvatar}
                     title={user.name}
                     category={user.profession ? user.profession : ''}

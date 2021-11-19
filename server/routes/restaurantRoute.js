@@ -31,8 +31,8 @@ router.route('/')
             try {
                 const newRestaurant = new restaurantModel({
                     name,
-                    type,
-                    cuisineType,
+                    // type,
+                    // cuisineType,
                     phone,
                     street,
                     number,

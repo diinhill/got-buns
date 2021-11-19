@@ -47,7 +47,7 @@ const FooditemView = () => {
                 <HumongousHeader
                     backgroundImage={fooditem.photo ? `http://localhost:5000/images/${fooditem.photo}` : defaultBgImage}
                     title={fooditem.name}
-                    category={fooditem.type}
+                    category={''}
                     qty={fooditem.amount}
                     qtyName={fooditem.amount <= 1 ? 'Unit' : 'Units'}
                     avatar={''}

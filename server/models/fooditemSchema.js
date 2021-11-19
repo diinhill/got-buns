@@ -9,7 +9,6 @@ export const FooditemSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        required: true,
     },
     restaurantID: {
         type: mongoose.Schema.Types.ObjectId,
@@ -19,25 +18,23 @@ export const FooditemSchema = new mongoose.Schema({
         type: /*Schema.Types.Decimal128*/ Number,
         required: true,
     },
-    purchaseDate: {
-        type: Date,
-        required: true,
-    },
-    dueDate: {
-        type: Date,
-        required: true,
-    },
+    // purchaseDate: {
+    //     type: Date,
+    //     required: true,
+    // },
+    // dueDate: {
+    //     type: Date,
+    //     required: true,
+    // },
     price: {
         type: /*Schema.Types.Decimal128*/ Number,
         required: true,
     },
     swapPossible: {
         type: Boolean,
-        required: true,
     },
     reserved: {
         type: Boolean,
-        required: true,
         default: false,
     },
     updated: {

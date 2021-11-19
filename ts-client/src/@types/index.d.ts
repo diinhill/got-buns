@@ -37,8 +37,8 @@ export enum CuisineTypes {
 interface Restaurant {
     _id: string
     name: string
-    type: string
-    cuisineType: string
+    type?: string
+    cuisineType?: string
     phone: string
     street: string
     number: string
@@ -58,15 +58,15 @@ interface Fooditem {
     _id: string
     name: string
     restaurantID: string
-    type: string
+    type?: string
     amount: string | number
     price: string
-    swapPossible: string | boolean
+    swapPossible?: string | boolean
     reserved?: boolean | string
     photo?: string
     updated?: Date | string
-    purchaseDate: Date | string
-    dueDate: Date | string
+    purchaseDate?: Date | string
+    dueDate?: Date | string
 }
 
 

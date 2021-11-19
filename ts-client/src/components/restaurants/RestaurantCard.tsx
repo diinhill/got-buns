@@ -25,7 +25,7 @@ const RestaurantCard: React.FC<Props> = ({ restaurant }) => {
                     style={{ backgroundImage: `url(http://localhost:5000/images/${restaurant.photo})` || `url(${require("../../assets/img/chumbucket.png")}` }}
                 >
                     <div className="info">
-                        <i><h5 className="info-title">{`${restaurant.type}: ${restaurant.cuisineType} cuisine`}</h5></i>
+                        {/* <i><h5 className="info-title">{`${restaurant.type}: ${restaurant.cuisineType} cuisine`}</h5></i> */}
                         <div className="description">
                             <h4 className="info-title">{restaurant.name}</h4>
                             <p>

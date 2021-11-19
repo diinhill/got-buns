@@ -23,7 +23,7 @@ const EditFooditemView = () => {
     const { editFooditem, getCurrentRestaurant } = useContext(RestaurantContext)
     const [newFooditem, setNewFooditem] = useState({
         photo: '', name: '', type: '', amount: '',
-        purchaseDate: '', dueDate: '', price: '', swapPossible: '', reserved: ''
+        /* purchaseDate: '', dueDate: '',  */price: '', swapPossible: '', reserved: ''
     })
     const [imgfile, setImgfile] = useState<File | string>('')
     const [restaurant, setRestaurant] = useState<Restaurant | undefined>()
@@ -47,8 +47,8 @@ const EditFooditemView = () => {
         newFooditem.name && formData.append('name', newFooditem.name)
         newFooditem.type && formData.append('type', newFooditem.type)
         newFooditem.amount && formData.append('amount', newFooditem.amount)
-        newFooditem.purchaseDate && formData.append('purchaseDate', newFooditem.purchaseDate)
-        newFooditem.dueDate && formData.append('dueDate', newFooditem.dueDate)
+        // newFooditem.purchaseDate && formData.append('purchaseDate', newFooditem.purchaseDate)
+        // newFooditem.dueDate && formData.append('dueDate', newFooditem.dueDate)
         newFooditem.price && formData.append('price', newFooditem.price)
         newFooditem.swapPossible && formData.append('swapPossible', newFooditem.swapPossible)
         newFooditem.reserved && formData.append('reserved', newFooditem.reserved)

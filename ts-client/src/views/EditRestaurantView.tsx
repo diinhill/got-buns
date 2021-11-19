@@ -19,7 +19,7 @@ const EditRestaurantView = () => {
     const { editRestaurant, getCurrentRestaurant } = useContext(RestaurantContext)
     const [restaurant, setRestaurant] = useState<Restaurant>()
     const [newRestaurant, setNewRestaurant] = useState<Partial<Restaurant>>({
-        photo: '', name: '', type: '', cuisineType: '',
+        photo: '', name: '',/*  type: '', cuisineType: '', */
         street: '', number: '', postal: '', town: '', phone: ''
     })
     const [imgfile, setImgfile] = useState<File | string>('')
@@ -42,8 +42,8 @@ const EditRestaurantView = () => {
         // newRestaurant.photo && formData.append('photo', newRestaurant.photo)
         imgfile && formData.append('photo', imgfile)
         newRestaurant.name && formData.append('name', newRestaurant.name)
-        newRestaurant.type && formData.append('type', newRestaurant.type)
-        newRestaurant.cuisineType && formData.append('cuisineType', newRestaurant.cuisineType)
+        // newRestaurant.type && formData.append('type', newRestaurant.type)
+        // newRestaurant.cuisineType && formData.append('cuisineType', newRestaurant.cuisineType)
         newRestaurant.street && formData.append('street', newRestaurant.street)
         newRestaurant.number && formData.append('number', newRestaurant.number)
         newRestaurant.postal && formData.append('postal', newRestaurant.postal)
@@ -87,7 +87,7 @@ const EditRestaurantView = () => {
                 <HumongousHeader
                     backgroundImage={restaurant.photo ? `http://localhost:5000/images/${restaurant.photo}` : defaultBgImage}
                     title={restaurant.name}
-                    category={restaurant.type}
+                    category={restaurant.town}
                     qty={restaurant.fooditems.length}
                     qtyName={restaurant.fooditems.length <= 1 ? 'Food Item' : 'Food Items'}
                     avatar={''}

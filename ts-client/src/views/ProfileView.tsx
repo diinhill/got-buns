@@ -62,7 +62,7 @@ const ProfileView = () => {
     user ?
       <div className="wrapper">
         <HumongousHeader
-          backgroundImage={user.restaurants[0].photo ? `http://localhost:5000/images/${user.restaurants[0].photo}` : defaultBgImage}
+          backgroundImage={user.restaurants[0]?.photo ? `http://localhost:5000/images/${user.restaurants[0].photo}` : defaultBgImage}
           avatar={user.photo ? `http://localhost:5000/images/${user.photo}` : defaultAvatar}
           title={user.name}
           category={user.profession ? user.profession : ''}
